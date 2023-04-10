@@ -1,11 +1,22 @@
 version: '3.1'
 services:
   stats-server:
+    build: ./stats-service
+    container_name: stats-service
     ports:
       - "9090:9090"
+    depends_on:
+      - stats-db
+    env_file:
+      - stats.env
 
   stats-db:
     image: postgres:14-alpine
+    container_name: stats-db
+    volumes:
+      - /var/lib/postgresql/data/
+    env_file:
+      - stats-db.env
 
   ewm-service:
     ports:
