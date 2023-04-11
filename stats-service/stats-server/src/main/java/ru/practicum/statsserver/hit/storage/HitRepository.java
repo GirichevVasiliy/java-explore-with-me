@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface HitRepository extends JpaRepository<Hit, Long> {
-    @Query("SELECT h FROM Hit h WHERE h.timestamp BETWEEN :start AND :end AND h.uri LIKE :uri")
+    @Query("SELECT h FROM Hit h WHERE h.timestamp BETWEEN :start AND :end AND h.uri ilike :uri")
     List<Hit> getAllHits(LocalDateTime start, LocalDateTime end, List<String> uri);
 
 }
