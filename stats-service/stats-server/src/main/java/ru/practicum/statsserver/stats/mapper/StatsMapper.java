@@ -8,7 +8,7 @@ public class StatsMapper {
         return StatsDto.builder()
                 .app(stats.getApp())
                 .uri(stats.getUri())
-                .hits(stats.getHits().size())
+                .hits(stats.getHits())
                 .build();
     }
 }

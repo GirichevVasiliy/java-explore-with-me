@@ -6,5 +6,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface StatsService {
-    List<StatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique);
+    List<StatsDto> getStats(String start, String end, List<String> uris, boolean unique);
 }
