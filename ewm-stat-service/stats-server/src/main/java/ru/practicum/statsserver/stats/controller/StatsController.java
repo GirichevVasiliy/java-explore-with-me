@@ -16,7 +16,6 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @RequestMapping(path = "/stats")
