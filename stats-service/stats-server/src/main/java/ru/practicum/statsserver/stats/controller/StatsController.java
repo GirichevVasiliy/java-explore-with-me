@@ -39,7 +39,7 @@ public class StatsController {
         List<StatsDto> list = service.getStats(start, end, uris, unique);
         HitDto hitDto = HitDto.builder()
                 .uri("/events")
-                .app("stats-server")
+                .app("ewm-stat-service")
                 .ip(InetAddress.getLocalHost().getHostAddress().toString())
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();

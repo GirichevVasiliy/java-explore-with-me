@@ -25,10 +25,10 @@ public class StatsServiceImpl implements StatsService {
     public List<StatsDto> getStats(String start, String end, List<String> uris, boolean unique) {
         LocalDateTime newStart = DateFormatter.formatDate(start);
         LocalDateTime newEnd = DateFormatter.formatDate(end);
-        if ((uris.isEmpty() || uris == null) && !unique){
+        if (uris == null && !unique){
             return statsRepository.findByDate(newStart, newEnd);
         }
-        if ((uris.isEmpty() || uris == null) && unique){
+        if (uris == null && unique){
             return statsRepository.findByDateAndUniqueIp(newStart, newEnd);
         }
         if (!uris.isEmpty() && !unique){

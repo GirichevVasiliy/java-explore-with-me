@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.HitDto;
 import ru.practicum.StatsDto;
 import ru.practicum.statsserver.hit.model.Hit;
 import ru.practicum.statsserver.hit.storage.HitRepository;
@@ -59,8 +58,6 @@ class StatsRepositoryTest {
 
         hit5 = hitRepository.save(new Hit(null, "ewm-main-service", "/events/56", "192.163.120.120", DateFormatter.formatDate("2023-03-06 09:00:00")));
         entityManager.persist(hit5);
-
-
     }
 
     @Test
@@ -81,16 +78,19 @@ class StatsRepositoryTest {
         assertThat(stats.contains(statsDto1)).isTrue();
         assertThat(stats.contains(statsDto2)).isTrue();
     }
+
     @Test
     void findByDateFutureTest() {
         List<StatsDto> stats = statsRepository.findByDate(newStartFuture, newEndFuture);
         assertThat(stats.isEmpty()).isTrue();
     }
+
     @Test
     void findByDatePastTest() {
         List<StatsDto> stats = statsRepository.findByDate(newStartPast, newEndPast);
         assertThat(stats.isEmpty()).isTrue();
     }
+
     @Test
     void findByDateAndUniqueIpTest() {
         StatsDto statsDto1 = StatsDto.builder()
@@ -109,16 +109,19 @@ class StatsRepositoryTest {
         assertThat(stats.contains(statsDto1)).isTrue();
         assertThat(stats.contains(statsDto2)).isTrue();
     }
+
     @Test
     void findByDateAndUniqueIpFutureTest() {
         List<StatsDto> stats = statsRepository.findByDateAndUniqueIp(newStartFuture, newEndFuture);
         assertThat(stats.isEmpty()).isTrue();
     }
+
     @Test
     void findByDateAndUniqueIpPastTest() {
         List<StatsDto> stats = statsRepository.findByDateAndUniqueIp(newStartPast, newEndPast);
         assertThat(stats.isEmpty()).isTrue();
     }
+
     @Test
     void findByDateAndUrisTest() {
         StatsDto statsDto1 = StatsDto.builder()
@@ -131,16 +134,19 @@ class StatsRepositoryTest {
         assertThat(stats.size() == size).isTrue();
         assertThat(stats.contains(statsDto1)).isTrue();
     }
+
     @Test
     void findByDateAndUrisFutureTest() {
         List<StatsDto> stats = statsRepository.findByDateAndUris(newStartFuture, newEndFuture, uris);
         assertThat(stats.isEmpty()).isTrue();
     }
+
     @Test
     void findByDateAndUrisPastTest() {
         List<StatsDto> stats = statsRepository.findByDateAndUris(newStartPast, newEndPast, uris);
         assertThat(stats.isEmpty()).isTrue();
     }
+
     @Test
     void findByDateAndUrisWithUniqueIpTest() {
         StatsDto statsDto1 = StatsDto.builder()
@@ -153,11 +159,13 @@ class StatsRepositoryTest {
         assertThat(stats.size() == size).isTrue();
         assertThat(stats.contains(statsDto1)).isTrue();
     }
+
     @Test
     void findByDateAndUrisWithUniqueIpFutureTest() {
         List<StatsDto> stats = statsRepository.findByDateAndUrisWithUniqueIp(newStartFuture, newEndFuture, uris);
         assertThat(stats.isEmpty()).isTrue();
     }
+
     @Test
     void findByDateAndUrisWithUniqueIpPastTest() {
         List<StatsDto> stats = statsRepository.findByDateAndUrisWithUniqueIp(newStartPast, newEndPast, uris);
