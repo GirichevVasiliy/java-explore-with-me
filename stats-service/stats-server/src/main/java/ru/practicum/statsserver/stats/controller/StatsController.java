@@ -38,7 +38,7 @@ public class StatsController {
                                    @RequestParam(defaultValue = "false") Boolean unique) throws UnknownHostException {
         List<StatsDto> list = service.getStats(start, end, uris, unique);
         HitDto hitDto = HitDto.builder()
-                .uri("/stats")
+                .uri("/events")
                 .app("stats-server")
                 .ip(InetAddress.getLocalHost().getHostAddress().toString())
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
