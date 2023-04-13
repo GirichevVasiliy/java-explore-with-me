@@ -9,7 +9,7 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>stats-service</artifactId>
+    <artifactId>ewm-stat-service</artifactId>
 
     <properties>
         <java.version>11</java.version>
