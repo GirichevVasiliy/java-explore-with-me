@@ -1,6 +1,7 @@
 package ru.practicum.statsserver.stats.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,17 +9,19 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.statsserver.hit.controller.HitController;
-import ru.practicum.statsserver.hit.model.Hit;
-import ru.practicum.statsserver.hit.storage.HitRepository;
+import ru.practicum.StatsDto;
+import ru.practicum.statsserver.hit.service.HitServiceImpl;
 import ru.practicum.statsserver.stats.service.StatsServiceImpl;
-import ru.practicum.statsserver.util.DateFormatter;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 @WebMvcTest(StatsController.class)
 @AutoConfigureMockMvc
 class StatsControllerTest {
@@ -28,33 +31,73 @@ class StatsControllerTest {
     private ObjectMapper objectMapper;
     @MockBean
     StatsServiceImpl statsService;
-
-    @Autowired
-    private HitRepository hitRepository;
-    private Hit hit1;
-    private Hit hit2;
-    private Hit hit3;
-    private Hit hit4;
-    private Hit hit5;
-    private List<String> uris = Arrays.asList("/events/1");
-    private boolean unique = false;
-    private final LocalDateTime start = DateFormatter.formatDate("2019-09-06 11:00:00");
-    private final LocalDateTime end = DateFormatter.formatDate("2030-09-06 11:00:00");
-    private final LocalDateTime newStartFuture = DateFormatter.formatDate("2045-09-06 11:00:00");
-    private final LocalDateTime newEndFuture = DateFormatter.formatDate("2045-09-06 11:00:00");
-    private final LocalDateTime newStartPast = DateFormatter.formatDate("1987-09-06 11:00:00");
-    private final LocalDateTime newEndPast = DateFormatter.formatDate("1987-09-06 11:00:00");
+    @MockBean
+    HitServiceImpl hitService;
+    private List<StatsDto> stats = new ArrayList<>();
+    private StatsDto statsDto1;
+    private StatsDto statsDto2;
 
     @BeforeEach
-    private void init() {
-        hit1 = hitRepository.save(new Hit(null, "ewm-main-service", "/events/1", "192.163.0.1", DateFormatter.formatDate("2022-09-06 11:00:00")));
-        hit2 = hitRepository.save(new Hit(null, "ewm-main-service", "/events/1", "192.163.0.1", DateFormatter.formatDate("2022-09-07 12:00:00")));
-        hit3 = hitRepository.save(new Hit(null, "ewm-main-service", "/events/1", "192.163.0.1", DateFormatter.formatDate("2022-09-08 13:00:00")));
-        hit4 = hitRepository.save(new Hit(null, "ewm-main-service", "/events/1", "192.163.100.100", DateFormatter.formatDate("2023-03-03 07:00:00")));
-        hit5 = hitRepository.save(new Hit(null, "ewm-main-service", "/events/56", "192.163.120.120", DateFormatter.formatDate("2023-03-06 09:00:00")));
+    void init() {
+        statsDto1 = StatsDto.builder()
+                .app("ewm-main-service")
+                .uri("/events/1")
+                .hits(1L)
+                .build();
+        statsDto2 = StatsDto.builder()
+                .app("ewm-main-service")
+                .uri("/events/56")
+                .hits(1L)
+                .build();
+        stats.add(statsDto1);
+        stats.add(statsDto2);
     }
-    @Test
-    void getStatsTest() {
 
+    @Test
+    @SneakyThrows
+    void getStatsValidRequestTest() {
+        when(statsService.getStats(any(), any(), any(), anyBoolean())).thenReturn(stats);
+        String result = mockMvc.perform(get("/stats")
+                        .param("start", "2020-09-06 11:00:00")
+                        .param("end", "2036-09-06 12:00:00")
+                        .param("uris", "/events")
+                        .param("unique", "true"))
+                .andExpect(status().is2xxSuccessful())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        verify(statsService, times(1)).getStats(any(), any(), any(), anyBoolean());
+        assertEquals(objectMapper.writeValueAsString(stats), result);
+    }
+
+    @Test
+    @SneakyThrows
+    void getStatsRequestNotUniqueTest() {
+        when(statsService.getStats(any(), any(), any(), anyBoolean())).thenReturn(stats);
+        String result = mockMvc.perform(get("/stats")
+                        .param("start", "2020-09-06 11:00:00")
+                        .param("end", "2036-09-06 12:00:00")
+                        .param("uris", "/events"))
+                .andExpect(status().is2xxSuccessful())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        verify(statsService, times(1)).getStats(any(), any(), any(), anyBoolean());
+        assertEquals(objectMapper.writeValueAsString(stats), result);
+    }
+
+    @Test
+    @SneakyThrows
+    void getStatsRequestNotListTest() {
+        when(statsService.getStats(any(), any(), any(), anyBoolean())).thenReturn(stats);
+        String result = mockMvc.perform(get("/stats")
+                        .param("start", "2020-09-06 11:00:00")
+                        .param("end", "2036-09-06 12:00:00"))
+                .andExpect(status().is2xxSuccessful())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        verify(statsService, times(1)).getStats(any(), any(), any(), anyBoolean());
+        assertEquals(objectMapper.writeValueAsString(stats), result);
     }
 }

@@ -11,8 +11,7 @@ import ru.practicum.StatsDto;
 import ru.practicum.statsserver.hit.service.HitService;
 import ru.practicum.statsserver.stats.service.StatsService;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -34,12 +33,13 @@ public class StatsController {
     public List<StatsDto> getStats(@RequestParam String start,
                                    @RequestParam String end,
                                    @RequestParam(required = false) List<String> uris,
-                                   @RequestParam(defaultValue = "false") Boolean unique) throws UnknownHostException {
+                                   @RequestParam(defaultValue = "false") Boolean unique,
+                                   HttpServletRequest request) {
         List<StatsDto> list = service.getStats(start, end, uris, unique);
         HitDto hitDto = HitDto.builder()
-                .uri("/events")
-                .app("ewm-stat-service")
-                .ip(InetAddress.getLocalHost().getHostAddress().toString())
+                .uri(request.getRequestURI())
+                .app(request.getServerName())
+                .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .build();
         hitService.addHit(hitDto);
