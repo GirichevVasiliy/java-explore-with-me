@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class DateFormatter {
-    private final static String DATA_FORMAT = new String("yyyy-MM-dd HH:mm:ss");
+    private static final String DATA_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static LocalDateTime formatDate(String date) {
         LocalDateTime newDate = null;

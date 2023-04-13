@@ -49,7 +49,7 @@ class HitControllerTest {
     @Test
     @SneakyThrows
     void addHitNotAppValidHitDtoTest() {
-       hitDto = HitDto.builder()
+        hitDto = HitDto.builder()
                 .app("")
                 .uri("/events/1")
                 .ip("192.163.0.1")
@@ -60,6 +60,7 @@ class HitControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
+
     @Test
     @SneakyThrows
     void addHitNotUriValidHitDtoTest() {
@@ -74,6 +75,7 @@ class HitControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError());
     }
+
     @Test
     @SneakyThrows
     void addHitNotIpValidHitDtoTest() {

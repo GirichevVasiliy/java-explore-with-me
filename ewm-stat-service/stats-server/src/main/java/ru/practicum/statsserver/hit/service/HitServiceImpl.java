@@ -13,12 +13,14 @@ import ru.practicum.statsserver.hit.storage.HitRepository;
 @Service
 @Slf4j
 @Transactional(readOnly = true)
-public class HitServiceImpl implements HitService{
+public class HitServiceImpl implements HitService {
     private final HitRepository hitRepository;
+
     @Autowired
-    public HitServiceImpl(@Qualifier("hitRepository")HitRepository hitRepository) {
+    public HitServiceImpl(@Qualifier("hitRepository") HitRepository hitRepository) {
         this.hitRepository = hitRepository;
     }
+
     @Transactional
     @Override
     public void addHit(HitDto hitDto) {

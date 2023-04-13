@@ -27,22 +27,23 @@ public class StatsServiceImpl implements StatsService {
         LocalDateTime newStart = DateFormatter.formatDate(start);
         LocalDateTime newEnd = DateFormatter.formatDate(end);
         validDate(newStart, newEnd);
-        if (uris == null && !unique){
+        if (uris == null && !unique) {
             return statsRepository.findByDate(newStart, newEnd);
         }
-        if (uris == null && unique){
+        if (uris == null && unique) {
             return statsRepository.findByDateAndUniqueIp(newStart, newEnd);
         }
-        if (!uris.isEmpty() && !unique){
+        if (!uris.isEmpty() && !unique) {
             return statsRepository.findByDateAndUris(newStart, newEnd, uris);
         }
-        if (!uris.isEmpty() && unique){
+        if (!uris.isEmpty() && unique) {
             return statsRepository.findByDateAndUrisWithUniqueIp(newStart, newEnd, uris);
         }
         return new ArrayList<>();
     }
-    private void validDate(LocalDateTime start, LocalDateTime end){
-        if (end.isBefore(start) || start.isAfter(end)){
+
+    private void validDate(LocalDateTime start, LocalDateTime end) {
+        if (end.isBefore(start) || start.isAfter(end)) {
             throw new ValidationDateException("Невенно заданы даты для поиска");
         }
     }
