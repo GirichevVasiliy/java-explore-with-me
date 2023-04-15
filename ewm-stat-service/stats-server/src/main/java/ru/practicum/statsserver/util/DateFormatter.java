@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class DateFormatter {
-    private static final String DATA_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     public static LocalDateTime formatDate(String date) {
         LocalDateTime newDate = null;
@@ -15,7 +15,7 @@ public class DateFormatter {
             throw new ValidationDateException("Дата должна быть задана");
         }
         try {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATA_FORMAT);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
             newDate = LocalDateTime.parse(date, formatter);
         } catch (DateTimeParseException e) {
             throw new ValidationDateException("Неверный формат даты");

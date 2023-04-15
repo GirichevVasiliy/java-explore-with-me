@@ -1,22 +1,20 @@
 package ru.practicum;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Value
 @Builder
-@AllArgsConstructor
 public class HitDto {
-    private final Long id;
+    Long id;
     @NotBlank(message = "Поле \"app\" должно быть заполнено")
-    private final String app;
+    String app;
     @NotBlank(message = "Поле \"uri\" должно быть заполнено")
-    private final String uri;
+    String uri;
     @NotBlank(message = "Поле \"ip\" должно быть заполнено")
-    private final String ip;
+    String ip;
     @NotBlank(message = "Поле \"timestamp\" должно быть заполнено")
-    private final String timestamp;
+    String timestamp;
 }

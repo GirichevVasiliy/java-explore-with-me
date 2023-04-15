@@ -5,3 +5,4 @@
                                 ip VARCHAR(32) NOT NULL,
                                 time_stamp TIMESTAMP WITHOUT TIME ZONE
 );
+CREATE INDEX hits_all_fields ON hits (app, uri, ip, time_stamp);
