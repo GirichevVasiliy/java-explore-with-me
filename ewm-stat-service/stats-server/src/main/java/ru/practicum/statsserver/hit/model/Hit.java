@@ -31,7 +31,7 @@ public class Hit {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Hit hit = (Hit) o;
-        return id == hit.id && Objects.equals(app, hit.app) && Objects.equals(uri, hit.uri) && Objects.equals(ip, hit.ip) && Objects.equals(timestamp, hit.timestamp);
+        return Objects.equals(id, hit.id) && Objects.equals(app, hit.app) && Objects.equals(uri, hit.uri) && Objects.equals(ip, hit.ip) && Objects.equals(timestamp, hit.timestamp);
     }
 
     @Override
