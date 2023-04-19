@@ -21,14 +21,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class EventServicePrivateImpl implements EventServicePrivate {
     private final EventRepository eventRepository;
-
     @Autowired
     public EventServicePrivateImpl(EventRepository eventRepository) {
         this.eventRepository = eventRepository;
     }
 
     @Override
-    public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size) {
+    public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, Integer from, Integer size) {
         return null;
     }
 @Transactional

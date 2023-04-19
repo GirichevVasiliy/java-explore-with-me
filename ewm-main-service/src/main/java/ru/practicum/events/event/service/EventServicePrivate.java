@@ -8,7 +8,7 @@ import ru.practicum.events.request.dto.EventRequestStatusUpdateRequest;
 import java.util.List;
 
 public interface EventServicePrivate {
-    List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size);
+    List<EventShortDto> getAllPrivateEventsByUserId(Long userId, Integer from, Integer size);
     EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto);
     EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId);
     EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest);
