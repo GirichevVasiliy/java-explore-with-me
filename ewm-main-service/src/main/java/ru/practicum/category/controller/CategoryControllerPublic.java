@@ -8,21 +8,22 @@ import ru.practicum.category.service.CategoryService;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/categories")
 @Slf4j
-public class CategoryController {
+public class CategoryControllerPublic {
     private final CategoryService categoryService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService) {
+    public CategoryControllerPublic(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
     @GetMapping()
-    public List<CategoryDto> getAllCategory(@Positive @Min(0) @RequestParam(defaultValue = "0") Integer from,
+    public List<CategoryDto> getAllCategory(@PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                             @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size) {
         return categoryService.getAllCategory(from, size);
     }

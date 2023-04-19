@@ -7,5 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(path = "/admin/events")
 @Slf4j
-public class EventControllerForAdmin {
+public class EventControllerAdmin {
 }

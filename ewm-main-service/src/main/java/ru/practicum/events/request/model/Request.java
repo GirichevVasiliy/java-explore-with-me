@@ -1,18 +1,21 @@
-package ru.practicum.events.event.dto;
+package ru.practicum.events.request.model;
 
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-import javax.validation.constraints.Pattern;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
-
-@Value
+@Getter
+@Setter
 @Builder
-public class ParticipationRequestDto { // Заявка на участие в событии
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "requests")
+public class Request {
+    Long id; //Идентификатор заявки
     LocalDateTime created; // 2022-09-06T21:10:05.432 Дата и время создания заявки
     Long event; // Идентификатор события
-    Long id; //Идентификатор заявки
     Long requester; // Идентификатор пользователя, отправившего заявку
     String status; // example: PENDING Статус заявки
-
 }

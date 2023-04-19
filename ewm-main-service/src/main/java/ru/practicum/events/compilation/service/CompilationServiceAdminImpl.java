@@ -12,11 +12,11 @@ import ru.practicum.events.compilation.storage.CompilationStorage;
 @Service
 @Slf4j
 @Transactional(readOnly = true)
-public class CompilationServiceForAdminImpl implements CompilationServiceForAdmin {
+public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
     private final CompilationStorage compilationStorage;
 
     @Autowired
-    public CompilationServiceForAdminImpl(CompilationStorage compilationStorage) {
+    public CompilationServiceAdminImpl(CompilationStorage compilationStorage) {
         this.compilationStorage = compilationStorage;
     }
 

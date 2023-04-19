@@ -31,7 +31,7 @@
                                 title VARCHAR NOT NULL,
                                 views BIGINT NOT NULL,
                                 CONSTRAINT pk_events PRIMARY KEY (id),
-                                CONSTRAINT uq_vents UNIQUE (title),
+                                CONSTRAINT uq_events UNIQUE (title),
                                 CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE,
                                 CONSTRAINT fk_initiator_id FOREIGN KEY (initiator_id) REFERENCES users (id) ON DELETE CASCADE,
     );

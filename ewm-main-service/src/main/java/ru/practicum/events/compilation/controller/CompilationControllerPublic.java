@@ -10,6 +10,7 @@ import ru.practicum.events.compilation.service.CompilationService;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 /**
@@ -19,17 +20,17 @@ import java.util.List;
 @RequestMapping(path = "/compilations")
 @Slf4j
 @Validated
-public class CompilationController {
+public class CompilationControllerPublic {
     private final CompilationService compilationService;
 
     @Autowired
-    public CompilationController(CompilationService compilationService) {
+    public CompilationControllerPublic(CompilationService compilationService) {
         this.compilationService = compilationService;
     }
 
     @GetMapping()
     public List<CompilationDto> getAllCompilations(@NotNull @RequestParam Boolean pinned,
-                                                   @Positive @Min(0) @RequestParam(defaultValue = "0") Integer from,
+                                                   @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                                    @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size) {
         return compilationService.getAllCompilations(pinned, from, size);
     }

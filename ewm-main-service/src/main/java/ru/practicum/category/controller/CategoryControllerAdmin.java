@@ -11,11 +11,11 @@ import ru.practicum.category.service.CategoryServiceForAdmin;
 @RestController
 @RequestMapping(path = "/admin/categories")
 @Slf4j
-public class CategoryControllerForAdmin {
+public class CategoryControllerAdmin {
     private final CategoryServiceForAdmin service;
 
     @Autowired
-    public CategoryControllerForAdmin(CategoryServiceForAdmin service) {
+    public CategoryControllerAdmin(CategoryServiceForAdmin service) {
         this.service = service;
     }
 

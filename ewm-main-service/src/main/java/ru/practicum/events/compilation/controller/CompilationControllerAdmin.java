@@ -7,16 +7,16 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.compilation.dto.CompilationDto;
 import ru.practicum.events.compilation.dto.NewCompilationDto;
 import ru.practicum.events.compilation.dto.UpdateCompilationRequest;
-import ru.practicum.events.compilation.service.CompilationServiceForAdmin;
+import ru.practicum.events.compilation.service.CompilationServiceAdmin;
 
 @RestController
 @RequestMapping(path = "/admin/compilations")
 @Slf4j
-public class CompilationControllerForAdmin {
-    private final CompilationServiceForAdmin compilationServiceForAdmin;
+public class CompilationControllerAdmin {
+    private final CompilationServiceAdmin compilationServiceForAdmin;
 
     @Autowired
-    public CompilationControllerForAdmin(CompilationServiceForAdmin compilationServiceForAdmin) {
+    public CompilationControllerAdmin(CompilationServiceAdmin compilationServiceForAdmin) {
         this.compilationServiceForAdmin = compilationServiceForAdmin;
     }
 
