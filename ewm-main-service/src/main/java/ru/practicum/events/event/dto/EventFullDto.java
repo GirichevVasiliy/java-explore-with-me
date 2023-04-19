@@ -3,6 +3,7 @@ package ru.practicum.events.event.dto;
 import lombok.Builder;
 import lombok.Value;
 import ru.practicum.category.dto.CategoryDto;
+import ru.practicum.events.event.dto.stateDto.EventStateDto;
 import ru.practicum.events.event.model.location.Location;
 import ru.practicum.users.dto.UserShortDto;
 
@@ -27,7 +28,7 @@ public class EventFullDto {
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Invalid date format")
     String publishedOn; //Дата и время публикации события (в формате "yyyy-MM-dd HH:mm:ss")
     boolean requestModeration; // Нужна ли пре-модерация заявок на участие
-    String state; // example: PUBLISHED, Список состояний жизненного цикла события
+    EventStateDto state; // example: PUBLISHED, Список состояний жизненного цикла события
     String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
     Long views; // Количество просмотрев события
 
