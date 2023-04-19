@@ -8,6 +8,8 @@ import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.NewCategoryDto;
 import ru.practicum.category.service.CategoryServiceForAdmin;
 
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping(path = "/admin/categories")
 @Slf4j
@@ -24,12 +26,12 @@ public class CategoryControllerAdmin {
         return service.addCategory(newCategoryDto);
     }
     @PatchMapping("/{catId}")
-    public CategoryDto updateCategory(@PathVariable Long catId,
+    public CategoryDto updateCategory(@NotNull @PathVariable Long catId,
                                      @Validated @RequestBody NewCategoryDto newCategoryDto) {
         return service.updateCategory(catId, newCategoryDto);
     }
     @DeleteMapping("/{catId}")
-    public void deleteCategoryById(@PathVariable Long catId) {
+    public void deleteCategoryById(@NotNull @PathVariable Long catId) {
         service.deleteCategoryById(catId);
     }
 }

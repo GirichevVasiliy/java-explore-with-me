@@ -20,19 +20,27 @@ public class CompilationControllerAdmin {
         this.compilationServiceForAdmin = compilationServiceForAdmin;
     }
 
+    /**
+     * Добавление новой подборки (подборка может не содержать событий)
+     */
     @PostMapping
     public CompilationDto addCompilation(@Validated @RequestBody NewCompilationDto newCompilationDto) {
         return compilationServiceForAdmin.addCompilation(newCompilationDto);
     }
-
+    /**
+     * обновить информацию о подборке
+     */
     @PatchMapping("/{compId}")
-    public CompilationDto updateCategory(@PathVariable Long compId,
+    public CompilationDto updateCompilationById(@PathVariable Long compId,
                                          @RequestBody UpdateCompilationRequest updateCompilationRequest) {
         return compilationServiceForAdmin.updateCompilationById(compId, updateCompilationRequest);
     }
 
+    /**
+     * Удаление подборки
+     */
     @DeleteMapping("/{compId}")
-    public void deleteCategoryById(@PathVariable Long compId) {
+    public void deleteCompilationById(@PathVariable Long compId) {
         compilationServiceForAdmin.deleteCompilationById(compId);
     }
 }

@@ -20,6 +20,7 @@ public class RequestControllerPrivate {
     public RequestControllerPrivate(RequestServicePrivate requestServicePrivate) {
         this.requestServicePrivate = requestServicePrivate;
     }
+
     /**
      * Информация о заявках текущего пользователя на участие в чужих событиях
      */
@@ -27,6 +28,7 @@ public class RequestControllerPrivate {
     List<ParticipationRequestDto> getAllRequestsUserById(@NotNull @PathVariable Long userId) {
         return requestServicePrivate.getAllRequestsUserById(userId);
     }
+
     /**
      * Добавление запроса от текущего пользователя на участие в событии
      */
@@ -42,9 +44,7 @@ public class RequestControllerPrivate {
      */
     @PatchMapping("/{requestId}/cancel")
     ParticipationRequestDto updateRequestById(@NotNull @PathVariable Long userId,
-                                              @NotNull @PathVariable Long requestId){
+                                              @NotNull @PathVariable Long requestId) {
         return requestServicePrivate.updateRequestById(userId, requestId);
     }
-
-
 }

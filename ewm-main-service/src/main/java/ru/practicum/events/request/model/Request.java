@@ -1,6 +1,7 @@
 package ru.practicum.events.request.model;
 
 import lombok.*;
+import ru.practicum.events.event.model.Event;
 import ru.practicum.users.model.User;
 
 import javax.persistence.*;
@@ -18,8 +19,9 @@ public class Request {
     private Long id; //Идентификатор заявки
     @Column(name = "created")
     private LocalDateTime created; // 2022-09-06T21:10:05.432 Дата и время создания заявки
-    @Column(name = "event")
-    private Long event; // Идентификатор события
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    private Event event;
     @ManyToOne
     @JoinColumn(name = "requester_id")
     private User requester; // Идентификатор пользователя, отправившего заявку
