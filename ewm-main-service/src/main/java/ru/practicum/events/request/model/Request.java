@@ -1,9 +1,9 @@
 package ru.practicum.events.request.model;
 
 import lombok.*;
+import ru.practicum.users.model.User;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 @Getter
 @Setter
@@ -11,11 +11,18 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "requests")
+@Table(name = "requests", schema = "public")
 public class Request {
-    Long id; //Идентификатор заявки
-    LocalDateTime created; // 2022-09-06T21:10:05.432 Дата и время создания заявки
-    Long event; // Идентификатор события
-    Long requester; // Идентификатор пользователя, отправившего заявку
-    String status; // example: PENDING Статус заявки
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; //Идентификатор заявки
+    @Column(name = "created")
+    private LocalDateTime created; // 2022-09-06T21:10:05.432 Дата и время создания заявки
+    @Column(name = "event")
+    private Long event; // Идентификатор события
+    @ManyToOne
+    @JoinColumn(name = "requester_id")
+    private User requester; // Идентификатор пользователя, отправившего заявку
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status; // example: PENDING Статус заявки
 }

@@ -20,7 +20,7 @@ import java.util.Set;
 public class Compilation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
             name = "compilation_events",
@@ -29,7 +29,7 @@ public class Compilation {
     )
     private Set<Event> events = new HashSet<>();
     @Column(name = "pinned")
-    boolean pinned;
+    private boolean pinned;
     @Column(name = "title")
-    String title;
+    private String title;
 }
