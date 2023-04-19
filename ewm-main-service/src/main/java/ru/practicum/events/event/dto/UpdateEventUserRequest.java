@@ -1,5 +1,6 @@
 package ru.practicum.events.event.dto;
 
+import ru.practicum.events.event.dto.stateDto.ActionStateDto;
 import ru.practicum.events.event.model.ActionState;
 import ru.practicum.events.event.model.location.Location;
 
@@ -18,6 +19,6 @@ public class UpdateEventUserRequest { // Данные для изменения 
     private boolean paid; // Новое значение флага о платности мероприятия
     private int participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
     private boolean requestModeration; // Нужна ли пре-модерация заявок на участие
-    ActionState stateAction;
+    ActionStateDto stateAction;
     private String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
 }
