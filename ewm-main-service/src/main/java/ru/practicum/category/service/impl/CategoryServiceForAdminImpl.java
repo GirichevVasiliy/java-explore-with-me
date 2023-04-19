@@ -31,7 +31,7 @@ public class CategoryServiceForAdminImpl implements CategoryServiceForAdmin {
     }
 
     @Override
-    public CategoryDto updateCategory(Long catId, NewCategoryDto newCategoryDto) {
+    public CategoryDto updateCategory(Long catId, CategoryDto newCategoryDto) {
         return null;
     }
 }

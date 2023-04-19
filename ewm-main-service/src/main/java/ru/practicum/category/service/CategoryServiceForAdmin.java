@@ -6,5 +6,5 @@ import ru.practicum.category.dto.NewCategoryDto;
 public interface CategoryServiceForAdmin {
     CategoryDto addCategory(NewCategoryDto newCategoryDto);
     void deleteCategoryById(Long catId);
-    CategoryDto updateCategory(Long catId, NewCategoryDto newCategoryDto);
+    CategoryDto updateCategory(Long catId, CategoryDto newCategoryDto);
 }
