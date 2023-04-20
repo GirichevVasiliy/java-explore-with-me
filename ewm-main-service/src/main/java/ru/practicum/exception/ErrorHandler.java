@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.exception.model.ApiError;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -19,31 +20,46 @@ public class ErrorHandler {
         ApiError apiError = ApiError.builder()
                 .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
                 .message(e.getMessage())
-                .reason("Resource not found")
+                .reason("The required object was not found")
                 .status("NOT_FOUND")
                 .timestamp(LocalDateTime.now())
                 .build();
         return apiError;
     }
+
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ApiError handleBadRequestException(final BadRequestException e) {
         ApiError apiError = ApiError.builder()
                 .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
                 .message(e.getMessage())
-                .reason("Bad request")
+                .reason("Incorrectly made request.")
                 .status("BAD_REQUEST")
                 .timestamp(LocalDateTime.now())
                 .build();
         return apiError;
     }
+
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.CONFLICT)
-    public ApiError handleConflictException(final ConflictException e) {
+    public ApiError handleConflictDeleteException(final ConflictDeleteException e) {
         ApiError apiError = ApiError.builder()
                 .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
                 .message(e.getMessage())
-                .reason("Conflict")
+                .reason("For the requested operation the conditions are not met.")
+                .status("CONFLICT")
+                .timestamp(LocalDateTime.now())
+                .build();
+        return apiError;
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    public ApiError handleConflictNameCategoryException(final ConflictNameCategoryException e) {
+        ApiError apiError = ApiError.builder()
+                .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
+                .message(e.getMessage())
+                .reason("Integrity constraint has been violated.")
                 .status("CONFLICT")
                 .timestamp(LocalDateTime.now())
                 .build();

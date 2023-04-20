@@ -59,4 +59,8 @@ public class FindObjectInRepository {
         Optional<Event> findEventByCategory = eventRepository.findEventByCategoryIs(category);
         return findEventByCategory.isPresent();
     }
+    public boolean isSearchForUniqueCategory(String name){
+        Optional<Category> findCategories = categoryRepository.findCategoriesByName(name);
+        return findCategories.isPresent();
+    }
 }

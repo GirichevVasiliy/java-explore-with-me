@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.category.dto.CategoryDto;
-import ru.practicum.category.service.CategoryService;
+import ru.practicum.category.service.CategoryServicePublic;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
@@ -15,10 +15,10 @@ import java.util.List;
 @RequestMapping(path = "/categories")
 @Slf4j
 public class CategoryControllerPublic {
-    private final CategoryService categoryService;
+    private final CategoryServicePublic categoryService;
 
     @Autowired
-    public CategoryControllerPublic(CategoryService categoryService) {
+    public CategoryControllerPublic(CategoryServicePublic categoryService) {
         this.categoryService = categoryService;
     }
 

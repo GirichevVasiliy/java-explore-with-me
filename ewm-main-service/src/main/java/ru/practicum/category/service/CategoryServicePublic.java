@@ -4,7 +4,7 @@ import ru.practicum.category.dto.CategoryDto;
 
 import java.util.List;
 
-public interface CategoryService {
+public interface CategoryServicePublic {
     List<CategoryDto> getAllCategory(int from, int size);
     CategoryDto getCategoryById(Long catId);
 }

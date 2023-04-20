@@ -1,4 +1,4 @@
-package ru.practicum.exception;
+package ru.practicum.exception.model;
 
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
