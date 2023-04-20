@@ -32,7 +32,7 @@ public class CompilationServicePublicImpl implements CompilationServicePublic {
 
     @Override
     public List<CompilationDto> getAllCompilations(boolean pinned, int from, int size) {
-        Sort sortByPinned = Sort.by(Sort.Direction.ASC, "pinned");
+        Sort sortByPinned = Sort.by(Sort.Direction.ASC, "pinned"); //??????????????????????????????
         Pageable pageable = PageRequest.of(from, size, sortByPinned);
         return compilationStorage.findAll(pageable).stream().map(CompilationMapper::compilationToCompilationDto)
                 .collect(Collectors.toList());

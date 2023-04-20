@@ -10,9 +10,9 @@ import java.util.List;
 @Value
 @Builder
 public class NewCompilationDto { // Подборка событий
-    List<EventShortDto> events;
+    List<Long> events;
     @NotNull(message = "pinned не может быть пустым")
-    boolean pinned; // Закреплена ли подборка на главной странице сайта example: true
+    Boolean pinned; // Закреплена ли подборка на главной странице сайта example: true
     @NotNull(message = "title не может быть пустым")
     String title; // Заголовок подборки example: Летние концерты
 }

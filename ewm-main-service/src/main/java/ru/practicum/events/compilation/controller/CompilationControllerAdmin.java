@@ -9,6 +9,8 @@ import ru.practicum.events.compilation.dto.NewCompilationDto;
 import ru.practicum.events.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.events.compilation.service.CompilationServiceAdmin;
 
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping(path = "/admin/compilations")
 @Slf4j
@@ -31,7 +33,7 @@ public class CompilationControllerAdmin {
      * обновить информацию о подборке
      */
     @PatchMapping("/{compId}")
-    public CompilationDto updateCompilationById(@PathVariable Long compId,
+    public CompilationDto updateCompilationById(@NotNull @PathVariable Long compId,
                                          @RequestBody UpdateCompilationRequest updateCompilationRequest) {
         return compilationServiceForAdmin.updateCompilationById(compId, updateCompilationRequest);
     }

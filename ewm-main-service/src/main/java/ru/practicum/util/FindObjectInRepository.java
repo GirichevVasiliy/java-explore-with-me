@@ -7,6 +7,7 @@ import ru.practicum.category.model.Category;
 import ru.practicum.category.storage.CategoryRepository;
 import ru.practicum.events.compilation.model.Compilation;
 import ru.practicum.events.compilation.storage.CompilationStorage;
+import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.events.request.model.Request;
@@ -15,7 +16,10 @@ import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.model.User;
 import ru.practicum.users.storage.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class FindObjectInRepository {
@@ -62,5 +66,8 @@ public class FindObjectInRepository {
     public boolean isSearchForUniqueCategory(String name){
         Optional<Category> findCategories = categoryRepository.findCategoriesByName(name);
         return findCategories.isPresent();
+    }
+    public Set<Event> getAllEventsByIds(List<Long> eventsIds){
+        return eventRepository.findAllByIdIsIn(eventsIds);
     }
 }
