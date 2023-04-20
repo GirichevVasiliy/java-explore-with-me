@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.compilation.dto.CompilationDto;
-import ru.practicum.events.compilation.service.CompilationService;
+import ru.practicum.events.compilation.service.CompilationServicePublic;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -21,10 +21,10 @@ import java.util.List;
 @Slf4j
 @Validated
 public class CompilationControllerPublic {
-    private final CompilationService compilationService;
+    private final CompilationServicePublic compilationService;
 
     @Autowired
-    public CompilationControllerPublic(CompilationService compilationService) {
+    public CompilationControllerPublic(CompilationServicePublic compilationService) {
         this.compilationService = compilationService;
     }
 
