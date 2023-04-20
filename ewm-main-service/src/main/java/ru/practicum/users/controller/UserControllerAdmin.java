@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.users.dto.NewUserRequest;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.dto.UserShortDto;
 import ru.practicum.users.service.UserServiceAdmin;
@@ -35,8 +36,8 @@ public class UserControllerAdmin {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    UserDto addUser(@Validated @RequestBody UserShortDto userShortDto) {
-        return userServiceAdmin.addUser(userShortDto);
+    UserDto addUser(@Validated @RequestBody NewUserRequest newUserRequest) {
+        return userServiceAdmin.addUser(newUserRequest);
     }
 
     @DeleteMapping("/{userId}")

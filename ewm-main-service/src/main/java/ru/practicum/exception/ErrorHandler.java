@@ -65,4 +65,17 @@ public class ErrorHandler {
                 .build();
         return apiError;
     }
+
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    public ApiError handleConflictNameAndEmailException(final ConflictNameAndEmailException e) {
+        ApiError apiError = ApiError.builder()
+                .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
+                .message(e.getMessage())
+                .reason("Integrity constraint has been violated.")
+                .status("CONFLICT")
+                .timestamp(LocalDateTime.now())
+                .build();
+        return apiError;
+    }
 }
