@@ -56,9 +56,26 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     @Override
     public CompilationDto updateCompilationById(Long compId, UpdateCompilationRequest updateCompilationRequest) {
-        Compilation compilation = findObjectInRepository.getCompilationById(compId);
-       /* if (updateCompilationRequest.getEvents())*/
-        return null;
+        Compilation compilationOld = findObjectInRepository.getCompilationById(compId);
+        Compilation newCompilation = new Compilation();
+        Set<Event> events = new HashSet<>();
+        if (!updateCompilationRequest.getEvents().isEmpty()){
+            events = addEvents(updateCompilationRequest.getEvents());
+            newCompilation.setEvents(events);
+       } else {
+            newCompilation.setEvents(compilationOld.getEvents());
+        }
+        if(updateCompilationRequest.getPinned() != null){
+            newCompilation.setPinned(updateCompilationRequest.getPinned());
+        } else {
+            newCompilation.setPinned(compilationOld.isPinned());
+        }
+        if(!updateCompilationRequest.getTitle().isEmpty()){
+            newCompilation.setTitle(updateCompilationRequest.getTitle());
+        } else {
+            newCompilation.setTitle(compilationOld.getTitle());;
+        }
+        return CompilationMapper.compilationToCompilationDto(compilationStorage.save(newCompilation));
     }
 
     private Set<Event> addEvents(List<Long> eventsIds) {
