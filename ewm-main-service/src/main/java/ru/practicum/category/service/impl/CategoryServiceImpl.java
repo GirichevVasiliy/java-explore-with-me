@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.service.CategoryService;
 import ru.practicum.category.storage.CategoryRepository;
+import ru.practicum.exception.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -27,6 +28,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategoryById(Long catId) {
-        return null;
+        throw new ResourceNotFoundException("Невенно заданы даты для поиска");
     }
 }

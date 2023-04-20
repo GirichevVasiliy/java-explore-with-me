@@ -1,4 +1,4 @@
-package ru.practicum.events.compilation.service;
+package ru.practicum.events.compilation.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.events.compilation.dto.CompilationDto;
 import ru.practicum.events.compilation.dto.NewCompilationDto;
 import ru.practicum.events.compilation.dto.UpdateCompilationRequest;
+import ru.practicum.events.compilation.service.CompilationServiceAdmin;
 import ru.practicum.events.compilation.storage.CompilationStorage;
 
 @Service

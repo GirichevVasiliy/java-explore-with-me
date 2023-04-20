@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.NewCategoryDto;
 import ru.practicum.category.service.CategoryServiceAdmin;
+import ru.practicum.util.FindObjectInRepository;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -17,8 +18,9 @@ import javax.validation.constraints.NotNull;
 public class CategoryControllerAdmin {
     private final CategoryServiceAdmin service;
 
+
     @Autowired
-    public CategoryControllerAdmin(CategoryServiceAdmin service) {
+    public CategoryControllerAdmin(CategoryServiceAdmin service, FindObjectInRepository findObjectInRepository) {
         this.service = service;
     }
 
