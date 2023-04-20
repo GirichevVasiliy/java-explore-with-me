@@ -22,13 +22,13 @@ public class EventFullDto {
     String eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
     Long id;
     UserShortDto initiator; //Пользователь (краткая информация)
-    Location location; //Широта и долгота места проведения события
+    LocationDto location; //Широта и долгота места проведения события
     boolean paid; // Нужно ли оплачивать участие
     int participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Invalid date format")
     String publishedOn; //Дата и время публикации события (в формате "yyyy-MM-dd HH:mm:ss")
     boolean requestModeration; // Нужна ли пре-модерация заявок на участие
-    EventStateDto state; // example: PUBLISHED, Список состояний жизненного цикла события
+    String state; // example: PUBLISHED, Список состояний жизненного цикла события
     String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
     Long views; // Количество просмотрев события
 
