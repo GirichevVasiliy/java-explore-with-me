@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS users(
                                 title VARCHAR(255) NOT NULL,
                                 views BIGINT NOT NULL,
                                 CONSTRAINT uq_events UNIQUE (title),
-                                CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE,
+                                CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE,
                                 CONSTRAINT fk_initiator_id FOREIGN KEY (initiator_id) REFERENCES users (id) ON DELETE CASCADE
     );
     CREATE TABLE IF NOT EXISTS requests(
