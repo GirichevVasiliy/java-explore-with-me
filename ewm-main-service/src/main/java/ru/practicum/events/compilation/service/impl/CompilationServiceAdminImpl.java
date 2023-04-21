@@ -58,7 +58,7 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
     public CompilationDto updateCompilationById(Long compId, UpdateCompilationRequest updateCompilationRequest) {
         Compilation compilationOld = findObjectInRepository.getCompilationById(compId);
         Compilation newCompilation = new Compilation();
-        Set<Event> events = new HashSet<>();
+        Set<Event> events;
         if (!updateCompilationRequest.getEvents().isEmpty()){
             events = addEvents(updateCompilationRequest.getEvents());
             newCompilation.setEvents(events);

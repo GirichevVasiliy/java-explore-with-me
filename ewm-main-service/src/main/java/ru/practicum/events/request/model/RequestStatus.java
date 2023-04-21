@@ -1,5 +1,8 @@
 package ru.practicum.events.request.model;
 
 public enum RequestStatus {
-    CONFIRMED, REJECTED;
+    PENDING,
+    REJECTED,
+    CONFIRMED,
+    CANCELED
 }

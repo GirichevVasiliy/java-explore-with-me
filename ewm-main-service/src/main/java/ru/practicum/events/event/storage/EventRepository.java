@@ -1,5 +1,6 @@
 package ru.practicum.events.event.storage;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.practicum.category.model.Category;
@@ -13,4 +14,5 @@ import java.util.Set;
 public interface EventRepository extends JpaRepository<Event, Long> {
     Optional<Event> findEventByCategoryIs(Category category);
     Set<Event> findAllByIdIsIn(List<Long> id);
+    List<Event> findAllByInitiatorId(Long userId, Pageable pageable);
 }
