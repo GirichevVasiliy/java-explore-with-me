@@ -2,10 +2,13 @@ package ru.practicum.events.event.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.category.dto.CategoryDto;
+import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.EventShortDto;
@@ -26,10 +29,15 @@ import ru.practicum.events.request.model.Request;
 import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.events.request.storage.RequestRepository;
 import ru.practicum.exception.BadRequestException;
+import ru.practicum.exception.ConflictNameCategoryException;
 import ru.practicum.exception.ForbiddenEventException;
+import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.model.User;
 import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.util.util.DateFormatter;
 
+import javax.persistence.EntityExistsException;
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -65,13 +73,13 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     @Transactional
     @Override
     public EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto) {
-        checkEventDate(newEventDto.getEventDate());
+        checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
         User user = findObjectInRepository.getUserById(userId);
-        Category category = findObjectInRepository.getCategoryById(newEventDto.getId());
+        Category category = findObjectInRepository.getCategoryById(newEventDto.getCategory());
         Long views = 0L;
         Long confirmedRequests = 0L;
         Event event = EventMapper.newEventDtoToCreateEvent(newEventDto, user, category, views, confirmedRequests);
-        return EventMapper.eventToEventFullDto(eventRepository.save(event));
+        return getEventFullDto(event);
     }
 
     @Override
@@ -85,7 +93,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     @Transactional
     @Override
     public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
-        checkEventDate(updateEvent.getEventDate());
+        checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
         checkOwnerEvent(event, user);
@@ -100,8 +108,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (updateEvent.getDescription() != null) {
             event.setDescription(updateEvent.getDescription());
         }
-        if (updateEvent.getEventDate() != null) {
-            event.setEventDate(updateEvent.getEventDate());
+        if (updateEvent.getEventDate().isEmpty()) {
+            event.setEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         if (updateEvent.getLocation() != null) {
             event.setLocation(LocationMapper.locationDtoToLocation(updateEvent.getLocation()));
@@ -121,7 +129,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (updateEvent.getTitle() != null) {
             event.setTitle(updateEvent.getTitle());
         }
-        return EventMapper.eventToEventFullDto(eventRepository.save(event));
+        return getEventFullDto(event);
     }
 
     @Override
@@ -233,6 +241,15 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         eventRepository.save(event);
         EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
         return result;
+    }
+    private EventFullDto getEventFullDto(Event event) {
+        try {
+            return EventMapper.eventToEventFullDto(eventRepository.save(event));
+        } catch (DataAccessException e) {
+            throw new ResourceNotFoundException("База данных недоступна");
+        }   catch (Exception e){
+            throw new BadRequestException("Запрос на добавлении события " + event + " составлен не корректно ");
+        }
     }
 }
 

@@ -90,4 +90,16 @@ public class ErrorHandler {
                 .build();
         return apiError;
     }
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    public ApiError handleValidationDateException(final ValidationDateException e) {
+        ApiError apiError = ApiError.builder()
+                .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
+                .message(e.getMessage())
+                .reason("Incorrectly made request.")
+                .status("BAD_REQUEST")
+                .timestamp(LocalDateTime.now())
+                .build();
+        return apiError;
+    }
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Value;
 import ru.practicum.events.event.dto.stateDto.ActionStateDto;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -16,8 +17,8 @@ public class UpdateEventAdminRequest { // Данные для изменения
     Long category; // Новая категория
     @Size(min = 20, max = 7000, message = "Минимальное кол-во символов для описания: 20. Максимальное: 7000")
     String description; // Новое описание
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Invalid date format")
+    String eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
     LocationDto location; //Широта и долгота места проведения события
     Boolean paid; // Нужно ли оплачивать участие
     Integer participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения

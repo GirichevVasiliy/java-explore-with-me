@@ -18,6 +18,7 @@ import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.exception.ForbiddenEventException;
 import ru.practicum.users.model.User;
 import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.util.util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,7 +47,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
     @Override
     public EventFullDto updateEventById(Long eventId, UpdateEventAdminRequest updateEvent) {
         Event event = findObjectInRepository.getEventById(eventId);
-        checkEventDate(event.get)
+        //checkEventDate(event.get)!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         if (updateEvent.getAnnotation() != null) {
             event.setAnnotation(updateEvent.getAnnotation());
         }
@@ -58,7 +59,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setDescription(updateEvent.getDescription());
         }
         if (updateEvent.getEventDate() != null) {
-            event.setEventDate(updateEvent.getEventDate());
+            event.setEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         if (updateEvent.getLocation() != null) {
             event.setLocation(LocationMapper.locationDtoToLocation(updateEvent.getLocation()));
@@ -73,7 +74,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setRequestModeration(updateEvent.getRequestModeration());
         }
         if (updateEvent.getStateAction() != null) {
-            event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));
+            //event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));
         }
         if (updateEvent.getTitle() != null) {
             event.setTitle(updateEvent.getTitle());

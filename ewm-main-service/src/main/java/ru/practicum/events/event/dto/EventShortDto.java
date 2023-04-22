@@ -16,8 +16,7 @@ public class EventShortDto {
     String annotation; // example: Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории
     CategoryDto category;
     Long confirmedRequests; // Количество одобренных заявок на участие в данном событии
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    @Future()
+    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", message = "Invalid date format")
     String eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
     Long id;
     UserShortDto initiator; //Пользователь (краткая информация)

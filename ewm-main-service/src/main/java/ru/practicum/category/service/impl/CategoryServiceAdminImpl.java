@@ -2,6 +2,7 @@ package ru.practicum.category.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.dto.CategoryDto;
@@ -10,9 +11,13 @@ import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.service.CategoryServiceAdmin;
 import ru.practicum.category.storage.CategoryRepository;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictDeleteException;
 import ru.practicum.exception.ConflictNameCategoryException;
+import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.util.FindObjectInRepository;
+
+import javax.persistence.EntityExistsException;
 
 @Service
 @Slf4j
@@ -30,12 +35,7 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     @Override
     public CategoryDto addCategory(NewCategoryDto newCategoryDto) {
         Category category = CategoryMapper.newCategoryDtoToCategory(newCategoryDto);
-        try {
-            return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
-        } catch (Exception e) {
-            throw new ConflictNameCategoryException("Имя категории должно быть уникальным, "
-                    + newCategoryDto.getName() + " уже используется");
-        }
+        return getCategoryDto(category, newCategoryDto.getName());
     }
 
     @Override
@@ -49,13 +49,22 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
 
     @Override
     public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) {
-        if (findObjectInRepository.isSearchForUniqueCategory(categoryDto.getName())) {
-            throw new ConflictNameCategoryException("Имя категории должно быть уникальным, "
-                    + categoryDto.getName() + " уже используется");
-        }
         Category category = findObjectInRepository.getCategoryById(catId);
         category.setId(catId);
         category.setName(categoryDto.getName());
-        return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
+        return getCategoryDto(category, category.getName());
+    }
+
+    private CategoryDto getCategoryDto(Category category, String name) {
+        try {
+            return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
+        } catch (DataAccessException e) {
+            throw new ResourceNotFoundException("База данных недоступна");
+        } catch (EntityExistsException e) {
+            throw new ConflictNameCategoryException("Имя категории должно быть уникальным, "
+                    + name + " уже используется");
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Запрос на добавлении категории " + name + " составлен не корректно ");
+        }
     }
 }

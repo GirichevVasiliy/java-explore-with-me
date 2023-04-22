@@ -9,6 +9,7 @@ import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.model.EventState;
 import ru.practicum.users.mapper.UserMapper;
 import ru.practicum.users.model.User;
+import ru.practicum.util.util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -58,6 +59,7 @@ public class EventMapper {
                 .publishedOn(event.getPublishedOn())
                 .requestModeration(event.isRequestModeration())
                 .state(event.getState().name())
+                .title(event.getTitle())
                 .views(event.getViews())
                 .build();
     }
@@ -71,7 +73,7 @@ public class EventMapper {
                 .confirmedRequests(confirmedRequests)
                 .createdOn(dateTime)
                 .description(newEventDto.getDescription())
-                .eventDate(newEventDto.getEventDate())
+                .eventDate(DateFormatter.formatDate(newEventDto.getEventDate()))
                 .initiator(user)
                 .location(LocationMapper.locationDtoToLocation(newEventDto.getLocation()))
                 .paid(newEventDto.getPaid())

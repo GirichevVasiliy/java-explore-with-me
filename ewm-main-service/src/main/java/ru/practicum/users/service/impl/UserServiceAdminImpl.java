@@ -2,11 +2,14 @@ package ru.practicum.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictNameAndEmailException;
+import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.dto.NewUserRequest;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.mapper.UserMapper;
@@ -15,6 +18,7 @@ import ru.practicum.users.service.UserServiceAdmin;
 import ru.practicum.users.storage.UserRepository;
 import ru.practicum.util.FindObjectInRepository;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,9 +49,13 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
         User user = UserMapper.newUserRequestToUser(newUserRequest);
         try {
             return UserMapper.userToDto(userRepository.save(user));
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
+            throw new ResourceNotFoundException("База данных недоступна");
+        } catch (EntityExistsException e) {
             throw new ConflictNameAndEmailException("Почта " + newUserRequest.getEmail() + " или имя пользователя " +
                     newUserRequest.getName() + " уже используется");
+        } catch (IllegalArgumentException e) {
+            throw new BadRequestException("Запрос на добавление пользователя" + newUserRequest + " составлен не корректно ");
         }
     }
 
