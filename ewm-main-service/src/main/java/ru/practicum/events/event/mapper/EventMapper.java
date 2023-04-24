@@ -5,8 +5,10 @@ import ru.practicum.category.model.Category;
 import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.dto.NewEventDto;
+import ru.practicum.events.event.dto.stateDto.EventStateDto;
 import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.model.EventState;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.users.mapper.UserMapper;
 import ru.practicum.users.model.User;
 import ru.practicum.util.util.DateFormatter;
@@ -84,5 +86,17 @@ public class EventMapper {
                 .title(newEventDto.getTitle())
                 .views(views)
                 .build();
+    }
+    public static EventState eventStateDtoToEventState(EventStateDto state){
+        if (state.name().equals(EventStateDto.PENDING.name())){
+            return EventState.PENDING;
+        }
+        if (state.name().equals(EventStateDto.CANCELED.name())){
+            return EventState.CANCELED;
+        }
+        if (state.name().equals(EventStateDto.PUBLISHED.name())){
+            return EventState.PUBLISHED;
+        }
+        throw new BadRequestException("Нет такого статуса" + state.name());
     }
 }

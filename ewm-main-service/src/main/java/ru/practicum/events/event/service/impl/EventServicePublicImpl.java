@@ -2,6 +2,8 @@ package ru.practicum.events.event.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.events.event.dto.EventShortDto;
@@ -26,6 +28,7 @@ public class EventServicePublicImpl implements EventServicePublic {
     @Override
     public List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, boolean paid, LocalDateTime rangeStart,
                                                   LocalDateTime rangeEnd, boolean onlyAvailable, String sort, int from, int size) {
+        Pageable pageable = PageRequest.of(from, size);
         return null;
     }
 

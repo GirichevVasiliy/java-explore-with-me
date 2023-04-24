@@ -46,7 +46,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
     public List<EventFullDto> getAllEventsForAdmin(List<Long> users, List<EventStateDto> states, List<Long> categories,
                                                    LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
         Pageable pageable = PageRequest.of(from, size);
-        List<EventState> eventStates = states.stream().map()
+        List<EventState> eventStates = states.stream().map(EventMapper::eventStateDtoToEventState).collect(Collectors.toList());
         List<Event> events = eventRepository.findAllByAdmin(users, eventStates, categories, rangeStart, rangeEnd, pageable);
         return events.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
     }
