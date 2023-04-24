@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional(readOnly = true)
+@Transactional
 public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
     private final CompilationStorage compilationStorage;
     private final FindObjectInRepository findObjectInRepository;
@@ -50,8 +50,8 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     @Override
     public void deleteCompilationById(Long compId) {
-        Compilation compilation = findObjectInRepository.getCompilationById(compId);
-        compilationStorage.delete(compilation);
+        findObjectInRepository.getCompilationById(compId);
+        compilationStorage.deleteById(compId);
     }
 
     @Override

@@ -3,6 +3,7 @@ package ru.practicum.events.event.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.service.EventServicePublic;
 
@@ -29,8 +30,8 @@ public class EventControllerPublic {
     List<EventShortDto> getAllPublicEvents(@RequestParam(required = false) String text,
                                            @RequestParam(required = false) List<Long> categories,
                                            @RequestParam(required = false) Boolean paid,
-                                           @RequestParam(required = false) LocalDateTime rangeStart,
-                                           @RequestParam(required = false) LocalDateTime rangeEnd,
+                                           @RequestParam(required = false) String rangeStart,
+                                           @RequestParam(required = false) String rangeEnd,
                                            @RequestParam(defaultValue = "false") Boolean onlyAvailable,
                                            @RequestParam(defaultValue = "EVENT_DATE") String sort,
                                            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
@@ -39,7 +40,7 @@ public class EventControllerPublic {
     }
 
     @GetMapping("/{id}")
-    EventShortDto getPublicEventById(@PathVariable Long id) {
+    EventFullDto getPublicEventById(@PathVariable Long id) {
         return eventServicePublic.getPublicEventById(id);
     }
 }

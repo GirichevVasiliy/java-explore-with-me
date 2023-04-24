@@ -2,9 +2,8 @@ package ru.practicum.category.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.NewCategoryDto;
 import ru.practicum.category.mapper.CategoryMapper;
@@ -14,14 +13,10 @@ import ru.practicum.category.storage.CategoryRepository;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictDeleteException;
 import ru.practicum.exception.ConflictNameCategoryException;
-import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.util.FindObjectInRepository;
-
-import javax.persistence.EntityExistsException;
 
 @Service
 @Slf4j
-@Transactional
 public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     private final CategoryRepository categoryRepository;
     private final FindObjectInRepository findObjectInRepository;
@@ -58,9 +53,7 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     private CategoryDto getCategoryDto(Category category, String name) {
         try {
             return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
-        } catch (DataAccessException e) {
-            throw new ResourceNotFoundException("База данных недоступна");
-        } catch (EntityExistsException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new ConflictNameCategoryException("Имя категории должно быть уникальным, "
                     + name + " уже используется");
         } catch (IllegalArgumentException e) {

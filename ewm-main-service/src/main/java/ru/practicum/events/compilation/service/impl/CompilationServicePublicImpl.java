@@ -31,7 +31,7 @@ public class CompilationServicePublicImpl implements CompilationServicePublic {
     }
 
     @Override
-    public List<CompilationDto> getAllCompilations(boolean pinned, int from, int size) {
+    public List<CompilationDto> getAllCompilations(Boolean pinned, int from, int size) {
         Pageable pageable = PageRequest.of(from, size);
         return compilationStorage.findAllByPinnedIs(pinned, pageable).stream()
                 .map(CompilationMapper::compilationToCompilationDto).collect(Collectors.toList());

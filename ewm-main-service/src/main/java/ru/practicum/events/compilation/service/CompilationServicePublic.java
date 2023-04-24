@@ -5,6 +5,6 @@ import ru.practicum.events.compilation.dto.CompilationDto;
 import java.util.List;
 
 public interface CompilationServicePublic {
-    List<CompilationDto> getAllCompilations(boolean pinned, int from, int size);
+    List<CompilationDto> getAllCompilations(Boolean pinned, int from, int size);
     CompilationDto getCompilationById(Long compId);
 }

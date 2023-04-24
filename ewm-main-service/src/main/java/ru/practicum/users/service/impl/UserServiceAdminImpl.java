@@ -3,6 +3,7 @@ package ru.practicum.users.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional(readOnly = true)
 public class UserServiceAdminImpl implements UserServiceAdmin {
     private final UserRepository userRepository;
     private final FindObjectInRepository findObjectInRepository;
@@ -43,15 +43,12 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
         return users.stream().map(UserMapper::userToDto).collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public UserDto addUser(NewUserRequest newUserRequest) {
         User user = UserMapper.newUserRequestToUser(newUserRequest);
         try {
             return UserMapper.userToDto(userRepository.save(user));
-        } catch (DataAccessException e) {
-            throw new ResourceNotFoundException("База данных недоступна");
-        } catch (EntityExistsException e) {
+        } catch (DataIntegrityViolationException e) {
             throw new ConflictNameAndEmailException("Почта " + newUserRequest.getEmail() + " или имя пользователя " +
                     newUserRequest.getName() + " уже используется");
         } catch (IllegalArgumentException e) {
@@ -59,7 +56,6 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
         }
     }
 
-    @Transactional
     @Override
     public void deleteUserById(Long userId) {
         User user = findObjectInRepository.getUserById(userId);

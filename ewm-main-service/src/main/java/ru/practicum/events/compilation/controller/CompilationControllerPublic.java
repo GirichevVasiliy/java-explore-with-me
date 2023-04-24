@@ -32,7 +32,7 @@ public class CompilationControllerPublic {
      * Получение подборок событий
      */
     @GetMapping()
-    public List<CompilationDto> getAllCompilations(@NotNull @RequestParam Boolean pinned,
+    public List<CompilationDto> getAllCompilations(@RequestParam(required = false) Boolean pinned,
                                                    @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                                    @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size) {
         return compilationService.getAllCompilations(pinned, from, size);
