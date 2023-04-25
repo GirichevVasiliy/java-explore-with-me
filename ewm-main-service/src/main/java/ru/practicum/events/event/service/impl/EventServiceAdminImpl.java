@@ -3,15 +3,11 @@ package ru.practicum.events.event.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.model.Category;
 import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.UpdateEventAdminRequest;
 import ru.practicum.events.event.dto.stateDto.ActionStateDto;
-import ru.practicum.events.event.dto.stateDto.EventStateDto;
 import ru.practicum.events.event.mapper.EventMapper;
 import ru.practicum.events.event.mapper.LocationMapper;
 import ru.practicum.events.event.model.Event;
@@ -25,12 +21,12 @@ import ru.practicum.util.FindObjectInRepository;
 import ru.practicum.util.util.DateFormatter;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional(readOnly = true)
 public class EventServiceAdminImpl implements EventServiceAdmin {
     private final EventRepository eventRepository;
     private final FindObjectInRepository findObjectInRepository;
@@ -43,18 +39,28 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
     }
 
     @Override
-    public List<EventFullDto> getAllEventsForAdmin(List<Long> users, List<EventStateDto> states, List<Long> categories,
+    public List<EventFullDto> getAllEventsForAdmin(List<Long> users, List<String> states, List<Long> categories,
                                                    LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
-        Pageable pageable = PageRequest.of(from, size);
-        List<EventState> eventStates = states.stream().map(EventMapper::eventStateDtoToEventState).collect(Collectors.toList());
-        List<Event> events = eventRepository.findAllByAdmin(users, eventStates, categories, rangeStart, rangeEnd, pageable);
-        return events.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+        if (states != null) {
+            return eventRepository.findAllByAdmin(users, states, categories, rangeStart, rangeEnd, from, size).stream()
+                    .map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+        } else {
+            return eventRepository.findAllByAdminAndState(users, categories, rangeStart, rangeEnd, from, size).stream()
+                    .map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+        }
     }
 
     @Override
     public EventFullDto updateEventById(Long eventId, UpdateEventAdminRequest updateEvent) {
+
         Event event = findObjectInRepository.getEventById(eventId);
-        LocalDateTime publishedOn = checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
+        eventAvailability(event);
+        LocalDateTime publishedOn;
+        if (updateEvent.getEventDate() != null) {
+            publishedOn = checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
+        } else {
+            publishedOn = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        }
         if (updateEvent.getAnnotation() != null) {
             event.setAnnotation(updateEvent.getAnnotation());
         }
@@ -110,8 +116,18 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             return EventState.PENDING;
         } else if (stateAction.equals(ActionStateDto.CANCEL_REVIEW)) {
             return EventState.CANCELED;
+        } else if (stateAction.equals(ActionStateDto.PUBLISH_EVENT)) {
+            return EventState.PUBLISHED;
+        } else if (stateAction.equals(ActionStateDto.REJECT_EVENT)) {
+            return EventState.CANCELED;
         } else {
             throw new BadRequestException("Статус не соответствует модификатору доступа");
+        }
+    }
+
+    private void eventAvailability(Event event) {
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            throw new ForbiddenEventException("Статус события не позволяет редоктировать событие, статус: " + event.getState());
         }
     }
 }

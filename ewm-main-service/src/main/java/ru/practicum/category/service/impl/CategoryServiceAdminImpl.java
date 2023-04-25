@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.category.dto.NewCategoryDto;
 import ru.practicum.category.mapper.CategoryMapper;
@@ -17,6 +18,7 @@ import ru.practicum.util.FindObjectInRepository;
 
 @Service
 @Slf4j
+@Transactional
 public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     private final CategoryRepository categoryRepository;
     private final FindObjectInRepository findObjectInRepository;
@@ -46,7 +48,9 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) {
         Category category = findObjectInRepository.getCategoryById(catId);
         category.setId(catId);
-        category.setName(categoryDto.getName());
+        if(categoryDto.getName() != null){
+            category.setName(categoryDto.getName());
+        }
         return getCategoryDto(category, category.getName());
     }
 
@@ -56,7 +60,7 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
         } catch (DataIntegrityViolationException e) {
             throw new ConflictNameCategoryException("Имя категории должно быть уникальным, "
                     + name + " уже используется");
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             throw new BadRequestException("Запрос на добавлении категории " + name + " составлен не корректно ");
         }
     }

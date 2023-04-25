@@ -22,10 +22,32 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     List<Event> findAllByInitiatorId(Long userId, Pageable pageable);
 
-    @Query("SELECT e FROM Event e WHERE e.initiator.id IN :users AND e.state IN :states AND e.category.id IN :categories " +
-            "AND e.eventDate BETWEEN :rangeStart AND :rangeEnd")
-    List<Event> findAllByAdmin(List<Long> users, List<EventState> states, List<Long> categories,
-                               LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable pageable);
+    @Query(value = "SELECT * FROM events WHERE (initiator_id IN :users OR :users IS NULL) AND state IN :states " +
+            "AND (category_id IN :categories  OR :categories IS NULL) AND (event_date >= to_timestamp(:rangeStart, 'yyyy-mm-dd hh24:mi:ss')  " +
+            "OR to_timestamp(:rangeStart, 'yyyy-mm-dd hh24:mi:ss') IS NULL) AND (event_date <= to_timestamp(:rangeEnd, 'yyyy-mm-dd hh24:mi:ss')   " +
+            "OR to_timestamp(:rangeEnd, 'yyyy-mm-dd hh24:mi:ss') IS NULL) OFFSET :from LIMIT :size", nativeQuery = true)
+    List<Event> findAllByAdmin(@Param("users") List<Long> users,
+                               @Param("states") List<String> states,
+                               @Param("categories") List<Long> categories,
+                               @Param("rangeStart") LocalDateTime rangeStart,
+                               @Param("rangeEnd") LocalDateTime rangeEnd,
+                               @Param("from") Integer from,
+                               @Param("size") Integer size);
+
+    @Query(value = "SELECT * " +
+            "FROM events " +
+            "WHERE (initiator_id IN :users OR :users IS NULL) " +
+            "AND (category_id IN :categories  OR :categories IS NULL) " +
+            "AND (event_date >= to_timestamp(:rangeStart, 'yyyy-mm-dd hh24:mi:ss')  OR to_timestamp(:rangeStart, 'yyyy-mm-dd hh24:mi:ss') IS NULL) " +
+            "AND (event_date <= to_timestamp(:rangeEnd, 'yyyy-mm-dd hh24:mi:ss')   OR to_timestamp(:rangeEnd, 'yyyy-mm-dd hh24:mi:ss') IS NULL) " +
+            "OFFSET :from " +
+            "LIMIT :size", nativeQuery = true)
+    List<Event> findAllByAdminAndState(@Param("users") List<Long> users,
+                                          @Param("categories") List<Long> categories,
+                                          @Param("rangeStart") LocalDateTime rangeStart,
+                                          @Param("rangeEnd") LocalDateTime rangeEnd,
+                                          @Param("from") Integer from,
+                                          @Param("size") Integer size);
     @Query(value = "SELECT * " +
             "FROM events  " +
             "WHERE (lower(annotation) LIKE '%'||lower(:text)||'%' OR lower(description) LIKE '%'||lower(:text)||'%') " +

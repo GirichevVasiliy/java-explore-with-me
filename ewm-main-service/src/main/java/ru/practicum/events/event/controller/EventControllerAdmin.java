@@ -2,19 +2,16 @@ package ru.practicum.events.event.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.event.dto.EventFullDto;
-import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.dto.UpdateEventAdminRequest;
-import ru.practicum.events.event.dto.stateDto.EventStateDto;
 import ru.practicum.events.event.service.EventServiceAdmin;
 import ru.practicum.util.util.DateFormatter;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -29,20 +26,21 @@ public class EventControllerAdmin {
         this.eventServiceAdmin = eventServiceAdmin;
     }
     @GetMapping()
-    List<EventFullDto> getAllEventsForAdmin(@RequestParam List<Long> users,
-                                                 @RequestParam List<EventStateDto> states,
-                                                 @RequestParam List<Long> categories,
-                                                 @RequestParam String rangeStart,
-                                                 @RequestParam String rangeEnd,
-                                                 @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                                 @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size) {
+    @ResponseStatus(HttpStatus.OK)
+    List<EventFullDto> getAllEventsForAdmin(@RequestParam(required = false) List<Long> users,
+                                                 @RequestParam (required = false) List<String> states,
+                                                 @RequestParam (required = false) List<Long> categories,
+                                                 @RequestParam (required = false) String rangeStart,
+                                                 @RequestParam (required = false) String rangeEnd,
+                                                 @PositiveOrZero @RequestParam(defaultValue = "0", required = false) Integer from,
+                                                 @Positive @Min(1) @RequestParam(defaultValue = "10", required = false) Integer size) {
         LocalDateTime newRangeStart = DateFormatter.formatDate(rangeStart);
         LocalDateTime newRangeEnd = DateFormatter.formatDate(rangeEnd);
         return eventServiceAdmin.getAllEventsForAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size);
     }
     @PatchMapping("/{eventId}")
-    EventFullDto updateEventById( @NotNull @PathVariable Long eventId,
-                                  @RequestParam UpdateEventAdminRequest updateEventAdminRequest){
+    EventFullDto updateEventById(@PathVariable Long eventId,
+                                  @RequestBody UpdateEventAdminRequest updateEventAdminRequest){
         return eventServiceAdmin.updateEventById(eventId, updateEventAdminRequest);
     }
 }

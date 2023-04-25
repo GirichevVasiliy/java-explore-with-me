@@ -6,9 +6,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.category.dto.CategoryDto;
-import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.EventShortDto;
@@ -29,15 +26,12 @@ import ru.practicum.events.request.model.Request;
 import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.events.request.storage.RequestRepository;
 import ru.practicum.exception.BadRequestException;
-import ru.practicum.exception.ConflictNameCategoryException;
 import ru.practicum.exception.ForbiddenEventException;
 import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.model.User;
 import ru.practicum.util.FindObjectInRepository;
 import ru.practicum.util.util.DateFormatter;
 
-import javax.persistence.EntityExistsException;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -47,7 +41,6 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional(readOnly = true)
 public class EventServicePrivateImpl implements EventServicePrivate {
     private final EventRepository eventRepository;
     private final FindObjectInRepository findObjectInRepository;
@@ -70,7 +63,6 @@ public class EventServicePrivateImpl implements EventServicePrivate {
                 .map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
     }
 
-    @Transactional
     @Override
     public EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto) {
         checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
@@ -90,7 +82,6 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         return EventMapper.eventToEventFullDto(event);
     }
 
-    @Transactional
     @Override
     public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
         checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
@@ -146,7 +137,6 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         }
     }
 
-    @Transactional
     @Override
     public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request) {
         Event event = findObjectInRepository.getEventById(eventId);
@@ -189,6 +179,10 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (stateAction.equals(ActionStateDto.SEND_TO_REVIEW)) {
             return EventState.PENDING;
         } else if (stateAction.equals(ActionStateDto.CANCEL_REVIEW)) {
+            return EventState.CANCELED;
+        } else if (stateAction.equals(ActionStateDto.PUBLISH_EVENT)) {
+            return EventState.PUBLISHED;
+        } else if (stateAction.equals(ActionStateDto.REJECT_EVENT)) {
             return EventState.CANCELED;
         } else {
             throw new BadRequestException("Статус не соответствует модификатору доступа");
@@ -242,12 +236,13 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
         return result;
     }
+
     private EventFullDto getEventFullDto(Event event) {
         try {
             return EventMapper.eventToEventFullDto(eventRepository.save(event));
         } catch (DataAccessException e) {
             throw new ResourceNotFoundException("База данных недоступна");
-        }   catch (Exception e){
+        } catch (Exception e) {
             throw new BadRequestException("Запрос на добавлении события " + event + " составлен не корректно ");
         }
     }

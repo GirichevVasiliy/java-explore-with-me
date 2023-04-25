@@ -45,6 +45,6 @@ public class RequestControllerPrivate {
     @PatchMapping("/{requestId}/cancel")
     ParticipationRequestDto updateRequestById(@NotNull @PathVariable Long userId,
                                               @NotNull @PathVariable Long requestId) {
-        return requestServicePrivate.updateRequestById(userId, requestId);
+        return requestServicePrivate.updateRequestStatus(userId, requestId);
     }
 }

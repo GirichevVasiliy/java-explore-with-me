@@ -3,7 +3,6 @@ package ru.practicum.events.compilation.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.events.compilation.dto.CompilationDto;
 import ru.practicum.events.compilation.dto.NewCompilationDto;
 import ru.practicum.events.compilation.dto.UpdateCompilationRequest;
@@ -11,7 +10,6 @@ import ru.practicum.events.compilation.mapper.CompilationMapper;
 import ru.practicum.events.compilation.model.Compilation;
 import ru.practicum.events.compilation.service.CompilationServiceAdmin;
 import ru.practicum.events.compilation.storage.CompilationStorage;
-import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.util.FindObjectInRepository;
@@ -19,11 +17,9 @@ import ru.practicum.util.FindObjectInRepository;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@Transactional
 public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
     private final CompilationStorage compilationStorage;
     private final FindObjectInRepository findObjectInRepository;
@@ -56,24 +52,17 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     @Override
     public CompilationDto updateCompilationById(Long compId, UpdateCompilationRequest updateCompilationRequest) {
-        Compilation compilationOld = findObjectInRepository.getCompilationById(compId);
-        Compilation newCompilation = new Compilation();
+        Compilation newCompilation = findObjectInRepository.getCompilationById(compId);
         Set<Event> events;
-        if (!updateCompilationRequest.getEvents().isEmpty()){
+        if (updateCompilationRequest.getEvents() != null) {
             events = addEvents(updateCompilationRequest.getEvents());
             newCompilation.setEvents(events);
-       } else {
-            newCompilation.setEvents(compilationOld.getEvents());
         }
-        if(updateCompilationRequest.getPinned() != null){
+        if (updateCompilationRequest.getPinned() != null) {
             newCompilation.setPinned(updateCompilationRequest.getPinned());
-        } else {
-            newCompilation.setPinned(compilationOld.isPinned());
         }
-        if(!updateCompilationRequest.getTitle().isEmpty()){
+        if (updateCompilationRequest.getTitle() != null) {
             newCompilation.setTitle(updateCompilationRequest.getTitle());
-        } else {
-            newCompilation.setTitle(compilationOld.getTitle());;
         }
         return CompilationMapper.compilationToCompilationDto(compilationStorage.save(newCompilation));
     }

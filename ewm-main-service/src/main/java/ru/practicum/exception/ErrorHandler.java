@@ -52,7 +52,18 @@ public class ErrorHandler {
                 .build();
         return apiError;
     }
-
+    @ExceptionHandler
+    @ResponseStatus(code = HttpStatus.CONFLICT)
+    public ApiError handleConflictRequestException(final ConflictRequestException e) {
+        ApiError apiError = ApiError.builder()
+                .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
+                .message(e.getMessage())
+                .reason("For the requested operation the conditions are not met.")
+                .status("CONFLICT")
+                .timestamp(LocalDateTime.now())
+                .build();
+        return apiError;
+    }
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.CONFLICT)
     public ApiError handleConflictNameCategoryException(final ConflictNameCategoryException e) {
