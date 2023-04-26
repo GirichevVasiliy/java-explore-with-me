@@ -40,12 +40,21 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
 
     @Override
     public List<EventFullDto> getAllEventsForAdmin(List<Long> users, List<String> states, List<Long> categories,
-                                                   LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size) {
+                                                   String rangeStart, String rangeEnd, int from, int size) {
+        LocalDateTime newRangeStart = null;
+        if(rangeStart != null){
+            newRangeStart = DateFormatter.formatDate(rangeStart);
+        }
+        LocalDateTime newRangeEnd = null;
+       if(rangeEnd != null){
+           newRangeEnd = DateFormatter.formatDate(rangeEnd);
+       }
+
         if (states != null) {
-            return eventRepository.findAllByAdmin(users, states, categories, rangeStart, rangeEnd, from, size).stream()
+            return eventRepository.findAllByAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size).stream()
                     .map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         } else {
-            return eventRepository.findAllByAdminAndState(users, categories, rangeStart, rangeEnd, from, size).stream()
+            return eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, from, size).stream()
                     .map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         }
     }
@@ -126,7 +135,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
     }
 
     private void eventAvailability(Event event) {
-        if (event.getState().equals(EventState.PUBLISHED)) {
+        if (event.getState().equals(EventState.PUBLISHED) || event.getState().equals(EventState.CANCELED)) {
             throw new ForbiddenEventException("Статус события не позволяет редоктировать событие, статус: " + event.getState());
         }
     }

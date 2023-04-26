@@ -34,9 +34,8 @@ public class EventControllerAdmin {
                                                  @RequestParam (required = false) String rangeEnd,
                                                  @PositiveOrZero @RequestParam(defaultValue = "0", required = false) Integer from,
                                                  @Positive @Min(1) @RequestParam(defaultValue = "10", required = false) Integer size) {
-        LocalDateTime newRangeStart = DateFormatter.formatDate(rangeStart);
-        LocalDateTime newRangeEnd = DateFormatter.formatDate(rangeEnd);
-        return eventServiceAdmin.getAllEventsForAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size);
+
+        return eventServiceAdmin.getAllEventsForAdmin(users, states, categories, rangeStart, rangeEnd, from, size);
     }
     @PatchMapping("/{eventId}")
     EventFullDto updateEventById(@PathVariable Long eventId,

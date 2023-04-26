@@ -90,7 +90,7 @@ public class ErrorHandler {
         return apiError;
     }
     @ExceptionHandler
-    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+    @ResponseStatus(code = HttpStatus.CONFLICT)
     public ApiError handleForbiddenEventException(final ForbiddenEventException e) {
         ApiError apiError = ApiError.builder()
                 .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
