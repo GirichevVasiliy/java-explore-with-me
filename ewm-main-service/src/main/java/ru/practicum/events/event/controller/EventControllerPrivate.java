@@ -58,13 +58,13 @@ public class EventControllerPrivate {
         return eventServicePrivate.updatePrivateEventByIdAndByUserId(userId, eventId, updateEventUserRequest);
     }
 
-    @GetMapping("/{eventId}/request")
+    @GetMapping("/{eventId}/requests")
     List<ParticipationRequestDto> getAllPrivateEventsByRequests(@NotNull @PathVariable Long userId,
                                                                 @NotNull @PathVariable Long eventId) {
         return eventServicePrivate.getAllPrivateEventsByRequests(userId, eventId);
     }
 
-    @PatchMapping("/{eventId}/request")
+    @PatchMapping("/{eventId}/requests")
     EventRequestStatusUpdateResult updateEventRequestStatus(@NotNull @PathVariable Long userId,
                                                             @NotNull @PathVariable Long eventId,
                                                             @RequestBody EventRequestStatusUpdateRequest request) {

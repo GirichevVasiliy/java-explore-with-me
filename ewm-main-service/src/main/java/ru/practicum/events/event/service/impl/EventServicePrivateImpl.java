@@ -84,7 +84,9 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
-        checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
+        if (updateEvent.getEventDate() != null){
+            checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
+        }
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
         checkOwnerEvent(event, user);
@@ -99,7 +101,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (updateEvent.getDescription() != null) {
             event.setDescription(updateEvent.getDescription());
         }
-        if (updateEvent.getEventDate().isEmpty()) {
+        if (updateEvent.getEventDate() != null) {
             event.setEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         if (updateEvent.getLocation() != null) {
@@ -141,9 +143,9 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request) {
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
-        eventAvailability(event);
+        //eventAvailability(event);
         checkOwnerEvent(event, user);
-        if (request.getRequestIds().size() >= event.getParticipantLimit() && event.getParticipantLimit() != 0) {
+        if (event.getParticipantLimit() == event.getConfirmedRequests()) {
             throw new ForbiddenEventException("Достигнут лимит по заявкам на данное событие с id= " + eventId);
         } else if (event.getParticipantLimit() == 0 || !event.isRequestModeration()) {
             EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());

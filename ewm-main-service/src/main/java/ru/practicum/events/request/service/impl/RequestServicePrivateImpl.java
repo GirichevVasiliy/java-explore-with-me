@@ -71,9 +71,9 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
                     .requester(user)
                     .status(RequestStatus.CONFIRMED)
                     .build();
+            Long confirmedRequests = event.getConfirmedRequests();
+            event.setConfirmedRequests(confirmedRequests + 1L);
         }
-        Long confirmedRequests = event.getConfirmedRequests();
-        event.setConfirmedRequests(confirmedRequests + 1L);
         try {
             eventRepository.save(event);
             return RequestMapper.requestToParticipationRequestDto(requestRepository.save(request));
@@ -92,7 +92,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
             throw new ConflictRequestException("Пользователь с id= " + userId
                     + "не подавал заявку с id= " + request.getId());
         }
-        request.setStatus(RequestStatus.REJECTED);
+        request.setStatus(RequestStatus.CANCELED);
         Event event = request.getEvent();
         Long confirmedRequests = event.getConfirmedRequests();
         event.setConfirmedRequests(confirmedRequests - 1L);
