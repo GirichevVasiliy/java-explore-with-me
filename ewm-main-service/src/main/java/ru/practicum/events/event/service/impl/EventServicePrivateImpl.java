@@ -36,7 +36,6 @@ import ru.practicum.util.util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -86,7 +85,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
-        if (updateEvent.getEventDate() != null){
+        if (updateEvent.getEventDate() != null) {
             checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         Event event = findObjectInRepository.getEventById(eventId);
@@ -182,6 +181,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             throw new ForbiddenEventException("Событие с id=" + event.getId() + " не принадлежит пользователю с id=" + user.getId());
         }
     }
+
     private EventState determiningTheStatusForEvent(ActionStateDto stateAction) {
         if (stateAction.equals(ActionStateDto.SEND_TO_REVIEW)) {
             return EventState.PENDING;
@@ -205,7 +205,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     private List<ParticipationRequestDto> addRejectedAllRequests(List<Request> requests) {
         List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();
         for (Request req : requests) {
-            if (!req.getStatus().equals(RequestStatus.PENDING)){
+            if (!req.getStatus().equals(RequestStatus.PENDING)) {
                 throw new ConflictRequestException("Статус заявки " + req.getId() + " не позволяет ее одобрить, статус равен " + req.getStatus());
             }
             req.setStatus(RequestStatus.REJECTED);
@@ -238,8 +238,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             }
         }
         eventRepository.save(event);
-        EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
-        return result;
+        return new EventRequestStatusUpdateResult(confirmedRequests, rejectedRequests);
     }
 
     private EventFullDto getEventFullDto(Event event) {
