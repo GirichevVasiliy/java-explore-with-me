@@ -21,11 +21,13 @@ import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.events.request.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.events.request.dto.EventRequestStatusUpdateResult;
 import ru.practicum.events.request.dto.ParticipationRequestDto;
+import ru.practicum.events.request.dto.RequestStatusDto;
 import ru.practicum.events.request.mapper.RequestMapper;
 import ru.practicum.events.request.model.Request;
 import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.events.request.storage.RequestRepository;
 import ru.practicum.exception.BadRequestException;
+import ru.practicum.exception.ConflictRequestException;
 import ru.practicum.exception.ForbiddenEventException;
 import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.model.User;
@@ -143,22 +145,26 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request) {
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
-        //eventAvailability(event);
         checkOwnerEvent(event, user);
-        if (event.getParticipantLimit() == event.getConfirmedRequests()) {
+        if (event.getParticipantLimit() <= event.getConfirmedRequests()) {
+            log.warn("Достигнут лимит по заявкам на данное событие с id= " + eventId);
             throw new ForbiddenEventException("Достигнут лимит по заявкам на данное событие с id= " + eventId);
-        } else if (event.getParticipantLimit() == 0 || !event.isRequestModeration()) {
-            EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
-            log.info("Подтверждение заявок не требуется");
-            List<Request> requests = getAllRequestsContainsIds(request.getRequestIds());
-            List<ParticipationRequestDto> confirmRequests = addConfirmAllRequests(requests);
-            result.getConfirmedRequests().addAll(confirmRequests);
-            updateConfirmedRequests(confirmRequests.size(), event);
-            return result;
-        } else {
-            List<Request> requests = getAllRequestsContainsIds(request.getRequestIds());
-            return considerationOfRequests(event, requests);
         }
+        List<Request> requests = getAllRequestsContainsIds(request.getRequestIds());
+        if (event.getParticipantLimit() == 0 || !event.isRequestModeration()) {
+            log.info("Подтверждение заявок не требуется");
+            return new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
+        } else if (request.getStatus().equals(RequestStatusDto.CONFIRMED)) {
+            log.info("Запрос на подтверждение заявок");
+            return considerationOfRequests(event, requests);
+        } else if (request.getStatus().equals(RequestStatusDto.REJECTED)) {
+            log.info("Запрос на отклонение заявок");
+            EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
+            List<ParticipationRequestDto> rejectedRequests = addRejectedAllRequests(requests);
+            result.getRejectedRequests().addAll(rejectedRequests);
+            return result;
+        }
+        return new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
     }
 
     private void checkEventDate(LocalDateTime eventDate) {
@@ -176,7 +182,6 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             throw new ForbiddenEventException("Событие с id=" + event.getId() + " не принадлежит пользователю с id=" + user.getId());
         }
     }
-
     private EventState determiningTheStatusForEvent(ActionStateDto stateAction) {
         if (stateAction.equals(ActionStateDto.SEND_TO_REVIEW)) {
             return EventState.PENDING;
@@ -197,32 +202,30 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         }
     }
 
-    private List<ParticipationRequestDto> addConfirmAllRequests(List<Request> requests) {
-        List<ParticipationRequestDto> confirmedRequests = new ArrayList<>();
+    private List<ParticipationRequestDto> addRejectedAllRequests(List<Request> requests) {
+        List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();
         for (Request req : requests) {
-            req.setStatus(RequestStatus.CONFIRMED);
+            if (!req.getStatus().equals(RequestStatus.PENDING)){
+                throw new ConflictRequestException("Статус заявки " + req.getId() + " не позволяет ее одобрить, статус равен " + req.getStatus());
+            }
+            req.setStatus(RequestStatus.REJECTED);
             requestRepository.save(req);
-            confirmedRequests.add(RequestMapper.requestToParticipationRequestDto(req));
+            rejectedRequests.add(RequestMapper.requestToParticipationRequestDto(req));
         }
-        return confirmedRequests;
+        return rejectedRequests;
     }
 
     private List<Request> getAllRequestsContainsIds(List<Long> requestIds) {
         return requestRepository.findAllByIdIsIn(requestIds);
     }
 
-    private void updateConfirmedRequests(Integer newConfirmedRequests, Event event) {
-        Long sum = event.getConfirmedRequests() + newConfirmedRequests;
-        event.setConfirmedRequests(sum);
-        eventRepository.save(event);
-    }
-
     private EventRequestStatusUpdateResult considerationOfRequests(Event event, List<Request> requests) {
         List<ParticipationRequestDto> confirmedRequests = new ArrayList<>();
         List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();
-        Iterator<Request> i = requests.iterator();
-        while (i.hasNext()) {
-            Request req = i.next();
+        for (Request req : requests) {
+            if (!req.getStatus().equals(RequestStatus.PENDING)) {
+                throw new ConflictRequestException("Статус заявки " + req.getId() + " не позволяет ее одобрить, статус равен " + req.getStatus());
+            }
             if (event.getConfirmedRequests() <= event.getParticipantLimit()) {
                 req.setStatus(RequestStatus.CONFIRMED);
                 confirmedRequests.add(RequestMapper.requestToParticipationRequestDto(req));
