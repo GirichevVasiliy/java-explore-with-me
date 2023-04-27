@@ -1,14 +1,11 @@
 package ru.practicum.events.event.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Value;
 import ru.practicum.events.event.dto.stateDto.ActionStateDto;
-import ru.practicum.events.event.model.location.Location;
 
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 @Value
 @Builder

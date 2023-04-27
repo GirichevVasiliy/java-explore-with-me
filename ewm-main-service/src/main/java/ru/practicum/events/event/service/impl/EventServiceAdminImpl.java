@@ -41,14 +41,15 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
     @Override
     public List<EventFullDto> getAllEventsForAdmin(List<Long> users, List<String> states, List<Long> categories,
                                                    String rangeStart, String rangeEnd, int from, int size) {
+        log.info("Получен запрос на поиск всех событый (администратором)");
         LocalDateTime newRangeStart = null;
-        if(rangeStart != null){
+        if (rangeStart != null) {
             newRangeStart = DateFormatter.formatDate(rangeStart);
         }
         LocalDateTime newRangeEnd = null;
-       if(rangeEnd != null){
-           newRangeEnd = DateFormatter.formatDate(rangeEnd);
-       }
+        if (rangeEnd != null) {
+            newRangeEnd = DateFormatter.formatDate(rangeEnd);
+        }
 
         if (states != null) {
             return eventRepository.findAllByAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size).stream()
@@ -61,7 +62,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
 
     @Override
     public EventFullDto updateEventById(Long eventId, UpdateEventAdminRequest updateEvent) {
-
+        log.info("Получен запрос на обновление события с id= " + eventId + " (администратором)");
         Event event = findObjectInRepository.getEventById(eventId);
         eventAvailability(event);
         LocalDateTime publishedOn;

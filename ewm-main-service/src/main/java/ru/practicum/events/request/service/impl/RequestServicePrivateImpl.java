@@ -42,6 +42,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
 
     @Override
     public List<ParticipationRequestDto> getAllRequestsUserById(Long userId) {
+        log.info("Получен запрос на получение всех запросов пользователя с id= " + userId);
         User user = findObjectInRepository.getUserById(userId);
         List<Request> requests = requestRepository.findAllByRequesterIs(user);
         return requests.stream().map(RequestMapper::requestToParticipationRequestDto)
@@ -50,6 +51,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
 
     @Override
     public ParticipationRequestDto addRequestEventById(Long userId, Long eventId) {
+        log.info("Получен запрос на добавление запроса от пользователя с id= " + userId + " для события с id= " + eventId);
         User user = findObjectInRepository.getUserById(userId);
         Event event = findObjectInRepository.getEventById(eventId);
         checkEventState(event);
@@ -86,6 +88,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
 
     @Override
     public ParticipationRequestDto updateRequestStatus(Long userId, Long requestId) {
+        log.info("Получен запрос от пользователя с id= " + userId + " на обновление запроса с id= " + requestId);
         User user = findObjectInRepository.getUserById(userId);
         Request request = findObjectInRepository.getRequestById(requestId);
         if (!request.getRequester().equals(user)) {

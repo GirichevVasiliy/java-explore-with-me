@@ -18,13 +18,7 @@ public class CompilationMapper {
                 .title(compilationDto.getTitle())
                 .build();
     }
-/*    public static Compilation newCompilationDtoToCompilation(NewCompilationDto newCompilationDto) {
-        return Compilation.builder()
-                .events(newCompilationDto.getEvents().stream().map(EventMapper::eventShortDtoToEvent).collect(Collectors.toSet()))
-                .pinned(newCompilationDto.isPinned())
-                .title(newCompilationDto.getTitle())
-                .build();
-    }*/
+
     public static Compilation newCompilationDtoToCompilationAndEvents(NewCompilationDto newCompilationDto, Set<Event> events) {
         return Compilation.builder()
                 .events(events)
@@ -32,7 +26,8 @@ public class CompilationMapper {
                 .title(newCompilationDto.getTitle())
                 .build();
     }
-    public static CompilationDto compilationToCompilationDto(Compilation compilation){
+
+    public static CompilationDto compilationToCompilationDto(Compilation compilation) {
         return CompilationDto.builder()
                 .id(compilation.getId())
                 .events(compilation.getEvents().stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList()))

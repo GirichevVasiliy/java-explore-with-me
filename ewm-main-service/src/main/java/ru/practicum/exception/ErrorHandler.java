@@ -52,6 +52,7 @@ public class ErrorHandler {
                 .build();
         return apiError;
     }
+
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.CONFLICT)
     public ApiError handleConflictRequestException(final ConflictRequestException e) {
@@ -64,6 +65,7 @@ public class ErrorHandler {
                 .build();
         return apiError;
     }
+
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.CONFLICT)
     public ApiError handleConflictNameCategoryException(final ConflictNameCategoryException e) {
@@ -89,6 +91,7 @@ public class ErrorHandler {
                 .build();
         return apiError;
     }
+
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.CONFLICT)
     public ApiError handleForbiddenEventException(final ForbiddenEventException e) {
@@ -101,6 +104,7 @@ public class ErrorHandler {
                 .build();
         return apiError;
     }
+
     @ExceptionHandler
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public ApiError handleValidationDateException(final ValidationDateException e) {

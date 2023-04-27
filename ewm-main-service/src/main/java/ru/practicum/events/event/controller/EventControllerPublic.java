@@ -10,7 +10,6 @@ import ru.practicum.events.event.service.EventServicePublic;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController

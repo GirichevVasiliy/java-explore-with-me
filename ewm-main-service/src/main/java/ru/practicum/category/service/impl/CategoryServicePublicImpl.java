@@ -3,7 +3,6 @@ package ru.practicum.category.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.category.dto.CategoryDto;
@@ -26,14 +25,17 @@ public class CategoryServicePublicImpl implements CategoryServicePublic {
     public CategoryServicePublicImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Override
     public List<CategoryDto> getAllCategory(int from, int size) {
+        log.info("Запрос на поиск всех категорий");
         return categoryRepository.findAll(PageRequest.of(from, size)).stream()
                 .map(CategoryMapper::categoryToCategoryDto).collect(Collectors.toList());
     }
 
     @Override
     public CategoryDto getCategoryById(Long catId) {
+        log.info("Запрос на поиск категории по id= " + catId);
         Category category = categoryRepository.findById(catId).orElseThrow(()
                 -> new ResourceNotFoundException("Категория c id = " + catId + " не найдена"));
         return CategoryMapper.categoryToCategoryDto(category);

@@ -87,14 +87,15 @@ public class EventMapper {
                 .views(views)
                 .build();
     }
-    public static EventState eventStateDtoToEventState(EventStateDto state){
-        if (state.name().equals(EventStateDto.PENDING.name())){
+
+    public static EventState eventStateDtoToEventState(EventStateDto state) {
+        if (state.name().equals(EventStateDto.PENDING.name())) {
             return EventState.PENDING;
         }
-        if (state.name().equals(EventStateDto.CANCELED.name())){
+        if (state.name().equals(EventStateDto.CANCELED.name())) {
             return EventState.CANCELED;
         }
-        if (state.name().equals(EventStateDto.PUBLISHED.name())){
+        if (state.name().equals(EventStateDto.PUBLISHED.name())) {
             return EventState.PUBLISHED;
         }
         throw new BadRequestException("Нет такого статуса" + state.name());

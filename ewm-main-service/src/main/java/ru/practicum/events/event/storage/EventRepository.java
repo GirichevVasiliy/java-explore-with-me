@@ -43,11 +43,12 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "OFFSET :from " +
             "LIMIT :size", nativeQuery = true)
     List<Event> findAllByAdminAndState(@Param("users") List<Long> users,
-                                          @Param("categories") List<Long> categories,
-                                          @Param("rangeStart") LocalDateTime rangeStart,
-                                          @Param("rangeEnd") LocalDateTime rangeEnd,
-                                          @Param("from") Integer from,
-                                          @Param("size") Integer size);
+                                       @Param("categories") List<Long> categories,
+                                       @Param("rangeStart") LocalDateTime rangeStart,
+                                       @Param("rangeEnd") LocalDateTime rangeEnd,
+                                       @Param("from") Integer from,
+                                       @Param("size") Integer size);
+
     @Query(value = "SELECT * " +
             "FROM events  " +
             "WHERE (lower(annotation) LIKE '%'||lower(:text)||'%' OR lower(description) LIKE '%'||lower(:text)||'%') " +
@@ -69,6 +70,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                 @Param("sort") String sort,
                                 @Param("from") Integer from,
                                 @Param("size") Integer size);
+
     Optional<Event> findEventByIdAndStateIs(Long id, EventState state);
 
 }

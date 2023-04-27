@@ -2,7 +2,6 @@ package ru.practicum.events.compilation.dto;
 
 import lombok.Builder;
 import lombok.Value;
-import ru.practicum.events.event.dto.EventShortDto;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

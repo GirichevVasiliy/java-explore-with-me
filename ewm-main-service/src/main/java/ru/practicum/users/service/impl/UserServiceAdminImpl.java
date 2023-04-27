@@ -34,6 +34,7 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
 
     @Override
     public List<UserDto> getAllUsersByIds(List<Long> ids, int from, int size) {
+        log.info("Получен запрос на получение всех пользователей по id");
         Pageable pageable = PageRequest.of(from, size);
         List<User> users = userRepository.findAllUsersByIds(ids, pageable);
         return users.stream().map(UserMapper::userToDto).collect(Collectors.toList());
@@ -41,6 +42,7 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
 
     @Override
     public UserDto addUser(NewUserRequest newUserRequest) {
+        log.info("Получен запрос на добавление пользователя " + newUserRequest);
         User user = UserMapper.newUserRequestToUser(newUserRequest);
         try {
             return UserMapper.userToDto(userRepository.save(user));
@@ -54,6 +56,7 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
 
     @Override
     public void deleteUserById(Long userId) {
+        log.info("Получен запрос на удаления пользователя  по id" + userId);
         User user = findObjectInRepository.getUserById(userId);
         userRepository.delete(user);
     }

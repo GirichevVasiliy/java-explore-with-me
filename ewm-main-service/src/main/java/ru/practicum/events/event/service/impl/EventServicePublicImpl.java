@@ -30,6 +30,7 @@ public class EventServicePublicImpl implements EventServicePublic {
     @Override
     public List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, boolean paid, String rangeStart,
                                                   String rangeEnd, boolean onlyAvailable, String sort, int from, int size) {
+        log.info("Получен запрос на получение всех событий (публичный)");
 // статистика
         List<Event> events = eventRepository.findAllByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         return events.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
@@ -37,6 +38,7 @@ public class EventServicePublicImpl implements EventServicePublic {
 
     @Override
     public EventFullDto getPublicEventById(Long id) {
+        log.info("Получен запрос на получение события по id= " + id + " (публичный)");
         // статистика
         Event event =  eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
                 -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));

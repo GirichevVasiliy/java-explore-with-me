@@ -58,6 +58,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size) {
+        log.info("Получен запрос на получение всех событий для пользователя с id= " + userId + " (приватный)");
         findObjectInRepository.getUserById(userId);
         Pageable pageable = PageRequest.of(from, size);
         return eventRepository.findAllByInitiatorId(userId, pageable).stream()
@@ -66,6 +67,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto) {
+        log.info("Получен запрос на добавление события пользователем с id= " + userId + " (приватный)");
         checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
         User user = findObjectInRepository.getUserById(userId);
         Category category = findObjectInRepository.getCategoryById(newEventDto.getCategory());
@@ -77,6 +79,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId) {
+        log.info("Получен запрос на получение события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
         User user = findObjectInRepository.getUserById(userId);
         Event event = findObjectInRepository.getEventById(eventId);
         checkOwnerEvent(event, user);
@@ -85,6 +88,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
+        log.info("Получен запрос на обновление события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
         if (updateEvent.getEventDate() != null) {
             checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
@@ -128,6 +132,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public List<ParticipationRequestDto> getAllPrivateEventsByRequests(Long userId, Long eventId) {
+        log.info("Получен запрос на получение всех запросов для события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
         try {
             Event event = findObjectInRepository.getEventById(eventId);
             User user = findObjectInRepository.getUserById(userId);
@@ -142,6 +147,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request) {
+        log.info("Получен запрос на обновление статуса запроса для события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
         checkOwnerEvent(event, user);

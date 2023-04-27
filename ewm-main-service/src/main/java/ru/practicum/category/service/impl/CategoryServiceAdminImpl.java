@@ -29,12 +29,14 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
 
     @Override
     public CategoryDto addCategory(NewCategoryDto newCategoryDto) {
+        log.info("Запрос на добавление категории " + newCategoryDto.getName());
         Category category = CategoryMapper.newCategoryDtoToCategory(newCategoryDto);
         return getCategoryDto(category, newCategoryDto.getName());
     }
 
     @Override
     public void deleteCategoryById(Long catId) {
+        log.info("Запрос на удаление категории c id= " + catId);
         Category category = findObjectInRepository.getCategoryById(catId);
         if (findObjectInRepository.isRelatedEvent(category)) {
             throw new ConflictDeleteException("Существуют события, связанные с категорией " + category.getName());
@@ -44,6 +46,7 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
 
     @Override
     public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) {
+        log.info("Запрос на обновлении категории c id= " + catId);
         Category category = findObjectInRepository.getCategoryById(catId);
         category.setId(catId);
         if (categoryDto.getName() != null) {
@@ -56,9 +59,11 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
         try {
             return CategoryMapper.categoryToCategoryDto(categoryRepository.save(category));
         } catch (DataIntegrityViolationException e) {
+            log.warn("Нарушена уникальность имени категории " + name + " уже используется");
             throw new ConflictNameCategoryException("Имя категории должно быть уникальным, "
                     + name + " уже используется");
         } catch (Exception e) {
+            log.warn("Запрос на добавлении категории " + name + " составлен не корректно");
             throw new BadRequestException("Запрос на добавлении категории " + name + " составлен не корректно ");
         }
     }

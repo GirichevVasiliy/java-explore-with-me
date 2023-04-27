@@ -1,11 +1,9 @@
 package ru.practicum.category.storage;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.practicum.category.model.Category;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

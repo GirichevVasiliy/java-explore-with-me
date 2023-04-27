@@ -6,9 +6,6 @@ import lombok.Value;
 import ru.practicum.category.dto.CategoryDto;
 import ru.practicum.users.dto.UserShortDto;
 
-import javax.validation.constraints.Future;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 
 @Value

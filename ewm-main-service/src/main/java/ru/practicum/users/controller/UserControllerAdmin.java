@@ -7,7 +7,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.users.dto.NewUserRequest;
 import ru.practicum.users.dto.UserDto;
-import ru.practicum.users.dto.UserShortDto;
 import ru.practicum.users.service.UserServiceAdmin;
 
 import javax.validation.constraints.Min;

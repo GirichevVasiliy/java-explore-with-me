@@ -36,6 +36,7 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     @Override
     public CompilationDto addCompilation(NewCompilationDto newCompilationDto) {
+        log.info("Получен запрос на добавление подборки событий" + newCompilationDto);
         Set<Event> events = new HashSet<>();
         if (!newCompilationDto.getEvents().isEmpty()) {
             events = addEvents(newCompilationDto.getEvents());
@@ -46,12 +47,14 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     @Override
     public void deleteCompilationById(Long compId) {
+        log.info("Получен запрос на удаление подборки событий по id= " + compId);
         findObjectInRepository.getCompilationById(compId);
         compilationStorage.deleteById(compId);
     }
 
     @Override
     public CompilationDto updateCompilationById(Long compId, UpdateCompilationRequest updateCompilationRequest) {
+        log.info("Получен запрос на обновление подборки событий по id= " + compId);
         Compilation newCompilation = findObjectInRepository.getCompilationById(compId);
         Set<Event> events;
         if (updateCompilationRequest.getEvents() != null) {
