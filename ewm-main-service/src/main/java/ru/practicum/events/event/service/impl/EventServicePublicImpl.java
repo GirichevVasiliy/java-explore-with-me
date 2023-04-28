@@ -62,8 +62,7 @@ public class EventServicePublicImpl implements EventServicePublic {
         client.hitRequest(hitDto);
         Event event =  eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
                 -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
-        Long hits = client.statsRequest(id).orElse(0L);
-        event.setViews(hits);
+        event.setViews(event.getViews() + 1L);
        return EventMapper.eventToEventFullDto(event);
     }
 }
