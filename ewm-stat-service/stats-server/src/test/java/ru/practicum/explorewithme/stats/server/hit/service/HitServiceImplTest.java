@@ -8,9 +8,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.explorewithme.stats.dto.HitDto;
+import ru.practicum.explorewithme.stats.server.hit.model.Hit;
 import ru.practicum.explorewithme.stats.server.hit.storage.HitRepository;
 import ru.practicum.explorewithme.stats.server.util.DateFormatter;
-import ru.practicum.explorewithme.stats.server.hit.model.Hit;
 
 import java.util.List;
 

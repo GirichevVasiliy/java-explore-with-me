@@ -3,20 +3,18 @@ package ru.practicum.explorewithme.stats.server.hit.storage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.explorewithme.stats.server.util.DateFormatter;
+import org.springframework.test.annotation.DirtiesContext;
 import ru.practicum.explorewithme.stats.server.hit.model.Hit;
+import ru.practicum.explorewithme.stats.server.util.DateFormatter;
 
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
-@Transactional
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class HitRepositoryTest {
     @Autowired
     private TestEntityManager entityManager;
