@@ -7,6 +7,7 @@ import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.service.EventServicePublic;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
@@ -33,13 +34,14 @@ public class EventControllerPublic {
                                            @RequestParam(required = false) String rangeEnd,
                                            @RequestParam(defaultValue = "false") Boolean onlyAvailable,
                                            @RequestParam(defaultValue = "EVENT_DATE") String sort,
+                                           HttpServletRequest request,
                                            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
                                            @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size) {
-        return eventServicePublic.getAllPublicEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        return eventServicePublic.getAllPublicEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
     }
 
     @GetMapping("/{id}")
-    EventFullDto getPublicEventById(@PathVariable Long id) {
-        return eventServicePublic.getPublicEventById(id);
+    EventFullDto getPublicEventById(@PathVariable Long id,  HttpServletRequest request) {
+        return eventServicePublic.getPublicEventById(id, request);
     }
 }

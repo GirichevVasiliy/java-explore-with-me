@@ -16,16 +16,34 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Slf4j
 public abstract class BaseClient {
-    protected static final String BASE_URL = "http://localhost:9090";
-    WebClient client = WebClient.create(BASE_URL);
+    WebClient client;
 
-    protected List<StatsDto> get(String path, MultiValueMap<String, String> parameters) {
-        Flux<StatsDto> flux = client.get().uri(uriBuilder -> uriBuilder.path(path).queryParams(parameters).build()).retrieve().bodyToFlux(StatsDto.class);
-        return flux.collect(Collectors.toList()).share().block();
+    public BaseClient(String uri) {
+        client = WebClient.create(uri);
+    }
+
+    protected List<StatsDto> get(String path, MultiValueMap<String, String> params) {
+        Flux<StatsDto> flux = client
+                .get()
+                .uri(uriBuilder -> uriBuilder.path(path)
+                        .queryParams(params)
+                        .build())
+                .retrieve()
+                .bodyToFlux(StatsDto.class);
+        return flux.collect(Collectors.toList())
+                .share().block();
     }
 
     protected <T> void post(String path, T body) {
-        final Mono<ClientResponse> postResponse = client.post().uri(path).body(Mono.just(body), HitDto.class).accept(APPLICATION_JSON).exchange();
-        postResponse.map(ClientResponse::statusCode).subscribe(httpStatus -> log.info(httpStatus.toString()));
+        final Mono<ClientResponse> postResponse =
+                client
+                        .post()
+                        .uri(path)
+                        .body(Mono.just(body), HitDto.class)
+                        .accept(APPLICATION_JSON)
+                        .retrieve()
+                        .bodyToMono(ClientResponse.class);
+        postResponse
+                .map(ClientResponse::statusCode).subscribe(httpStatus -> log.info(httpStatus.toString()));
     }
 }
