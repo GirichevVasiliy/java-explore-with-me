@@ -2,6 +2,7 @@ package ru.practicum.events.event.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.events.event.dto.EventFullDto;
@@ -28,6 +29,8 @@ public class EventServicePublicImpl implements EventServicePublic {
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private final EventRepository eventRepository;
     private final StatsClient client;
+    @Value("${app.name}")
+    private String appName;
 
     @Autowired
     public EventServicePublicImpl(EventRepository eventRepository, StatsClient client) {
@@ -40,8 +43,8 @@ public class EventServicePublicImpl implements EventServicePublic {
                                                   String rangeEnd, boolean onlyAvailable, String sort, int from, int size, HttpServletRequest request) {
         log.info("Получен запрос на получение всех событий (публичный)");
         HitDto hitDto = HitDto.builder()
-                .app("ewm-main-service")
-                .uri("/events")
+                .app(appName)
+                .uri(request.getRequestURI())
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
                 .build();
@@ -54,15 +57,15 @@ public class EventServicePublicImpl implements EventServicePublic {
     public EventFullDto getPublicEventById(Long id, HttpServletRequest request) {
         log.info("Получен запрос на получение события по id= " + id + " (публичный)");
         HitDto hitDto = HitDto.builder()
-                .app("ewm-main-service")
+                .app(appName)
                 .uri(request.getRequestURI())
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
                 .build();
         client.hitRequest(hitDto);
-        Event event =  eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
+        Event event = eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
                 -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
         event.setViews(event.getViews() + 1L);
-       return EventMapper.eventToEventFullDto(event);
+        return EventMapper.eventToEventFullDto(event);
     }
 }

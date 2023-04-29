@@ -24,8 +24,6 @@ public class EventControllerPublic {
         this.eventServicePublic = eventServicePublic;
     }
 
-    /*
-    EventShortDto getPublicEventById(Long id);*/
     @GetMapping()
     List<EventShortDto> getAllPublicEvents(@RequestParam(required = false) String text,
                                            @RequestParam(required = false) List<Long> categories,
@@ -34,14 +32,14 @@ public class EventControllerPublic {
                                            @RequestParam(required = false) String rangeEnd,
                                            @RequestParam(defaultValue = "false") Boolean onlyAvailable,
                                            @RequestParam(defaultValue = "EVENT_DATE") String sort,
-                                           HttpServletRequest request,
                                            @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                           @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size) {
+                                           @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size,
+                                           HttpServletRequest request) {
         return eventServicePublic.getAllPublicEvents(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
     }
 
     @GetMapping("/{id}")
-    EventFullDto getPublicEventById(@PathVariable Long id,  HttpServletRequest request) {
+    EventFullDto getPublicEventById(@PathVariable Long id, HttpServletRequest request) {
         return eventServicePublic.getPublicEventById(id, request);
     }
 }

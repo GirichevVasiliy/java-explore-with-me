@@ -1,8 +1,5 @@
 package ru.practicum.explorewithme.stats.client;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import ru.practicum.explorewithme.stats.dto.HitDto;
@@ -13,13 +10,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class StatsClient extends BaseClient {
     private static final Integer START_DATE_OFFSET = 6;
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    @Autowired
-    public StatsClient(@Value("${server.url}") String serverUrl) {
+    public StatsClient(String serverUrl) {
         super(serverUrl);
     }
 
