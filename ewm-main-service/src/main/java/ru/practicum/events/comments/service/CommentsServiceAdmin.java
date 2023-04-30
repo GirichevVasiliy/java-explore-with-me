@@ -9,6 +9,6 @@ public interface CommentsServiceAdmin {
     CommentDto createComment(Long eventId, Long userId, InputCommentDto inputCommentDto);
     CommentDto updateComment(Long eventId, Long commentId, InputCommentDto inputCommentDto);
     CommentDto getCommentById(Long eventId, Long commentId);
-    List<CommentDto> getAllComments(Long eventId);
-    void deleteComment(Long eventId);
+    List<CommentDto> getAllCommentsByEventId(Long eventId);
+    void deleteComment(Long eventId, Long commentId);
 }
