@@ -21,7 +21,7 @@ public class StatsClient {
 
     public void hitRequest(HitDto hitDto) {
         client.post()
-                .uri(URL + "/hit")
+                .uri("/hit")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .bodyValue(hitDto)
                 .retrieve()

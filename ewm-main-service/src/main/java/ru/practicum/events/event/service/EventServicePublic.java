@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface EventServicePublic {
-    List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, Boolean paid, String rangeStart, String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request);
+    List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, Boolean paid, String rangeStart, String rangeEnd, boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request);
 
     EventFullDto getPublicEventById(Long id, HttpServletRequest request);
 }

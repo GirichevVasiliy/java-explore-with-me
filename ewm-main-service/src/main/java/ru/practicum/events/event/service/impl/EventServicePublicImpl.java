@@ -40,9 +40,14 @@ public class EventServicePublicImpl implements EventServicePublic {
 
     @Override
     public List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, Boolean paid, String rangeStart,
-                                                  String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request) {
+                                                  String rangeEnd, boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request) {
         log.info("Получен запрос на получение всех событий (публичный)");
-        HitDto hitDto = createHitDtoToStats(request);
+        HitDto hitDto = HitDto.builder()
+                .app(appName)
+                .uri("/events")
+                .ip(request.getRemoteAddr())
+                .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
+                .build();
         client.hitRequest(hitDto);
         List<Event> events = eventRepository.findAllByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         return events.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
