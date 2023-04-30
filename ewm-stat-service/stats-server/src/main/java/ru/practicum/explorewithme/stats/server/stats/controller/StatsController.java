@@ -6,14 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.practicum.explorewithme.stats.dto.HitDto;
 import ru.practicum.explorewithme.stats.dto.StatsDto;
-import ru.practicum.explorewithme.stats.server.stats.service.StatsService;
 import ru.practicum.explorewithme.stats.server.hit.service.HitService;
+import ru.practicum.explorewithme.stats.server.stats.service.StatsService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -36,13 +33,6 @@ public class StatsController {
                                    @RequestParam(defaultValue = "false") Boolean unique,
                                    HttpServletRequest request) {
         List<StatsDto> list = service.getStats(start, end, uris, unique);
-        HitDto hitDto = HitDto.builder()
-                .uri(request.getRequestURI())
-                .app(request.getServerName())
-                .ip(request.getRemoteAddr())
-                .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                .build();
-        hitService.addHit(hitDto);
         return list;
     }
 }

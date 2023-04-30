@@ -35,15 +35,13 @@ public abstract class BaseClient {
     }
 
     protected <T> void post(String path, T body) {
-        final Mono<ClientResponse> postResponse =
-                client
+        final Mono<ClientResponse> postResponse = client
                         .post()
                         .uri(path)
                         .body(Mono.just(body), HitDto.class)
                         .accept(APPLICATION_JSON)
                         .retrieve()
                         .bodyToMono(ClientResponse.class);
-        postResponse
-                .map(ClientResponse::statusCode).subscribe(httpStatus -> log.info(httpStatus.toString()));
+        postResponse.map(ClientResponse::statusCode).subscribe(httpStatus -> log.info(httpStatus.toString()));
     }
 }

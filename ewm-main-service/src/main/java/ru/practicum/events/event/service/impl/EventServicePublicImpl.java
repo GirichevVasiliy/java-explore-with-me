@@ -39,15 +39,10 @@ public class EventServicePublicImpl implements EventServicePublic {
     }
 
     @Override
-    public List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, boolean paid, String rangeStart,
-                                                  String rangeEnd, boolean onlyAvailable, String sort, int from, int size, HttpServletRequest request) {
+    public List<EventShortDto> getAllPublicEvents(String text, List<Long> categories, Boolean paid, String rangeStart,
+                                                  String rangeEnd, Boolean onlyAvailable, String sort, Integer from, Integer size, HttpServletRequest request) {
         log.info("Получен запрос на получение всех событий (публичный)");
-        HitDto hitDto = HitDto.builder()
-                .app(appName)
-                .uri(request.getRequestURI())
-                .ip(request.getRemoteAddr())
-                .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
-                .build();
+        HitDto hitDto = createHitDtoToStats(request);
         client.hitRequest(hitDto);
         List<Event> events = eventRepository.findAllByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
         return events.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
@@ -56,16 +51,21 @@ public class EventServicePublicImpl implements EventServicePublic {
     @Override
     public EventFullDto getPublicEventById(Long id, HttpServletRequest request) {
         log.info("Получен запрос на получение события по id= " + id + " (публичный)");
+        Event event = eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
+                -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
+        event.setViews(event.getViews() + 1L);
+        HitDto hitDto = createHitDtoToStats(request);
+        client.hitRequest(hitDto);
+        return EventMapper.eventToEventFullDto(event);
+    }
+
+    private HitDto createHitDtoToStats(HttpServletRequest request) {
         HitDto hitDto = HitDto.builder()
                 .app(appName)
                 .uri(request.getRequestURI())
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
                 .build();
-        client.hitRequest(hitDto);
-        Event event = eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
-                -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
-        event.setViews(event.getViews() + 1L);
-        return EventMapper.eventToEventFullDto(event);
+        return hitDto;
     }
 }
