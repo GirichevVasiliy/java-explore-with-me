@@ -1,7 +1,5 @@
 package ru.practicum.util.util;
 
-
-
 import ru.practicum.exception.ValidationDateException;
 
 import java.time.LocalDateTime;
