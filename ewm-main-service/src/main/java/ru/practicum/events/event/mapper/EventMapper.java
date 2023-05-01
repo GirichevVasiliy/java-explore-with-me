@@ -80,7 +80,7 @@ public class EventMapper {
                 .location(LocationMapper.locationDtoToLocation(newEventDto.getLocation()))
                 .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
-                .publishedOn(null) // ????
+                .publishedOn(null)
                 .requestModeration(newEventDto.getRequestModeration())
                 .state(EventState.PENDING)
                 .title(newEventDto.getTitle())

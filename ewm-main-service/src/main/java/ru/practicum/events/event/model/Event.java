@@ -52,6 +52,6 @@ public class Event {
     EventState state; // example: PUBLISHED, Список состояний жизненного цикла события
     @Column(name = "title", unique = true)
     String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
-    @Column(name = "views")
+    @Transient
     Long views; // Количество просмотрев события
 }

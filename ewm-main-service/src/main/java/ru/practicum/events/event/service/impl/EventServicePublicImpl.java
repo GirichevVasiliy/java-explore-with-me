@@ -15,11 +15,17 @@ import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.explorewithme.stats.client.StatsClient;
 import ru.practicum.explorewithme.stats.dto.HitDto;
+import ru.practicum.explorewithme.stats.dto.StatsDto;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,17 +56,32 @@ public class EventServicePublicImpl implements EventServicePublic {
                 .build();
         client.hitRequest(hitDto);
         List<Event> events = eventRepository.findAllByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        if (events.isEmpty()) {
+            return Collections.emptyList();
+        }
+        List<String> uris = events.stream().map(e -> request.getRequestURI() + "/" + e.getId()).collect(Collectors.toList());
+        LocalDateTime start = LocalDateTime.of(LocalDate.of(1900, 1, 1), LocalTime.of(1, 1, 1));
+        LocalDateTime end = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        List<StatsDto> stats = client.getStats(start, end, uris, false);
+        fillEventViews(events, stats, request.getRequestURI());
         return events.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
     }
 
     @Override
     public EventFullDto getPublicEventById(Long id, HttpServletRequest request) {
         log.info("Получен запрос на получение события по id= " + id + " (публичный)");
-        Event event = eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
-                -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
-        event.setViews(event.getViews() + 1L);
         HitDto hitDto = createHitDtoToStats(request);
         client.hitRequest(hitDto);
+
+        Event event = eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
+                -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
+        LocalDateTime start = LocalDateTime.of(LocalDate.of(1900, 1, 1), LocalTime.of(0, 0, 1));
+
+        List<StatsDto> stats = client.getStats(start, LocalDateTime.now(), List.of(request.getRequestURI()), false);
+
+        Long hits = stats.stream().map(StatsDto::getHits).reduce(0L, Long::sum);
+
+        event.setViews(hits);
         return EventMapper.eventToEventFullDto(event);
     }
 
@@ -72,5 +93,18 @@ public class EventServicePublicImpl implements EventServicePublic {
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
                 .build();
         return hitDto;
+    }
+
+    private void fillEventViews(List<Event> events, List<StatsDto> stats, String baseUri) {
+        if (!stats.isEmpty()) {
+            Map<String, Long> statsByUri = stats.stream()
+                    .collect(Collectors.groupingBy(StatsDto::getUri, Collectors.summingLong(v -> v.getHits().longValue())));
+            events.forEach(e -> {
+                Long views = statsByUri.get(baseUri + "/" + e.getId());
+                if (views != null) {
+                    e.setViews(views);
+                }
+            });
+        }
     }
 }

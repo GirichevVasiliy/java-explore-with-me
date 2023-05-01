@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS users(
                                 request_moderation BOOLEAN NOT NULL,
                                 state VARCHAR NOT NULL,
                                 title VARCHAR(255) NOT NULL,
-                                views BIGINT NOT NULL,
                                 CONSTRAINT uq_events UNIQUE (title),
                                 CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE CASCADE,
                                 CONSTRAINT fk_initiator_id FOREIGN KEY (initiator_id) REFERENCES users (id) ON DELETE CASCADE
@@ -57,8 +56,8 @@ CREATE TABLE IF NOT EXISTS users(
                                 CONSTRAINT fk_compilation_id FOREIGN KEY (compilation_id) REFERENCES compilations (id) ON DELETE CASCADE,
                                 CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE
     );
-CREATE INDEX categories_name_field ON categories (name);
-CREATE INDEX compilations_name_field ON compilations (pinned);
-CREATE INDEX events_state_field ON events (state);
-CREATE INDEX events_event_date_field ON events (event_date);
-CREATE INDEX events_paid_field ON events (paid);
+--CREATE INDEX categories_name_field ON categories (name);
+--CREATE INDEX compilations_name_field ON compilations (pinned);
+--CREATE INDEX events_state_field ON events (state);
+--CREATE INDEX events_event_date_field ON events (event_date);
+--CREATE INDEX events_paid_field ON events (paid);

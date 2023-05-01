@@ -46,8 +46,10 @@ public class FindObjectInRepository {
     }
 
     public Event getEventById(Long id) {
-        return eventRepository.findById(id).orElseThrow(()
+        Event event = eventRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
+
+        return event;
     }
 
     public Request getRequestById(Long id) {
