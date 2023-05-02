@@ -62,7 +62,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
 
     @Override
     public EventFullDto updateEventById(Long eventId, UpdateEventAdminRequest updateEvent) {
-        log.info("Получен запрос на обновление события с id= " + eventId + " (администратором)");
+        log.info("Получен запрос на обновление события с id= {} (администратором)", eventId);
         Event event = findObjectInRepository.getEventById(eventId);
         eventAvailability(event);
         LocalDateTime publishedOn;

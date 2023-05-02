@@ -18,6 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/admin/users")
 @Slf4j
+@Validated
 public class UserControllerAdmin {
     private final UserServiceAdmin userServiceAdmin;
 
@@ -29,7 +30,7 @@ public class UserControllerAdmin {
     @GetMapping
     List<UserDto> getAllUsersByIds(@RequestParam List<Long> ids,
                                    @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                   @Positive @Min(1) @RequestParam(defaultValue = "10") Integer size) {
+                                   @Positive @RequestParam(defaultValue = "10") Integer size) {
         return userServiceAdmin.getAllUsersByIds(ids, from, size);
     }
 
@@ -41,7 +42,7 @@ public class UserControllerAdmin {
 
     @DeleteMapping("/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteUserById(@NotNull @PathVariable Long userId) {
+    void deleteUserById(@PathVariable Long userId) {
         userServiceAdmin.deleteUserById(userId);
     }
 }

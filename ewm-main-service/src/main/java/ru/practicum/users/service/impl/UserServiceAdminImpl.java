@@ -16,6 +16,7 @@ import ru.practicum.users.service.UserServiceAdmin;
 import ru.practicum.users.storage.UserRepository;
 import ru.practicum.util.FindObjectInRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,9 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
     @Override
     public List<UserDto> getAllUsersByIds(List<Long> ids, int from, int size) {
         log.info("Получен запрос на получение всех пользователей по id");
+        if (ids == null){
+            ids = new ArrayList<>();
+        }
         Pageable pageable = PageRequest.of(from, size);
         List<User> users = userRepository.findAllUsersByIds(ids, pageable);
         return users.stream().map(UserMapper::userToDto).collect(Collectors.toList());
@@ -42,7 +46,7 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
 
     @Override
     public UserDto addUser(NewUserRequest newUserRequest) {
-        log.info("Получен запрос на добавление пользователя " + newUserRequest);
+        log.info("Получен запрос на добавление пользователя {}", newUserRequest);
         User user = UserMapper.newUserRequestToUser(newUserRequest);
         try {
             return UserMapper.userToDto(userRepository.save(user));
@@ -56,7 +60,7 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
 
     @Override
     public void deleteUserById(Long userId) {
-        log.info("Получен запрос на удаления пользователя  по id" + userId);
+        log.info("Получен запрос на удаления пользователя  по id= {}", userId);
         User user = findObjectInRepository.getUserById(userId);
         userRepository.delete(user);
     }

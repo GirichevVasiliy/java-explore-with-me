@@ -31,7 +31,7 @@ public class CompilationServicePublicImpl implements CompilationServicePublic {
 
     @Override
     public List<CompilationDto> getAllCompilations(Boolean pinned, int from, int size) {
-        log.info("Получен запрос поиск всех подборок событий, по условию закрепления" + pinned);
+        log.info("Получен запрос поиск всех подборок событий, по условию закрепления {}", pinned);
         Pageable pageable = PageRequest.of(from, size);
         return compilationStorage.findAllByPinnedIs(pinned, pageable).stream()
                 .map(CompilationMapper::compilationToCompilationDto).collect(Collectors.toList());
@@ -39,7 +39,7 @@ public class CompilationServicePublicImpl implements CompilationServicePublic {
 
     @Override
     public CompilationDto getCompilationById(Long compId) {
-        log.info("Получен запрос на поиск подборки событий по id= " + compId);
+        log.info("Получен запрос на поиск подборки событий по id= {}", compId);
         return CompilationMapper.compilationToCompilationDto(findObjectInRepository.getCompilationById(compId));
     }
 }

@@ -35,7 +35,7 @@ public class CategoryServicePublicImpl implements CategoryServicePublic {
 
     @Override
     public CategoryDto getCategoryById(Long catId) {
-        log.info("Запрос на поиск категории по id= " + catId);
+        log.info("Запрос на поиск категории по id= {}", catId);
         Category category = categoryRepository.findById(catId).orElseThrow(()
                 -> new ResourceNotFoundException("Категория c id = " + catId + " не найдена"));
         return CategoryMapper.categoryToCategoryDto(category);

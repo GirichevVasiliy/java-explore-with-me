@@ -36,9 +36,9 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     @Override
     public CompilationDto addCompilation(NewCompilationDto newCompilationDto) {
-        log.info("Получен запрос на добавление подборки событий" + newCompilationDto);
+        log.info("Получен запрос на добавление подборки событий {}", newCompilationDto);
         Set<Event> events = new HashSet<>();
-        if (!newCompilationDto.getEvents().isEmpty()) {
+        if (newCompilationDto.getEvents() != null && !newCompilationDto.getEvents().isEmpty()) {
             events = addEvents(newCompilationDto.getEvents());
         }
         Compilation compilation = CompilationMapper.newCompilationDtoToCompilationAndEvents(newCompilationDto, events);
@@ -47,14 +47,14 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     @Override
     public void deleteCompilationById(Long compId) {
-        log.info("Получен запрос на удаление подборки событий по id= " + compId);
+        log.info("Получен запрос на удаление подборки событий по id= {}", compId);
         findObjectInRepository.getCompilationById(compId);
         compilationStorage.deleteById(compId);
     }
 
     @Override
     public CompilationDto updateCompilationById(Long compId, UpdateCompilationRequest updateCompilationRequest) {
-        log.info("Получен запрос на обновление подборки событий по id= " + compId);
+        log.info("Получен запрос на обновление подборки событий по id= {}", compId);
         Compilation newCompilation = findObjectInRepository.getCompilationById(compId);
         Set<Event> events;
         if (updateCompilationRequest.getEvents() != null) {
@@ -64,7 +64,7 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
         if (updateCompilationRequest.getPinned() != null) {
             newCompilation.setPinned(updateCompilationRequest.getPinned());
         }
-        if (updateCompilationRequest.getTitle() != null) {
+        if (updateCompilationRequest.getTitle() != null && updateCompilationRequest.getTitle().isBlank()) {
             newCompilation.setTitle(updateCompilationRequest.getTitle());
         }
         return CompilationMapper.compilationToCompilationDto(compilationStorage.save(newCompilation));

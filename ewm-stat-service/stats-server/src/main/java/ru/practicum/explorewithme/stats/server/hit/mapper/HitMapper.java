@@ -1,9 +1,10 @@
 package ru.practicum.explorewithme.stats.server.hit.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.explorewithme.stats.dto.HitDto;
 import ru.practicum.explorewithme.stats.server.util.DateFormatter;
 import ru.practicum.explorewithme.stats.server.hit.model.Hit;
-
+@UtilityClass
 public class HitMapper {
     public static Hit toHit(HitDto hitDto) {
         return Hit.builder()

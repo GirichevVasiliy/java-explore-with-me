@@ -3,6 +3,7 @@ package ru.practicum.events.request.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.request.dto.ParticipationRequestDto;
 import ru.practicum.events.request.service.RequestServicePrivate;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/users/{userId}/requests")
 @Slf4j
+@Validated
 public class RequestControllerPrivate {
     private final RequestServicePrivate requestServicePrivate;
 
@@ -25,7 +27,7 @@ public class RequestControllerPrivate {
      * Информация о заявках текущего пользователя на участие в чужих событиях
      */
     @GetMapping
-    List<ParticipationRequestDto> getAllRequestsUserById(@NotNull @PathVariable Long userId) {
+    List<ParticipationRequestDto> getAllRequestsUserById(@PathVariable Long userId) {
         return requestServicePrivate.getAllRequestsUserById(userId);
     }
 
@@ -34,7 +36,7 @@ public class RequestControllerPrivate {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    ParticipationRequestDto addRequestEventById(@NotNull @PathVariable Long userId,
+    ParticipationRequestDto addRequestEventById(@PathVariable Long userId,
                                                 @NotNull @RequestParam Long eventId) {
         return requestServicePrivate.addRequestEventById(userId, eventId);
     }
@@ -43,8 +45,8 @@ public class RequestControllerPrivate {
      * Отмена своего запроса на участие в событии
      */
     @PatchMapping("/{requestId}/cancel")
-    ParticipationRequestDto updateRequestById(@NotNull @PathVariable Long userId,
-                                              @NotNull @PathVariable Long requestId) {
+    ParticipationRequestDto updateRequestById(@PathVariable Long userId,
+                                              @PathVariable Long requestId) {
         return requestServicePrivate.updateRequestStatus(userId, requestId);
     }
 }

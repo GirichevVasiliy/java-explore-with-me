@@ -1,5 +1,6 @@
 package ru.practicum.events.event.mapper;
 
+import lombok.experimental.UtilityClass;
 import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.events.event.dto.EventFullDto;
@@ -15,21 +16,8 @@ import ru.practicum.util.util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-
+@UtilityClass
 public class EventMapper {
-    public static Event eventShortDtoToEvent(EventShortDto eventShortDto) {
-        return Event.builder()
-                .annotation(eventShortDto.getAnnotation())
-                .category(CategoryMapper.categoryDtoToCategory(eventShortDto.getCategory()))
-                .confirmedRequests(eventShortDto.getConfirmedRequests())
-                .eventDate(eventShortDto.getEventDate())
-                .id(eventShortDto.getId())
-                .initiator(UserMapper.userShortDtoToUser(eventShortDto.getInitiator()))
-                .paid(eventShortDto.isPaid())
-                .title(eventShortDto.getTitle())
-                .views(eventShortDto.getViews())
-                .build();
-    }
 
     public static EventShortDto eventToeventShortDto(Event event) {
         return EventShortDto.builder()

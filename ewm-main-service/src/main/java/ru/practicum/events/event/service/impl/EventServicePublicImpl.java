@@ -69,7 +69,7 @@ public class EventServicePublicImpl implements EventServicePublic {
 
     @Override
     public EventFullDto getPublicEventById(Long id, HttpServletRequest request) {
-        log.info("Получен запрос на получение события по id= " + id + " (публичный)");
+        log.info("Получен запрос на получение события по id= {} (публичный)", id);
         HitDto hitDto = createHitDtoToStats(request);
         client.hitRequest(hitDto);
 

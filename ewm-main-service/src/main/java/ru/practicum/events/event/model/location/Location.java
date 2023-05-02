@@ -13,6 +13,6 @@ import javax.persistence.Embeddable;
 @Builder
 @Embeddable
 public class Location {
-    float lat; // example: 55.754167 - Широта
-    float lon; // example: 37.62 - Долгота
+    private float lat; // example: 55.754167 - Широта
+    private float lon; // example: 37.62 - Долгота
 }

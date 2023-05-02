@@ -58,7 +58,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size) {
-        log.info("Получен запрос на получение всех событий для пользователя с id= " + userId + " (приватный)");
+        log.info("Получен запрос на получение всех событий для пользователя с id= {}  (приватный)", userId );
         findObjectInRepository.getUserById(userId);
         Pageable pageable = PageRequest.of(from, size);
         return eventRepository.findAllByInitiatorId(userId, pageable).stream()
@@ -67,7 +67,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto) {
-        log.info("Получен запрос на добавление события пользователем с id= " + userId + " (приватный)");
+        log.info("Получен запрос на добавление события пользователем с id= {} (приватный)", userId);
         checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
         User user = findObjectInRepository.getUserById(userId);
         Category category = findObjectInRepository.getCategoryById(newEventDto.getCategory());
@@ -79,7 +79,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId) {
-        log.info("Получен запрос на получение события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
+        log.info("Получен запрос на получение события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         User user = findObjectInRepository.getUserById(userId);
         Event event = findObjectInRepository.getEventById(eventId);
         checkOwnerEvent(event, user);
@@ -88,7 +88,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
-        log.info("Получен запрос на обновление события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
+        log.info("Получен запрос на обновление события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         if (updateEvent.getEventDate() != null) {
             checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
@@ -132,7 +132,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public List<ParticipationRequestDto> getAllPrivateEventsByRequests(Long userId, Long eventId) {
-        log.info("Получен запрос на получение всех запросов для события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
+        log.info("Получен запрос на получение всех запросов для события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         try {
             Event event = findObjectInRepository.getEventById(eventId);
             User user = findObjectInRepository.getUserById(userId);
@@ -147,12 +147,12 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request) {
-        log.info("Получен запрос на обновление статуса запроса для события с id= " + eventId + " для пользователя с id= " + userId + " (приватный)");
+        log.info("Получен запрос на обновление статуса запроса для события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
         checkOwnerEvent(event, user);
         if (event.getParticipantLimit() <= event.getConfirmedRequests()) {
-            log.warn("Достигнут лимит по заявкам на данное событие с id= " + eventId);
+            log.warn("Достигнут лимит по заявкам на данное событие с id= {}", eventId);
             throw new ForbiddenEventException("Достигнут лимит по заявкам на данное событие с id= " + eventId);
         }
         List<Request> requests = getAllRequestsContainsIds(request.getRequestIds());

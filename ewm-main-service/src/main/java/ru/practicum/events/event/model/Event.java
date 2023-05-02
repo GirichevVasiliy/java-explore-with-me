@@ -21,37 +21,37 @@ import java.time.LocalDateTime;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @Column(name = "annotation")
-    String annotation; // example: Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории Краткое описание
+    private String annotation; // example: Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории Краткое описание
     @ManyToOne
     @JoinColumn(name = "category_id")
-    Category category;
+    private Category category;
     @Column(name = "confirmed_requests")
-    Long confirmedRequests; // Количество одобренных заявок на участие в данном событии
+    private Long confirmedRequests; // Количество одобренных заявок на участие в данном событии
     @Column(name = "created_on")
-    LocalDateTime createdOn; // Дата и время создания события (в формате "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createdOn; // Дата и время создания события (в формате "yyyy-MM-dd HH:mm:ss")
     @Column(name = "description")
-    String description; //Полное описание события
+    private String description; //Полное описание события
     @Column(name = "event_date")
-    LocalDateTime eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
     @ManyToOne
     @JoinColumn(name = "initiator_id")
-    User initiator; //Пользователь (краткая информация)
+    private User initiator; //Пользователь (краткая информация)
     @Embedded
-    Location location; //Широта и долгота места проведения события
+    private Location location; //Широта и долгота места проведения события
     @Column(name = "paid")
-    boolean paid; // Нужно ли оплачивать участие
+    private boolean paid; // Нужно ли оплачивать участие
     @Column(name = "participant_limit")
-    int participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
+    private int participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
     @Column(name = "published_on")
-    LocalDateTime publishedOn; //Дата и время публикации события (в формате "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime publishedOn; //Дата и время публикации события (в формате "yyyy-MM-dd HH:mm:ss")
     @Column(name = "request_moderation")
-    boolean requestModeration; // Нужна ли пре-модерация заявок на участие
+    private boolean requestModeration; // Нужна ли пре-модерация заявок на участие
     @Enumerated(EnumType.STRING)
-    EventState state; // example: PUBLISHED, Список состояний жизненного цикла события
+    private EventState state; // example: PUBLISHED, Список состояний жизненного цикла события
     @Column(name = "title", unique = true)
-    String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
+    private String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
     @Transient
-    Long views; // Количество просмотрев события
+    private Long views; // Количество просмотрев события
 }
