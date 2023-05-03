@@ -132,7 +132,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
     }
 
     private void checkParticipantLimit(Event event) {
-        if (event.getParticipantLimit() == event.getConfirmedRequests()) {
+        if (event.getParticipantLimit() == event.getConfirmedRequests() && event.getParticipantLimit() != 0) {
             throw new ConflictRequestException("Событие с id= " + event.getId()
                     + " нельзя подавать запросы на участие, превышен лимит заявок");
         }

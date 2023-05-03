@@ -14,7 +14,7 @@ import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.model.User;
 import ru.practicum.users.storage.UserRepository;
 
-import java.util.Optional;
+import java.util.List;
 
 @Service
 public class FindObjectInRepository {
@@ -63,12 +63,7 @@ public class FindObjectInRepository {
     }
 
     public boolean isRelatedEvent(Category category) {
-        Optional<Event> findEventByCategory = eventRepository.findEventByCategoryIs(category);
-        return findEventByCategory.isPresent();
-    }
-
-    public boolean isSearchForUniqueCategory(String name) {
-        Optional<Category> findCategories = categoryRepository.findCategoriesByName(name);
-        return findCategories.isPresent();
+        List<Event> findEventByCategory = eventRepository.findEventByCategoryIs(category);
+        return !findEventByCategory.isEmpty();
     }
 }

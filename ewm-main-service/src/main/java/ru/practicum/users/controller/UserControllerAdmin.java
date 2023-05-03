@@ -9,8 +9,6 @@ import ru.practicum.users.dto.NewUserRequest;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.service.UserServiceAdmin;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;

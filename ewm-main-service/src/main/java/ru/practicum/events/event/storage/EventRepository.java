@@ -16,7 +16,7 @@ import java.util.Set;
 
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
-    Optional<Event> findEventByCategoryIs(Category category);
+    List<Event> findEventByCategoryIs(Category category);
 
     Set<Event> findAllByIdIsIn(List<Long> id);
 

@@ -5,6 +5,7 @@ import ru.practicum.users.dto.NewUserRequest;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.dto.UserShortDto;
 import ru.practicum.users.model.User;
+
 @UtilityClass
 public class UserMapper {
     public static User dtoToUser(UserDto userDto) {
@@ -38,9 +39,9 @@ public class UserMapper {
     }
 
     public static User newUserRequestToUser(NewUserRequest newUserRequest) {
-       return User.builder()
-               .name(newUserRequest.getName())
-               .email(newUserRequest.getEmail())
-               .build();
+        return User.builder()
+                .name(newUserRequest.getName())
+                .email(newUserRequest.getEmail())
+                .build();
     }
 }

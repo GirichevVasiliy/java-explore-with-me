@@ -49,9 +49,7 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
         log.info("Запрос на обновлении категории c id= {}", catId);
         Category category = findObjectInRepository.getCategoryById(catId);
         category.setId(catId);
-        if (categoryDto.getName() != null) {
-            category.setName(categoryDto.getName());
-        }
+        category.setName(categoryDto.getName());
         return getCategoryDto(category, category.getName());
     }
 

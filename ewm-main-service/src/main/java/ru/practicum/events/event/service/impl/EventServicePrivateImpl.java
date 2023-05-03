@@ -58,7 +58,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
 
     @Override
     public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size) {
-        log.info("Получен запрос на получение всех событий для пользователя с id= {}  (приватный)", userId );
+        log.info("Получен запрос на получение всех событий для пользователя с id= {}  (приватный)", userId);
         findObjectInRepository.getUserById(userId);
         Pageable pageable = PageRequest.of(from, size);
         return eventRepository.findAllByInitiatorId(userId, pageable).stream()
@@ -96,14 +96,14 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         User user = findObjectInRepository.getUserById(userId);
         checkOwnerEvent(event, user);
         eventAvailability(event);
-        if (updateEvent.getAnnotation() != null) {
+        if (updateEvent.getAnnotation() != null && !updateEvent.getAnnotation().isBlank()) {
             event.setAnnotation(updateEvent.getAnnotation());
         }
         if (updateEvent.getCategory() != null) {
             Category category = findObjectInRepository.getCategoryById(updateEvent.getCategory());
             event.setCategory(category);
         }
-        if (updateEvent.getDescription() != null) {
+        if (updateEvent.getDescription() != null && !updateEvent.getDescription().isBlank()) {
             event.setDescription(updateEvent.getDescription());
         }
         if (updateEvent.getEventDate() != null) {
@@ -124,7 +124,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (updateEvent.getStateAction() != null) {
             event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));
         }
-        if (updateEvent.getTitle() != null) {
+        if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
             event.setTitle(updateEvent.getTitle());
         }
         return getEventFullDto(event);

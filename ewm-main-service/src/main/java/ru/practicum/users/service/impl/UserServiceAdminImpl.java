@@ -36,7 +36,7 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
     @Override
     public List<UserDto> getAllUsersByIds(List<Long> ids, int from, int size) {
         log.info("Получен запрос на получение всех пользователей по id");
-        if (ids == null){
+        if (ids == null) {
             ids = new ArrayList<>();
         }
         Pageable pageable = PageRequest.of(from, size);

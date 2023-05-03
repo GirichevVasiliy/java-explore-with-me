@@ -16,6 +16,7 @@ import ru.practicum.util.util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+
 @UtilityClass
 public class EventMapper {
 
@@ -66,10 +67,10 @@ public class EventMapper {
                 .eventDate(DateFormatter.formatDate(newEventDto.getEventDate()))
                 .initiator(user)
                 .location(LocationMapper.locationDtoToLocation(newEventDto.getLocation()))
-                .paid(newEventDto.getPaid())
+                .paid(newEventDto.isPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
                 .publishedOn(null)
-                .requestModeration(newEventDto.getRequestModeration())
+                .requestModeration(newEventDto.isRequestModeration())
                 .state(EventState.PENDING)
                 .title(newEventDto.getTitle())
                 .views(views)

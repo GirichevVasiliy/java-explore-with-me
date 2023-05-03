@@ -13,6 +13,7 @@ import ru.practicum.events.compilation.service.CompilationServiceAdmin;
 @RestController
 @RequestMapping(path = "/admin/compilations")
 @Slf4j
+@Validated
 public class CompilationControllerAdmin {
     private final CompilationServiceAdmin compilationServiceForAdmin;
 

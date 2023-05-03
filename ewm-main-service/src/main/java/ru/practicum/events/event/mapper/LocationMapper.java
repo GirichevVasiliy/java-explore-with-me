@@ -3,6 +3,7 @@ package ru.practicum.events.event.mapper;
 import lombok.experimental.UtilityClass;
 import ru.practicum.events.event.dto.LocationDto;
 import ru.practicum.events.event.model.location.Location;
+
 @UtilityClass
 public class LocationMapper {
     public static Location locationDtoToLocation(LocationDto locationDto) {

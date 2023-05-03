@@ -11,6 +11,6 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT u FROM User u WHERE u.id = :ids")
+    @Query("SELECT u FROM User u WHERE u.id IN (:ids)")
     List<User> findAllUsersByIds(@Nullable List<Long> ids, Pageable pageable);
 }

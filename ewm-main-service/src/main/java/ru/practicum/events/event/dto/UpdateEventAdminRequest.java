@@ -5,6 +5,7 @@ import lombok.Value;
 import ru.practicum.events.event.dto.stateDto.ActionStateDto;
 
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 
 @Value
@@ -19,8 +20,10 @@ public class UpdateEventAdminRequest { // Данные для изменения
     String eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
     LocationDto location; //Широта и долгота места проведения события
     Boolean paid; // Нужно ли оплачивать участие
+    @PositiveOrZero
     Integer participantLimit; // Ограничение на количество участников. Значение 0 - означает отсутствие ограничения
     Boolean requestModeration; // Нужна ли пре-модерация заявок на участие
     ActionStateDto stateAction;
+    @Size(min = 5, max = 255, message = "Минимальное кол-во символов для описания: 5. Максимальное: 255")
     String title; // example: Знаменитое шоу 'Летающая кукуруза' Заголовок
 }

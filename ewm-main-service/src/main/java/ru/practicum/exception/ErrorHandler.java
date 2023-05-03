@@ -149,9 +149,10 @@ public class ErrorHandler {
         log.warn("Validation failed for some fields: {}", e.getMessage(), e);
         return apiError;
     }
+
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleValidationException(MissingServletRequestParameterException e){
+    public ApiError handleValidationException(MissingServletRequestParameterException e) {
         ApiError apiError = ApiError.builder()
                 .errors(Arrays.stream(e.getStackTrace()).map(StackTraceElement::toString).collect(Collectors.toList()))
                 .message("Validation failed for some fields")
@@ -162,6 +163,7 @@ public class ErrorHandler {
         log.warn("Validation failed for some fields: {}", e.getMessage(), e);
         return apiError;
     }
+
     @ExceptionHandler(Throwable.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handleAllExceptions(Throwable ex) {
@@ -172,7 +174,7 @@ public class ErrorHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.toString())
                 .timestamp(LocalDateTime.now())
                 .build();
-    log.warn("Unexpected error occurred: {}", ex.getMessage(), ex);
+        log.warn("Unexpected error occurred: {}", ex.getMessage(), ex);
         return apiError;
     }
 }

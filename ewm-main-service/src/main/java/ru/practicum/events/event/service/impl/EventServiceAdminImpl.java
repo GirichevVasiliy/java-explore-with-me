@@ -71,14 +71,14 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         } else {
             publishedOn = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
         }
-        if (updateEvent.getAnnotation() != null) {
+        if (updateEvent.getAnnotation() != null && !updateEvent.getAnnotation().isBlank()) {
             event.setAnnotation(updateEvent.getAnnotation());
         }
         if (updateEvent.getCategory() != null) {
             Category category = findObjectInRepository.getCategoryById(updateEvent.getCategory());
             event.setCategory(category);
         }
-        if (updateEvent.getDescription() != null) {
+        if (updateEvent.getDescription() != null && !updateEvent.getDescription().isBlank()) {
             event.setDescription(updateEvent.getDescription());
         }
         if (updateEvent.getEventDate() != null) {
@@ -99,7 +99,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         if (updateEvent.getStateAction() != null) {
             event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));
         }
-        if (updateEvent.getTitle() != null) {
+        if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
             event.setTitle(updateEvent.getTitle());
         }
         event.setPublishedOn(publishedOn);
