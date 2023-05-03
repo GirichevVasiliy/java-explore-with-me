@@ -9,12 +9,15 @@ import ru.practicum.events.compilation.storage.CompilationStorage;
 import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.events.request.model.Request;
+import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.events.request.storage.RequestRepository;
 import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.model.User;
 import ru.practicum.users.storage.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class FindObjectInRepository {
@@ -65,5 +68,20 @@ public class FindObjectInRepository {
     public boolean isRelatedEvent(Category category) {
         List<Event> findEventByCategory = eventRepository.findEventByCategoryIs(category);
         return !findEventByCategory.isEmpty();
+    }
+
+    public List<Event> confirmedRequests(List<Event> events) {
+        Map<Event, Long> countRequest = requestRepository.countRequestByEventInAndStatus(events, RequestStatus.CONFIRMED);
+        List<Event> newEvents = new ArrayList<>();
+        for (Event e : events) {
+            long count = countRequest.getOrDefault(e, 0L);
+            e.setConfirmedRequests(count);
+            newEvents.add(e);
+        }
+        return newEvents;
+    }
+
+    public long confirmedRequestsForOneEvent(Event event, RequestStatus status) {
+        return requestRepository.countRequestByEventAndStatus(event, status);
     }
 }

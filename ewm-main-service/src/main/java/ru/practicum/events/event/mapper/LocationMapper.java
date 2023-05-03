@@ -6,14 +6,14 @@ import ru.practicum.events.event.model.location.Location;
 
 @UtilityClass
 public class LocationMapper {
-    public static Location locationDtoToLocation(LocationDto locationDto) {
+    public Location locationDtoToLocation(LocationDto locationDto) {
         return Location.builder()
                 .lat(locationDto.getLat())
                 .lon(locationDto.getLon())
                 .build();
     }
 
-    public static LocationDto locationToLocationDto(Location location) {
+    public LocationDto locationToLocationDto(Location location) {
         return LocationDto.builder()
                 .lat(location.getLat())
                 .lon(location.getLon())

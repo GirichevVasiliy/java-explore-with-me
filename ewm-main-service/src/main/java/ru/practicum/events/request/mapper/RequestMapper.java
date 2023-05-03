@@ -7,7 +7,7 @@ import ru.practicum.events.request.model.Request;
 
 @UtilityClass
 public class RequestMapper {
-    public static ParticipationRequestDto requestToParticipationRequestDto(Request request) {
+    public ParticipationRequestDto requestToParticipationRequestDto(Request request) {
         return ParticipationRequestDto.builder()
                 .created(request.getCreated())
                 .event(request.getEvent().getId())

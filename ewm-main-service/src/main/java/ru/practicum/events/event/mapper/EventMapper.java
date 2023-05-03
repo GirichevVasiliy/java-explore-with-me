@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 @UtilityClass
 public class EventMapper {
 
-    public static EventShortDto eventToeventShortDto(Event event) {
+    public EventShortDto eventToeventShortDto(Event event) {
         return EventShortDto.builder()
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.categoryToCategoryDto(event.getCategory()))
@@ -34,7 +34,7 @@ public class EventMapper {
                 .build();
     }
 
-    public static EventFullDto eventToEventFullDto(Event event) {
+    public EventFullDto eventToEventFullDto(Event event) {
         return EventFullDto.builder()
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.categoryToCategoryDto(event.getCategory()))
