@@ -108,7 +108,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             if (!event.getState().equals(EventState.PUBLISHED) && updateEvent.getStateAction().equals(ActionStateDto.PUBLISH_EVENT)) {
                 event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             } else if (event.getPublishedOn() == null) {
-                event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)); //????
+                event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
             event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));
         }

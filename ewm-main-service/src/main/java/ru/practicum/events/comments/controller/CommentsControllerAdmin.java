@@ -7,8 +7,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.comments.dto.CommentDto;
 import ru.practicum.events.comments.dto.InputCommentDto;
+import ru.practicum.events.comments.dto.UpdateCommentAdminDto;
 import ru.practicum.events.comments.service.CommentsServiceAdmin;
 
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -30,8 +33,8 @@ public class CommentsControllerAdmin {
 
     @PatchMapping("/{commentId}")
     CommentDto updateComment(@PathVariable Long commentId,
-                             @Validated @RequestBody InputCommentDto inputCommentDto) {
-        return commentsServiceAdmin.updateComment(commentId, inputCommentDto);
+                             @Validated @RequestBody UpdateCommentAdminDto updateComment) {
+        return commentsServiceAdmin.updateComment(commentId, updateComment);
     }
 
     @GetMapping("/{commentId}")
@@ -40,8 +43,10 @@ public class CommentsControllerAdmin {
     }
 
     @GetMapping("/{eventId}")
-    List<CommentDto> getAllCommentsByEventId(@PathVariable Long eventId) {
-        return commentsServiceAdmin.getAllCommentsByEventId(eventId);
+    List<CommentDto> getAllCommentsByEventId(@PathVariable Long eventId,
+                                             @PositiveOrZero @RequestParam(defaultValue = "0", required = false) Integer from,
+                                             @Positive @RequestParam(defaultValue = "10", required = false) Integer size) {
+        return commentsServiceAdmin.getAllCommentsByEventId(eventId, from, size);
     }
 
     @DeleteMapping("/{commentId}")

@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.storage.CategoryRepository;
+import ru.practicum.events.comments.model.Comment;
+import ru.practicum.events.comments.storage.CommentsRepository;
 import ru.practicum.events.compilation.model.Compilation;
 import ru.practicum.events.compilation.storage.CompilationStorage;
 import ru.practicum.events.event.model.Event;
@@ -11,7 +13,6 @@ import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.events.request.model.Request;
 import ru.practicum.events.request.storage.RequestRepository;
 import ru.practicum.exception.ResourceNotFoundException;
-import ru.practicum.explorewithme.stats.client.StatsClient;
 import ru.practicum.users.model.User;
 import ru.practicum.users.storage.UserRepository;
 
@@ -24,18 +25,18 @@ public class FindObjectInRepository {
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
     private final UserRepository userRepository;
-    private final StatsClient client;
+    private final CommentsRepository commentsRepository;
 
     @Autowired
     public FindObjectInRepository(CategoryRepository categoryRepository, CompilationStorage compilationStorage,
                                   EventRepository eventRepository, RequestRepository requestRepository,
-                                  UserRepository userRepository, StatsClient client) {
+                                  UserRepository userRepository, CommentsRepository commentsRepository) {
         this.categoryRepository = categoryRepository;
         this.compilationStorage = compilationStorage;
         this.eventRepository = eventRepository;
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
-        this.client = client;
+        this.commentsRepository = commentsRepository;
     }
 
     public Category getCategoryById(Long id) {
@@ -63,6 +64,10 @@ public class FindObjectInRepository {
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Пользователь c id = " + id + " не найден"));
+    }
+    public Comment getCommentById(Long id){
+        return commentsRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Комментарий c id = " + id + " не найден"));
     }
 
     public boolean isRelatedEvent(Category category) {

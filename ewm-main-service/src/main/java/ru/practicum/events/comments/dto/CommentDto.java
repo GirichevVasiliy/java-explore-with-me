@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.users.dto.UserDto;
+import ru.practicum.users.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ public class CommentDto {
     Long id;
     String text;
     LocalDateTime createdOn;
-    UserDto author;
+    UserShortDto author;
     EventShortDto event;
-    CommentStateDto state;
+    String state;
 }

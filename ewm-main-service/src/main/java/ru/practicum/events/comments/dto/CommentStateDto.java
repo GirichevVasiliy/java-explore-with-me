@@ -1,5 +1,5 @@
 package ru.practicum.events.comments.dto;
 
 public enum CommentStateDto {
-    PENDING, PUBLISHED, CANCELED //ОЖИДАНИЕ, ОПУБЛИКОВАНО, ОТМЕНЕНО
+    PENDING, PUBLISHED, CANCELED, UPDATE //ОЖИДАНИЕ, ОПУБЛИКОВАНО, ОТМЕНЕНО
 }
