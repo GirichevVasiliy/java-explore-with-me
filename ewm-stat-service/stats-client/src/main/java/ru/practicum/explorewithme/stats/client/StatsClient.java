@@ -14,7 +14,6 @@ public class StatsClient {
     private final WebClient client;
     private static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_TIME_FORMAT);
-    private static final String URL = "http://localhost:9090";
 
     public StatsClient(String serverUrl) {
         this.client = WebClient.create(serverUrl);

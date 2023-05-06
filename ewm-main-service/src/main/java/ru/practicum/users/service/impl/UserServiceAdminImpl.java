@@ -36,11 +36,13 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
     @Override
     public List<UserDto> getAllUsersByIds(List<Long> ids, int from, int size) {
         log.info("Получен запрос на получение всех пользователей по id");
-        if (ids == null) {
-            ids = new ArrayList<>();
-        }
         Pageable pageable = PageRequest.of(from, size);
-        List<User> users = userRepository.findAllUsersByIds(ids, pageable);
+        List<User> users = new ArrayList<>();
+        if (ids != null && !ids.isEmpty()) {
+            users = userRepository.findAllUsersByIds(ids, pageable);
+        } else {
+            users = userRepository.findAllBy(pageable);
+        }
         return users.stream().map(UserMapper::userToDto).collect(Collectors.toList());
     }
 
