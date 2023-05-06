@@ -169,6 +169,12 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
         checkOwnerEvent(event, user);
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            addEventConfirmedRequestsAndViews(event, request);
+        } else {
+            event.setViews(0L);
+            event.setConfirmedRequests(0L);
+        }
         if (event.getParticipantLimit() <= event.getConfirmedRequests()) {
             log.warn("Достигнут лимит по заявкам на данное событие с id= {}", eventId);
             throw new ForbiddenEventException("Достигнут лимит по заявкам на данное событие с id= " + eventId);

@@ -76,11 +76,8 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         log.info("Получен запрос на обновление события с id= {} (администратором)", eventId);
         Event event = findObjectInRepository.getEventById(eventId);
         eventAvailability(event);
-        LocalDateTime publishedOn;
-        if (updateEvent.getEventDate() != null) {
-            publishedOn = checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
-        } else {
-            publishedOn = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
+        if (updateEvent.getEventDate() != null){
+            checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         if (updateEvent.getAnnotation() != null && !updateEvent.getAnnotation().isBlank()) {
             event.setAnnotation(updateEvent.getAnnotation());
@@ -108,12 +105,16 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setRequestModeration(updateEvent.getRequestModeration());
         }
         if (updateEvent.getStateAction() != null) {
+            if (!event.getState().equals(EventState.PUBLISHED) && updateEvent.getStateAction().equals(ActionStateDto.PUBLISH_EVENT)){
+                event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
+            } else if (event.getPublishedOn() == null){
+                event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)); //????
+            }
             event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));
         }
         if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
             event.setTitle(updateEvent.getTitle());
         }
-        event.setPublishedOn(publishedOn);
         if (event.getState().equals(EventState.PUBLISHED)) {
             addEventConfirmedRequestsAndViews(event, request);
         } else {

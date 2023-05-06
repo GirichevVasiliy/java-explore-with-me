@@ -57,7 +57,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
             "AND (event_date BETWEEN " +
             "to_timestamp(:rangeStart, 'yyyy-mm-dd hh24:mi:ss') AND to_timestamp(:rangeEnd, 'yyyy-mm-dd hh24:mi:ss') " +
             "OR event_date > CURRENT_TIMESTAMP) " +
-            "AND (participant_limit < confirmed_requests) = :onlyAvailable " +
             "ORDER BY lower(:sort) " +
             "OFFSET :from " +
             "LIMIT :size", nativeQuery = true)
@@ -66,7 +65,6 @@ public interface EventRepository extends JpaRepository<Event, Long> {
                                 @Param("paid") Boolean paid,
                                 @Param("rangeStart") String rangeStart,
                                 @Param("rangeEnd") String rangeEnd,
-                                @Param("onlyAvailable") Boolean onlyAvailable,
                                 @Param("sort") String sort,
                                 @Param("from") Integer from,
                                 @Param("size") Integer size);

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.events.request.dto.ParticipationRequestDto;
 import ru.practicum.events.request.service.RequestServicePrivate;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -37,8 +38,9 @@ public class RequestControllerPrivate {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     ParticipationRequestDto addRequestEventById(@PathVariable Long userId,
-                                                @NotNull @RequestParam Long eventId) {
-        return requestServicePrivate.addRequestEventById(userId, eventId);
+                                                @NotNull @RequestParam Long eventId,
+                                                HttpServletRequest request) {
+        return requestServicePrivate.addRequestEventById(userId, eventId, request);
     }
 
     /**
@@ -46,7 +48,8 @@ public class RequestControllerPrivate {
      */
     @PatchMapping("/{requestId}/cancel")
     ParticipationRequestDto updateRequestById(@PathVariable Long userId,
-                                              @PathVariable Long requestId) {
-        return requestServicePrivate.updateRequestStatus(userId, requestId);
+                                              @PathVariable Long requestId,
+                                              HttpServletRequest request) {
+        return requestServicePrivate.updateRequestStatus(userId, requestId, request);
     }
 }

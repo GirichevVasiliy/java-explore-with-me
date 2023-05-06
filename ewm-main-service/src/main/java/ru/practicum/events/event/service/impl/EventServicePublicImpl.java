@@ -55,12 +55,16 @@ public class EventServicePublicImpl implements EventServicePublic {
                 .timestamp(LocalDateTime.now().format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)))
                 .build();
         client.hitRequest(hitDto);
-        List<Event> events = eventRepository.findAllByPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size);
+        List<Event> events = eventRepository.findAllByPublic(text, categories, paid, rangeStart, rangeEnd, sort, from, size);
         if (events.isEmpty()) {
             return Collections.emptyList();
         }
         List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
         List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
+        if (!onlyAvailable){
+            return newEvents.stream().filter(e -> e.getParticipantLimit() >= e.getConfirmedRequests())
+                    .map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
+        }
         return newEvents.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
     }
 

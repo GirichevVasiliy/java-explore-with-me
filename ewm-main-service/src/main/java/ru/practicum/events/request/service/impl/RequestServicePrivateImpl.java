@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.model.EventState;
+import ru.practicum.events.event.service.impl.ProcessingEvents;
 import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.events.request.dto.ParticipationRequestDto;
 import ru.practicum.events.request.mapper.RequestMapper;
@@ -18,6 +19,7 @@ import ru.practicum.exception.ConflictRequestException;
 import ru.practicum.users.model.User;
 import ru.practicum.util.FindObjectInRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -30,14 +32,16 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
     private final RequestRepository requestRepository;
     private final FindObjectInRepository findObjectInRepository;
     private final EventRepository eventRepository;
+    private final ProcessingEvents processingEvents;
 
     @Autowired
     public RequestServicePrivateImpl(RequestRepository requestRepository,
                                      FindObjectInRepository findObjectInRepository,
-                                     EventRepository eventRepository) {
+                                     EventRepository eventRepository, ProcessingEvents processingEvents) {
         this.requestRepository = requestRepository;
         this.findObjectInRepository = findObjectInRepository;
         this.eventRepository = eventRepository;
+        this.processingEvents = processingEvents;
     }
 
     @Override
@@ -50,15 +54,22 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
     }
 
     @Override
-    public ParticipationRequestDto addRequestEventById(Long userId, Long eventId) {
+    public ParticipationRequestDto addRequestEventById(Long userId, Long eventId, HttpServletRequest httpServletRequest) {
         log.info("Получен запрос на добавление запроса от пользователя с id= {} для события с id= {}", userId, eventId);
         User user = findObjectInRepository.getUserById(userId);
         Event event = findObjectInRepository.getEventById(eventId);
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            addEventConfirmedRequestsAndViews(event, httpServletRequest);
+        } else {
+            event.setViews(0L);
+            event.setConfirmedRequests(0L);
+        }
         checkEventState(event);
         checkEventOwner(user, event);
         checkParticipantLimit(event);
         checkEventRequestUser(userId, eventId);
         Request request;
+
         if (event.isRequestModeration()) {
             request = Request.builder()
                     .created(LocalDateTime.now())
@@ -73,8 +84,6 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
                     .requester(user)
                     .status(RequestStatus.CONFIRMED)
                     .build();
-            Long confirmedRequests = event.getConfirmedRequests();
-            event.setConfirmedRequests(confirmedRequests + 1L);
         }
         try {
             eventRepository.save(event);
@@ -87,7 +96,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
     }
 
     @Override
-    public ParticipationRequestDto updateRequestStatus(Long userId, Long requestId) {
+    public ParticipationRequestDto updateRequestStatus(Long userId, Long requestId, HttpServletRequest httpServletRequest) {
         log.info("Получен запрос от пользователя с id= {} на обновление запроса с id= {}", userId, requestId);
         User user = findObjectInRepository.getUserById(userId);
         Request request = findObjectInRepository.getRequestById(requestId);
@@ -97,8 +106,12 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
         }
         request.setStatus(RequestStatus.CANCELED);
         Event event = request.getEvent();
-        Long confirmedRequests = event.getConfirmedRequests();
-        event.setConfirmedRequests(confirmedRequests - 1L);
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            addEventConfirmedRequestsAndViews(event, httpServletRequest);
+        } else {
+            event.setViews(0L);
+            event.setConfirmedRequests(0L);
+        }
         try {
             eventRepository.save(event);
             return RequestMapper.requestToParticipationRequestDto(requestRepository.save(request));
@@ -136,5 +149,11 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
             throw new ConflictRequestException("Событие с id= " + event.getId()
                     + " нельзя подавать запросы на участие, превышен лимит заявок");
         }
+    }
+    private void addEventConfirmedRequestsAndViews(Event event, HttpServletRequest request) {
+        long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
+        event.setConfirmedRequests(count);
+        long views = processingEvents.searchViews(event, request);
+        event.setViews(views);
     }
 }
