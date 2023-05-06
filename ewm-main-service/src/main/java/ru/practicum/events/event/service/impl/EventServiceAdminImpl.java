@@ -76,7 +76,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         log.info("Получен запрос на обновление события с id= {} (администратором)", eventId);
         Event event = findObjectInRepository.getEventById(eventId);
         eventAvailability(event);
-        if (updateEvent.getEventDate() != null){
+        if (updateEvent.getEventDate() != null) {
             checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
         if (updateEvent.getAnnotation() != null && !updateEvent.getAnnotation().isBlank()) {
@@ -105,9 +105,9 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setRequestModeration(updateEvent.getRequestModeration());
         }
         if (updateEvent.getStateAction() != null) {
-            if (!event.getState().equals(EventState.PUBLISHED) && updateEvent.getStateAction().equals(ActionStateDto.PUBLISH_EVENT)){
+            if (!event.getState().equals(EventState.PUBLISHED) && updateEvent.getStateAction().equals(ActionStateDto.PUBLISH_EVENT)) {
                 event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
-            } else if (event.getPublishedOn() == null){
+            } else if (event.getPublishedOn() == null) {
                 event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)); //????
             }
             event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));

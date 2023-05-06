@@ -61,7 +61,7 @@ public class EventServicePublicImpl implements EventServicePublic {
         }
         List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
         List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
-        if (!onlyAvailable){
+        if (!onlyAvailable) {
             return newEvents.stream().filter(e -> e.getParticipantLimit() >= e.getConfirmedRequests())
                     .map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
         }

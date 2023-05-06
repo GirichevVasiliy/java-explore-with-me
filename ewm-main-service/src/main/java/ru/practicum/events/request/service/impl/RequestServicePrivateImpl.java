@@ -150,6 +150,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
                     + " нельзя подавать запросы на участие, превышен лимит заявок");
         }
     }
+
     private void addEventConfirmedRequestsAndViews(Event event, HttpServletRequest request) {
         long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
         event.setConfirmedRequests(count);
