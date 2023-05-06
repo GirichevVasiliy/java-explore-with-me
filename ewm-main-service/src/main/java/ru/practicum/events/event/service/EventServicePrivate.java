@@ -8,18 +8,19 @@ import ru.practicum.events.request.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.events.request.dto.EventRequestStatusUpdateResult;
 import ru.practicum.events.request.dto.ParticipationRequestDto;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface EventServicePrivate {
-    List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size);
+    List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size, HttpServletRequest request);
 
     EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto);
 
-    EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId);
+    EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId, HttpServletRequest request);
 
-    EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest);
+    EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEventUserRequest, HttpServletRequest request);
 
-    List<ParticipationRequestDto> getAllPrivateEventsByRequests(Long userId, Long eventId);
+    List<ParticipationRequestDto> getAllPrivateEventsByRequests(Long userId, Long eventId, HttpServletRequest request);
 
-    EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request);
+    EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequest, HttpServletRequest request);
 }

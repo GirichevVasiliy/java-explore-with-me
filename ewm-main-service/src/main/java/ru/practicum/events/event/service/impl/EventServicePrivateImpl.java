@@ -30,10 +30,12 @@ import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictRequestException;
 import ru.practicum.exception.ForbiddenEventException;
 import ru.practicum.exception.ResourceNotFoundException;
+import ru.practicum.explorewithme.stats.client.StatsClient;
 import ru.practicum.users.model.User;
 import ru.practicum.util.FindObjectInRepository;
 import ru.practicum.util.util.DateFormatter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,22 +48,31 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     private final EventRepository eventRepository;
     private final FindObjectInRepository findObjectInRepository;
     private final RequestRepository requestRepository;
+    private final ProcessingEvents processingEvents;
+    private final StatsClient client;
 
     @Autowired
     public EventServicePrivateImpl(EventRepository eventRepository,
                                    FindObjectInRepository findObjectInRepository,
-                                   RequestRepository requestRepository) {
+                                   RequestRepository requestRepository,
+                                   StatsClient client,
+                                   ProcessingEvents processingEvents) {
         this.eventRepository = eventRepository;
         this.findObjectInRepository = findObjectInRepository;
         this.requestRepository = requestRepository;
+        this.client = client;
+        this.processingEvents = processingEvents;
     }
 
     @Override
-    public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size) {
+    public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size, HttpServletRequest request) {
         log.info("Получен запрос на получение всех событий для пользователя с id= {}  (приватный)", userId);
         findObjectInRepository.getUserById(userId);
         Pageable pageable = PageRequest.of(from, size);
-        return eventRepository.findAllByInitiatorId(userId, pageable).stream()
+        List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable);
+        List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
+        List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
+        return newEvents.stream()
                 .map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
     }
 
@@ -78,16 +89,17 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     }
 
     @Override
-    public EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId) {
+    public EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId, HttpServletRequest request) {
         log.info("Получен запрос на получение события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         User user = findObjectInRepository.getUserById(userId);
         Event event = findObjectInRepository.getEventById(eventId);
         checkOwnerEvent(event, user);
+        addEventConfirmedRequestsAndViews(event, request);
         return EventMapper.eventToEventFullDto(event);
     }
 
     @Override
-    public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent) {
+    public EventFullDto updatePrivateEventByIdAndByUserId(Long userId, Long eventId, UpdateEventUserRequest updateEvent, HttpServletRequest request) {
         log.info("Получен запрос на обновление события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         if (updateEvent.getEventDate() != null) {
             checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
@@ -127,11 +139,17 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
             event.setTitle(updateEvent.getTitle());
         }
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            addEventConfirmedRequestsAndViews(event, request);
+        } else {
+            event.setViews(0L);
+            event.setConfirmedRequests(0L);
+        }
         return getEventFullDto(event);
     }
 
     @Override
-    public List<ParticipationRequestDto> getAllPrivateEventsByRequests(Long userId, Long eventId) {
+    public List<ParticipationRequestDto> getAllPrivateEventsByRequests(Long userId, Long eventId, HttpServletRequest request) {
         log.info("Получен запрос на получение всех запросов для события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         try {
             Event event = findObjectInRepository.getEventById(eventId);
@@ -146,7 +164,7 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     }
 
     @Override
-    public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest request) {
+    public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequest, HttpServletRequest request) {
         log.info("Получен запрос на обновление статуса запроса для события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         Event event = findObjectInRepository.getEventById(eventId);
         User user = findObjectInRepository.getUserById(userId);
@@ -155,14 +173,14 @@ public class EventServicePrivateImpl implements EventServicePrivate {
             log.warn("Достигнут лимит по заявкам на данное событие с id= {}", eventId);
             throw new ForbiddenEventException("Достигнут лимит по заявкам на данное событие с id= " + eventId);
         }
-        List<Request> requests = getAllRequestsContainsIds(request.getRequestIds());
+        List<Request> requests = getAllRequestsContainsIds(eventRequest.getRequestIds());
         if (event.getParticipantLimit() == 0 || !event.isRequestModeration()) {
             log.info("Подтверждение заявок не требуется");
             return new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
-        } else if (request.getStatus().equals(RequestStatusDto.CONFIRMED)) {
+        } else if (eventRequest.getStatus().equals(RequestStatusDto.CONFIRMED)) {
             log.info("Запрос на подтверждение заявок");
             return considerationOfRequests(event, requests);
-        } else if (request.getStatus().equals(RequestStatusDto.REJECTED)) {
+        } else if (eventRequest.getStatus().equals(RequestStatusDto.REJECTED)) {
             log.info("Запрос на отклонение заявок");
             EventRequestStatusUpdateResult result = new EventRequestStatusUpdateResult(new ArrayList<>(), new ArrayList<>());
             List<ParticipationRequestDto> rejectedRequests = addRejectedAllRequests(requests);
@@ -228,6 +246,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     private EventRequestStatusUpdateResult considerationOfRequests(Event event, List<Request> requests) {
         List<ParticipationRequestDto> confirmedRequests = new ArrayList<>();
         List<ParticipationRequestDto> rejectedRequests = new ArrayList<>();
+        long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
+        event.setConfirmedRequests(count);
         for (Request req : requests) {
             if (!req.getStatus().equals(RequestStatus.PENDING)) {
                 throw new ConflictRequestException("Статус заявки " + req.getId() + " не позволяет ее одобрить, статус равен " + req.getStatus());
@@ -255,6 +275,13 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         } catch (Exception e) {
             throw new BadRequestException("Запрос на добавлении события " + event + " составлен не корректно ");
         }
+    }
+
+    private void addEventConfirmedRequestsAndViews(Event event, HttpServletRequest request) {
+        long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
+        event.setConfirmedRequests(count);
+        long views = processingEvents.searchViews(event, request);
+        event.setViews(views);
     }
 }
 

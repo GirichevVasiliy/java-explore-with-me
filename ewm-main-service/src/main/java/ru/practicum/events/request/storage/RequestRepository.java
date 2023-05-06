@@ -7,7 +7,6 @@ import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.users.model.User;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
@@ -21,5 +20,5 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     long countRequestByEventAndStatus(Event event, RequestStatus status);
 
-    Map<Event, Long> countRequestByEventInAndStatus(List<Event> events, RequestStatus status);
+    List<Request> findAllByEventInAndStatus(List<Event> events, RequestStatus status);
 }

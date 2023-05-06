@@ -14,6 +14,7 @@ import ru.practicum.events.request.dto.EventRequestStatusUpdateRequest;
 import ru.practicum.events.request.dto.EventRequestStatusUpdateResult;
 import ru.practicum.events.request.dto.ParticipationRequestDto;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
@@ -33,8 +34,9 @@ public class EventControllerPrivate {
     @GetMapping()
     List<EventShortDto> getAllPrivateEventsByUser(@PathVariable Long userId,
                                                   @PositiveOrZero @RequestParam(defaultValue = "0") Integer from,
-                                                  @Positive @RequestParam(defaultValue = "10") Integer size) {
-        return eventServicePrivate.getAllPrivateEventsByUserId(userId, from, size);
+                                                  @Positive @RequestParam(defaultValue = "10") Integer size,
+                                                  HttpServletRequest request) {
+        return eventServicePrivate.getAllPrivateEventsByUserId(userId, from, size, request);
     }
 
     @PostMapping()
@@ -46,27 +48,31 @@ public class EventControllerPrivate {
 
     @GetMapping("/{eventId}")
     EventFullDto getPrivateEventByIdAndByUserId(@PathVariable Long userId,
-                                                @PathVariable Long eventId) {
-        return eventServicePrivate.getPrivateEventByIdAndByUserId(userId, eventId);
+                                                @PathVariable Long eventId,
+                                                HttpServletRequest request) {
+        return eventServicePrivate.getPrivateEventByIdAndByUserId(userId, eventId, request);
     }
 
     @PatchMapping("/{eventId}")
     EventFullDto updatePrivateEventByIdAndByUserId(@PathVariable Long userId,
                                                    @PathVariable Long eventId,
-                                                   @Validated @RequestBody UpdateEventUserRequest updateEventUserRequest) {
-        return eventServicePrivate.updatePrivateEventByIdAndByUserId(userId, eventId, updateEventUserRequest);
+                                                   @Validated @RequestBody UpdateEventUserRequest updateEventUserRequest,
+                                                   HttpServletRequest request) {
+        return eventServicePrivate.updatePrivateEventByIdAndByUserId(userId, eventId, updateEventUserRequest, request);
     }
 
     @GetMapping("/{eventId}/requests")
     List<ParticipationRequestDto> getAllPrivateEventsByRequests(@PathVariable Long userId,
-                                                                @PathVariable Long eventId) {
-        return eventServicePrivate.getAllPrivateEventsByRequests(userId, eventId);
+                                                                @PathVariable Long eventId,
+                                                                HttpServletRequest request) {
+        return eventServicePrivate.getAllPrivateEventsByRequests(userId, eventId, request);
     }
 
     @PatchMapping("/{eventId}/requests")
     EventRequestStatusUpdateResult updateEventRequestStatus(@PathVariable Long userId,
                                                             @PathVariable Long eventId,
-                                                            @RequestBody EventRequestStatusUpdateRequest request) {
-        return eventServicePrivate.updateEventRequestStatus(userId, eventId, request);
+                                                            @RequestBody EventRequestStatusUpdateRequest eventRequest,
+                                                            HttpServletRequest request) {
+        return eventServicePrivate.updateEventRequestStatus(userId, eventId, eventRequest, request);
     }
 }

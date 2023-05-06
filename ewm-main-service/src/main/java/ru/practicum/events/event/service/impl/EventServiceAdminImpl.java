@@ -14,14 +14,17 @@ import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.model.EventState;
 import ru.practicum.events.event.service.EventServiceAdmin;
 import ru.practicum.events.event.storage.EventRepository;
+import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ForbiddenEventException;
 import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.util.FindObjectInRepository;
 import ru.practicum.util.util.DateFormatter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,18 +33,22 @@ import java.util.stream.Collectors;
 public class EventServiceAdminImpl implements EventServiceAdmin {
     private final EventRepository eventRepository;
     private final FindObjectInRepository findObjectInRepository;
+    private final ProcessingEvents processingEvents;
 
     @Autowired
     public EventServiceAdminImpl(EventRepository eventRepository,
-                                 FindObjectInRepository findObjectInRepository) {
+                                 FindObjectInRepository findObjectInRepository,
+                                 ProcessingEvents processingEvents) {
         this.eventRepository = eventRepository;
         this.findObjectInRepository = findObjectInRepository;
+        this.processingEvents = processingEvents;
     }
 
     @Override
     public List<EventFullDto> getAllEventsForAdmin(List<Long> users, List<String> states, List<Long> categories,
-                                                   String rangeStart, String rangeEnd, int from, int size) {
+                                                   String rangeStart, String rangeEnd, int from, int size, HttpServletRequest request) {
         log.info("Получен запрос на поиск всех событый (администратором)");
+        List<Event> events = new ArrayList<>();
         LocalDateTime newRangeStart = null;
         if (rangeStart != null) {
             newRangeStart = DateFormatter.formatDate(rangeStart);
@@ -52,16 +59,20 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         }
 
         if (states != null) {
-            return eventRepository.findAllByAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size).stream()
-                    .map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+            events = eventRepository.findAllByAdmin(users, states, categories, newRangeStart, newRangeEnd, from, size);
+            List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
+            List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
+            return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         } else {
-            return eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, from, size).stream()
-                    .map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
+            events = eventRepository.findAllByAdminAndState(users, categories, newRangeStart, newRangeEnd, from, size);
+            List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
+            List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
+            return newEvents.stream().map(EventMapper::eventToEventFullDto).collect(Collectors.toList());
         }
     }
 
     @Override
-    public EventFullDto updateEventById(Long eventId, UpdateEventAdminRequest updateEvent) {
+    public EventFullDto updateEventById(Long eventId, UpdateEventAdminRequest updateEvent, HttpServletRequest request) {
         log.info("Получен запрос на обновление события с id= {} (администратором)", eventId);
         Event event = findObjectInRepository.getEventById(eventId);
         eventAvailability(event);
@@ -103,6 +114,12 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setTitle(updateEvent.getTitle());
         }
         event.setPublishedOn(publishedOn);
+        if (event.getState().equals(EventState.PUBLISHED)) {
+            addEventConfirmedRequestsAndViews(event, request);
+        } else {
+            event.setViews(0L);
+            event.setConfirmedRequests(0L);
+        }
         try {
             return EventMapper.eventToEventFullDto(eventRepository.save(event));
         } catch (DataAccessException e) {
@@ -139,5 +156,12 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         if (event.getState().equals(EventState.PUBLISHED) || event.getState().equals(EventState.CANCELED)) {
             throw new ForbiddenEventException("Статус события не позволяет редоктировать событие, статус: " + event.getState());
         }
+    }
+
+    private void addEventConfirmedRequestsAndViews(Event event, HttpServletRequest request) {
+        long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
+        event.setConfirmedRequests(count);
+        long views = processingEvents.searchViews(event, request);
+        event.setViews(views);
     }
 }

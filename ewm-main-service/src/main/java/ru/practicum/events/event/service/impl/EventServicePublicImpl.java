@@ -16,19 +16,12 @@ import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.explorewithme.stats.client.StatsClient;
 import ru.practicum.explorewithme.stats.dto.HitDto;
-import ru.practicum.explorewithme.stats.dto.StatsDto;
-import ru.practicum.util.FindObjectInRepository;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,7 +30,7 @@ import java.util.stream.Collectors;
 public class EventServicePublicImpl implements EventServicePublic {
     public static final String DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private final EventRepository eventRepository;
-    private final FindObjectInRepository findObjectInRepository;
+    private final ProcessingEvents processingEvents;
     private final StatsClient client;
     @Value("${app.name}")
     private String appName;
@@ -45,10 +38,10 @@ public class EventServicePublicImpl implements EventServicePublic {
     @Autowired
     public EventServicePublicImpl(EventRepository eventRepository,
                                   StatsClient client,
-                                  FindObjectInRepository findObjectInRepository) {
+                                  ProcessingEvents processingEvents) {
         this.eventRepository = eventRepository;
         this.client = client;
-        this.findObjectInRepository = findObjectInRepository;
+        this.processingEvents = processingEvents;
     }
 
     @Override
@@ -66,12 +59,8 @@ public class EventServicePublicImpl implements EventServicePublic {
         if (events.isEmpty()) {
             return Collections.emptyList();
         }
-        List<String> uris = events.stream().map(e -> request.getRequestURI() + "/" + e.getId()).collect(Collectors.toList());
-        List<Event> newEvents = findObjectInRepository.confirmedRequests(events);
-        LocalDateTime start = findStartDateTime(newEvents);
-        LocalDateTime end = LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS);
-        List<StatsDto> stats = client.getStats(start, end, uris, true);
-        fillEventViews(newEvents, stats, request.getRequestURI());
+        List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
+        List<Event> newEvents = processingEvents.confirmedRequests(eventsAddViews);
         return newEvents.stream().map(EventMapper::eventToeventShortDto).collect(Collectors.toList());
     }
 
@@ -82,13 +71,7 @@ public class EventServicePublicImpl implements EventServicePublic {
         client.hitRequest(hitDto);
         Event event = eventRepository.findEventByIdAndStateIs(id, EventState.PUBLISHED).orElseThrow(()
                 -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
-        LocalDateTime date = LocalDateTime.of(LocalDate.of(1900, 1, 1), LocalTime.of(0, 0, 1));
-        LocalDateTime start = event.getPublishedOn() == null ? date : event.getPublishedOn();
-        List<StatsDto> stats = client.getStats(start, LocalDateTime.now(), List.of(request.getRequestURI()), true);
-        Long hits = stats.stream().map(StatsDto::getHits).reduce(0L, Long::sum);
-        event.setViews(hits);
-        long confirmedRequests = findObjectInRepository.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
-        event.setConfirmedRequests(confirmedRequests);
+        addEventConfirmedRequestsAndViews(event, request);
         return EventMapper.eventToEventFullDto(event);
     }
 
@@ -102,27 +85,10 @@ public class EventServicePublicImpl implements EventServicePublic {
         return hitDto;
     }
 
-    private void fillEventViews(List<Event> events, List<StatsDto> stats, String baseUri) {
-        if (!stats.isEmpty()) {
-            Map<String, Long> statsByUri = stats.stream()
-                    .collect(Collectors.groupingBy(StatsDto::getUri, Collectors.summingLong(v -> v.getHits().longValue())));
-            events.forEach(e -> {
-                Long views = statsByUri.get(baseUri + "/" + e.getId());
-                if (views != null) {
-                    e.setViews(views);
-                }
-            });
-        }
-    }
-
-    private LocalDateTime findStartDateTime(List<Event> events) {
-        LocalDateTime start;
-        Event event = events.stream().sorted(Comparator.comparing(Event::getPublishedOn)).collect(Collectors.toList()).get(0);
-        if (event.getPublishedOn() == null) {
-            start = LocalDateTime.of(LocalDate.of(1900, 1, 1), LocalTime.of(0, 0, 1));
-        } else {
-            start = event.getPublishedOn();
-        }
-        return start;
+    private void addEventConfirmedRequestsAndViews(Event event, HttpServletRequest request) {
+        long count = processingEvents.confirmedRequestsForOneEvent(event, RequestStatus.CONFIRMED);
+        event.setConfirmedRequests(count);
+        long views = processingEvents.searchViews(event, request);
+        event.setViews(views);
     }
 }

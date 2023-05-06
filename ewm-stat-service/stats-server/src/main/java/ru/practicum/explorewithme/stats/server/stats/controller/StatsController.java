@@ -10,7 +10,6 @@ import ru.practicum.explorewithme.stats.dto.StatsDto;
 import ru.practicum.explorewithme.stats.server.hit.service.HitService;
 import ru.practicum.explorewithme.stats.server.stats.service.StatsService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -30,8 +29,7 @@ public class StatsController {
     public List<StatsDto> getStats(@RequestParam String start,
                                    @RequestParam String end,
                                    @RequestParam(required = false) List<String> uris,
-                                   @RequestParam(defaultValue = "false") Boolean unique,
-                                   HttpServletRequest request) {
+                                   @RequestParam(defaultValue = "false") Boolean unique) {
         List<StatsDto> list = service.getStats(start, end, uris, unique);
         return list;
     }
