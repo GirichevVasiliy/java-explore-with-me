@@ -65,7 +65,8 @@ public class FindObjectInRepository {
         return userRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Пользователь c id = " + id + " не найден"));
     }
-    public Comment getCommentById(Long id){
+
+    public Comment getCommentById(Long id) {
         return commentsRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Комментарий c id = " + id + " не найден"));
     }

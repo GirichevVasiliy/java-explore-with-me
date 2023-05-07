@@ -8,8 +8,12 @@ import java.util.List;
 
 public interface CommentsServiceAdmin {
     CommentDto createComment(InputCommentDto inputCommentDto);
+
     CommentDto updateComment(Long commentId, UpdateCommentAdminDto updateComment);
+
     CommentDto getCommentById(Long commentId);
+
     List<CommentDto> getAllCommentsByEventId(Long eventId, Integer from, Integer size);
+
     void deleteComment(Long commentId);
 }

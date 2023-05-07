@@ -5,14 +5,16 @@ import lombok.Value;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Value
 @Builder
 public class InputCommentDto {
     @NotBlank(message = "Поле text должно быть заполнено")
+    @Size(max = 7000, message = "Максимальное кол-во символов для описания: 7000")
     String text;
-    @NotBlank(message = "Поле userId должно быть заполнено")
+    @NotNull(message = "Поле userId должно быть заполнено")
     Long userId;
-    @NotBlank(message = "Поле eventId должно быть заполнено")
+    @NotNull(message = "Поле eventId должно быть заполнено")
     Long eventId;
 }

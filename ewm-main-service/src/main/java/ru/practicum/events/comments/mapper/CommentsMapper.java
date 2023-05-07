@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit;
 
 @UtilityClass
 public class CommentsMapper {
-    public Comment createCommentAdmin(InputCommentDto inputCommentDto, User author, Event event){
+    public Comment createComment(InputCommentDto inputCommentDto, User author, Event event) {
         return Comment.builder()
                 .text(inputCommentDto.getText())
                 .createdOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
@@ -24,16 +24,8 @@ public class CommentsMapper {
                 .state(CommentState.PUBLISHED)
                 .build();
     }
-    public Comment createCommentPrivate(InputCommentDto inputCommentDto, User author, Event event){
-        return Comment.builder()
-                .text(inputCommentDto.getText())
-                .createdOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-                .author(author)
-                .event(event)
-                .state(CommentState.PENDING)
-                .build();
-    }
-    public CommentDto commentToCommentDto(Comment comment){
+
+    public CommentDto commentToCommentDto(Comment comment) {
         return CommentDto.builder()
                 .id(comment.getId())
                 .text(comment.getText())

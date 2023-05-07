@@ -11,7 +11,6 @@ import ru.practicum.events.comments.dto.InputCommentDto;
 import ru.practicum.events.comments.dto.UpdateCommentAdminDto;
 import ru.practicum.events.comments.mapper.CommentsMapper;
 import ru.practicum.events.comments.model.Comment;
-import ru.practicum.events.comments.model.CommentState;
 import ru.practicum.events.comments.service.CommentsServiceAdmin;
 import ru.practicum.events.comments.storage.CommentsRepository;
 import ru.practicum.events.event.model.Event;
@@ -41,7 +40,7 @@ public class CommentsServiceAdminImpl implements CommentsServiceAdmin {
     public CommentDto createComment(InputCommentDto inputCommentDto) {
         Event event = findObjectInRepository.getEventById(inputCommentDto.getEventId());
         User admin = findObjectInRepository.getUserById(inputCommentDto.getUserId());
-        Comment comment = CommentsMapper.createCommentAdmin(inputCommentDto, admin, event);
+        Comment comment = CommentsMapper.createComment(inputCommentDto, admin, event);
         return CommentsMapper.commentToCommentDto(commentsRepository.save(comment));
     }
 
@@ -54,7 +53,7 @@ public class CommentsServiceAdminImpl implements CommentsServiceAdmin {
         if (updateComment.getText() != null && !updateComment.getText().isBlank()) {
             comment.setText(updateComment.getText());
         }
-        if (updateComment.getCommentStateDto() != null){
+        if (updateComment.getCommentStateDto() != null) {
             addCommentStatusAdmin(updateComment, comment);
         }
         return CommentsMapper.commentToCommentDto(commentsRepository.save(comment));
@@ -78,18 +77,16 @@ public class CommentsServiceAdminImpl implements CommentsServiceAdmin {
         Comment comment = findObjectInRepository.getCommentById(commentId);
         commentsRepository.delete(comment);
     }
-    private void addCommentStatusAdmin(UpdateCommentAdminDto updateComment, Comment comment){
-        if (comment.getState().equals(CommentState.PENDING)){
-            if (updateComment.getCommentStateDto().equals(CommentStateDto.CANCELED)){
-                comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
-            }
-            if (updateComment.getCommentStateDto().equals(CommentStateDto.PUBLISHED)){
-                comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
-            }
-        } else if (comment.getState().equals(CommentState.PUBLISHED)) {
-            if (updateComment.getCommentStateDto().equals(CommentStateDto.UPDATE)) {
-                comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
-            }
+
+    private void addCommentStatusAdmin(UpdateCommentAdminDto updateComment, Comment comment) {
+        if (updateComment.getCommentStateDto().equals(CommentStateDto.CANCELED)) {
+            comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
+        }
+        if (updateComment.getCommentStateDto().equals(CommentStateDto.PUBLISHED)) {
+            comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
+        }
+        if (updateComment.getCommentStateDto().equals(CommentStateDto.UPDATE)) {
+            comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
         }
     }
 }

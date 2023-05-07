@@ -3,7 +3,6 @@ package ru.practicum.events.comments.dto;
 import lombok.Builder;
 import lombok.Value;
 import ru.practicum.events.event.dto.EventShortDto;
-import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.dto.UserShortDto;
 
 import java.time.LocalDateTime;

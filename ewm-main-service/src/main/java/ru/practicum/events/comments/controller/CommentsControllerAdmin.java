@@ -42,7 +42,7 @@ public class CommentsControllerAdmin {
         return commentsServiceAdmin.getCommentById(commentId);
     }
 
-    @GetMapping("/{eventId}")
+    @GetMapping("/event/{eventId}")
     List<CommentDto> getAllCommentsByEventId(@PathVariable Long eventId,
                                              @PositiveOrZero @RequestParam(defaultValue = "0", required = false) Integer from,
                                              @Positive @RequestParam(defaultValue = "10", required = false) Integer size) {
@@ -50,6 +50,7 @@ public class CommentsControllerAdmin {
     }
 
     @DeleteMapping("/{commentId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteComment(@PathVariable Long commentId) {
         commentsServiceAdmin.deleteComment(commentId);
     }

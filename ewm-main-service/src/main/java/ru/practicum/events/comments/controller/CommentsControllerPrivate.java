@@ -9,7 +9,8 @@ import ru.practicum.events.comments.dto.CommentDto;
 import ru.practicum.events.comments.dto.InputCommentDto;
 import ru.practicum.events.comments.service.CommentsServicePrivate;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,8 @@ import java.util.List;
 @Slf4j
 public class CommentsControllerPrivate {
     private final CommentsServicePrivate commentsServicePrivate;
-@Autowired
+
+    @Autowired
     public CommentsControllerPrivate(CommentsServicePrivate commentsServicePrivate) {
         this.commentsServicePrivate = commentsServicePrivate;
     }
@@ -42,11 +44,14 @@ public class CommentsControllerPrivate {
 
     @GetMapping("/event/{eventId}/user/{userId}")
     List<CommentDto> getAllCommentsByEventId(@PathVariable Long eventId,
-                                             @PathVariable Long userId) {
-        return commentsServicePrivate.getAllCommentsByEventId(eventId, userId);
+                                             @PathVariable Long userId,
+                                             @PositiveOrZero @RequestParam(defaultValue = "0", required = false) Integer from,
+                                             @Positive @RequestParam(defaultValue = "10", required = false) Integer size) {
+        return commentsServicePrivate.getAllCommentsByEventId(eventId, userId, from, size);
     }
 
     @DeleteMapping("/{commentId}/user/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteComment(@PathVariable Long commentId,
                        @PathVariable Long userId) {
         commentsServicePrivate.deleteComment(commentId, userId);
