@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "1bf57a27-8ef5-4d6c-8434-fb999fdc5b20",
-		"name": "Comments for GIT",
+		"_postman_id": "575bf3eb-42c5-4f48-b0c2-756208acb7d5",
+		"name": "Comments GIT-2",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23942420"
 	},
@@ -9,414 +9,6 @@
 		{
 			"name": "Commets admin",
 			"item": [
-				{
-					"name": "User 64 - Добавление пользователя (Владелец события)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"pm.expect(target).to.have.property('email');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');\r",
-									"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"Ovchar@mail.ru\",\r\n  \"name\": \"Овчаренко Артем\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/admin/users",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User 65 - Добавление пользователя Комментатор",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"pm.expect(target).to.have.property('email');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');\r",
-									"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"Astap@mail.ru\",\r\n  \"name\": \"Астапович Юра\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/admin/users",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Category 56- Добавление категории Туризм",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Категория должна содержать поля: id, name\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Название категории должно совпадать с отправленным');\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Категория - 1\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/admin/categories",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"categories"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Event 39 - Добавление события",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('title');\r",
-									"pm.expect(target).to.have.property('annotation');\r",
-									"pm.expect(target).to.have.property('category');\r",
-									"pm.expect(target).to.have.property('paid');\r",
-									"pm.expect(target).to.have.property('eventDate');\r",
-									"pm.expect(target).to.have.property('initiator');\r",
-									"pm.expect(target).to.have.property('description');\r",
-									"pm.expect(target).to.have.property('participantLimit');\r",
-									"pm.expect(target).to.have.property('state');\r",
-									"pm.expect(target).to.have.property('createdOn');\r",
-									"pm.expect(target).to.have.property('location');\r",
-									"pm.expect(target).to.have.property('requestModeration');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(target.title).equal(source.title, 'Название события должно соответствовать названию события в запросе');\r",
-									"    pm.expect(target.annotation).equal(source.annotation, 'Аннотация события должна соответствовать аннотации события в запросе');\r",
-									"    pm.expect(target.paid.toString()).equal(source.paid.toString(), 'Стоимость события должна соответствовать стоимости события в запросе');\r",
-									"    pm.expect(target.eventDate).equal(source.eventDate, 'Дата проведения события должна соответствовать дате проведения события в запросе');\r",
-									"    pm.expect(target.description).equal(source.description, 'Описание события должно соответствовать описание события в запросе');\r",
-									"    pm.expect(target.participantLimit.toString()).equal(source.participantLimit.toString(), 'Лимит участников события должно соответствовать лимиту участников события в запросе');\r",
-									"    pm.expect(target.location.lat.toString()).equal(source.location.lat.toString(), 'Широта локации проведения события должна соответствовать широте локации проведения события в запросе');\r",
-									"    pm.expect(target.location.lon.toString()).equal(source.location.lon.toString(), 'Долгота локации проведения события должна соответствовать долготе локации проведения события в запросе');\r",
-									"    pm.expect(target.requestModeration.toString()).equal(source.requestModeration.toString(), 'Необходимость модерации события должна соответствовать необходимости модерации события в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"annotation\": \"Краткое описание события\",\r\n  \"category\": 56,\r\n  \"description\": \"Полное описание события\",\r\n  \"eventDate\": \"2023-05-15 15:00:00\",\r\n\"location\": {\r\n    \"lat\": 55.75416,\r\n    \"lon\": 37.62\r\n  },\r\n\"paid\": true,\r\n\"participantLimit\": 45,\r\n\"requestModeration\": false,\r\n\"title\": \"Краткое описание\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/users/:userId/events",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								":userId",
-								"events"
-							],
-							"variable": [
-								{
-									"key": "userId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Event 39 - Публикация сообщения",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.environment.set({\r",
-									"  \"annotation\": \"Краткое описание события\",\r",
-									"    \"category\": {\r",
-									"        \"id\": 1,\r",
-									"        \"name\": \"Категория - 1\"\r",
-									"    },\r",
-									"    \"confirmedRequests\": 0,\r",
-									"    \"createdOn\": \"2023-05-07 22:36:55\",\r",
-									"    \"description\": \"Полное описание события\",\r",
-									"    \"eventDate\": \"2023-05-15 15:00:00\",\r",
-									"    \"id\": 4,\r",
-									"    \"initiator\": {\r",
-									"        \"id\": 1,\r",
-									"        \"name\": \"Овчаренко Артем\"\r",
-									"    },\r",
-									"    \"location\": {\r",
-									"        \"lat\": 55.75416,\r",
-									"        \"lon\": 37.62\r",
-									"    },\r",
-									"    \"paid\": true,\r",
-									"    \"participantLimit\": 45,\r",
-									"    \"publishedOn\": \"2023-05-07 23:20:14\",\r",
-									"    \"requestModeration\": false,\r",
-									"    \"state\": \"PUBLISHED\",\r",
-									"    \"title\": \"Краткое описание\",\r",
-									"    \"views\": 0\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-									"    pm.response.to.be.ok;    \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = pm.environment.toObject();\r",
-									"const target = pm.response.json();\r",
-									"console.log(source)\r",
-									"console.log(target)\r",
-									"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, publishedOn, location, requestModeration\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('title');\r",
-									"pm.expect(target).to.have.property('annotation');\r",
-									"pm.expect(target).to.have.property('category');\r",
-									"pm.expect(target).to.have.property('paid');\r",
-									"pm.expect(target).to.have.property('eventDate');\r",
-									"pm.expect(target).to.have.property('initiator');\r",
-									"pm.expect(target).to.have.property('description');\r",
-									"pm.expect(target).to.have.property('participantLimit');\r",
-									"pm.expect(target).to.have.property('state');\r",
-									"pm.expect(target).to.have.property('createdOn');\r",
-									"pm.expect(target).to.have.property('publishedOn');\r",
-									"pm.expect(target).to.have.property('location');\r",
-									"pm.expect(target).to.have.property('requestModeration');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\"stateAction\": \"PUBLISH_EVENT\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/admin/events/:eventId",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"events",
-								":eventId"
-							],
-							"variable": [
-								{
-									"key": "eventId",
-									"value": "39",
-									"description": "(Required) id события"
-								}
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Comment 1 -Добавление коммента",
 					"event": [
@@ -456,7 +48,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент1\",\r\n  \"userId\": 64,\r\n  \"eventId\": 39\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент1\",\r\n  \"userId\": 1,\r\n  \"eventId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -617,7 +209,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"КомментAdmin\",\r\n  \"userId\": 64,\r\n  \"eventId\": 39,\r\n  \"commentStateDto\": \"PUBLISHED\"\r\n}",
+							"raw": "{\r\n  \"text\": \"КомментAdmin\",\r\n  \"userId\": 1,\r\n  \"eventId\": 1,\r\n  \"commentStateDto\": \"PUBLISHED\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -647,170 +239,7 @@
 					"response": []
 				},
 				{
-					"name": "User 66 - Добавление пользователя 66 владелец события 40",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"pm.expect(target).to.have.property('email');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');\r",
-									"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"Stp90@mail.ru\",\r\n  \"name\": \"Степанюк Иван\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/admin/users",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Event 40 Добавление событие",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('title');\r",
-									"pm.expect(target).to.have.property('annotation');\r",
-									"pm.expect(target).to.have.property('category');\r",
-									"pm.expect(target).to.have.property('paid');\r",
-									"pm.expect(target).to.have.property('eventDate');\r",
-									"pm.expect(target).to.have.property('initiator');\r",
-									"pm.expect(target).to.have.property('description');\r",
-									"pm.expect(target).to.have.property('participantLimit');\r",
-									"pm.expect(target).to.have.property('state');\r",
-									"pm.expect(target).to.have.property('createdOn');\r",
-									"pm.expect(target).to.have.property('location');\r",
-									"pm.expect(target).to.have.property('requestModeration');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(target.title).equal(source.title, 'Название события должно соответствовать названию события в запросе');\r",
-									"    pm.expect(target.annotation).equal(source.annotation, 'Аннотация события должна соответствовать аннотации события в запросе');\r",
-									"    pm.expect(target.paid.toString()).equal(source.paid.toString(), 'Стоимость события должна соответствовать стоимости события в запросе');\r",
-									"    pm.expect(target.eventDate).equal(source.eventDate, 'Дата проведения события должна соответствовать дате проведения события в запросе');\r",
-									"    pm.expect(target.description).equal(source.description, 'Описание события должно соответствовать описание события в запросе');\r",
-									"    pm.expect(target.participantLimit.toString()).equal(source.participantLimit.toString(), 'Лимит участников события должно соответствовать лимиту участников события в запросе');\r",
-									"    pm.expect(target.location.lat.toString()).equal(source.location.lat.toString(), 'Широта локации проведения события должна соответствовать широте локации проведения события в запросе');\r",
-									"    pm.expect(target.location.lon.toString()).equal(source.location.lon.toString(), 'Долгота локации проведения события должна соответствовать долготе локации проведения события в запросе');\r",
-									"    pm.expect(target.requestModeration.toString()).equal(source.requestModeration.toString(), 'Необходимость модерации события должна соответствовать необходимости модерации события в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"annotation\": \"Событие 2 владелец 3\",\r\n  \"category\": 56,\r\n  \"description\": \"Событие 2 полное описание\",\r\n  \"eventDate\": \"2023-05-15 15:00:00\",\r\n\"location\": {\r\n    \"lat\": 55.75416,\r\n    \"lon\": 37.62\r\n  },\r\n\"paid\": true,\r\n\"participantLimit\": 45,\r\n\"requestModeration\": false,\r\n\"title\": \"Событие 2 кратко\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/users/:userId/events",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								":userId",
-								"events"
-							],
-							"variable": [
-								{
-									"key": "userId",
-									"value": "66"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Comment 2 -  Коммент 2 принадлежит событию 2",
+					"name": "Comment 2 -  Коммент 2 принадлежит событию 1",
 					"event": [
 						{
 							"listen": "test",
@@ -848,7 +277,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент2\",\r\n  \"userId\": 66,\r\n  \"eventId\": 40\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент2\",\r\n  \"userId\": 2,\r\n  \"eventId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -898,7 +327,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"КомментAdmin2\",\r\n  \"userId\": 66,\r\n  \"eventId\": 39,\r\n  \"commentStateDto\": \"PUBLISHED\"\r\n}",
+							"raw": "{\r\n  \"text\": \"КомментAdmin2\",\r\n  \"userId\": 2,\r\n  \"eventId\": 3,\r\n  \"commentStateDto\": \"PUBLISHED\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -928,22 +357,33 @@
 					"response": []
 				},
 				{
-					"name": "Обновление коммента admin 409",
+					"name": "Обновление коммента 2 admin",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
-									"    pm.response.to.be.clientError;    \r",
+									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
+									"    pm.response.to.have.status(200);  \r",
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
 									"});\r",
 									"\r",
+									"const source = JSON.parse(pm.request.body.raw);\r",
 									"const target = pm.response.json();\r",
 									"\r",
-									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
-									"    pm.expect(target).to.have.property('status');\r",
+									"pm.test(\"Комментарий должен содержать поля: id, text, createdOn, author, event, state\", function () {\r",
+									"pm.expect(target).to.have.property('id');\r",
+									"pm.expect(target).to.have.property('text');\r",
+									"pm.expect(target).to.have.property('createdOn');\r",
+									"pm.expect(target).to.have.property('author');\r",
+									"pm.expect(target).to.have.property('event');\r",
+									"pm.expect(target).to.have.property('state');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
+									"    pm.expect(target.id).to.not.be.null;\r",
+									"    pm.expect(target.text).equal(source.text, 'Название события должно соответствовать названию события в запросе');\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -955,7 +395,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"КомментAdmin2UPDATE\",\r\n  \"userId\": 62,\r\n  \"eventId\": 39,\r\n  \"commentStateDto\": null\r\n  }",
+							"raw": "{\r\n  \"text\": \"КомментAdmin2UPDATE\",\r\n  \"userId\": 2,\r\n  \"eventId\": 1,\r\n  \"commentStateDto\": null\r\n  }",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1015,10 +455,10 @@
 									"    pm.expect(target.text).to.eql(\"КомментAdmin\");\r",
 									"});\r",
 									"pm.test(\"Соотвествие author.id\", function () {\r",
-									"    pm.expect(target.author.id).to.eql(64);\r",
+									"    pm.expect(target.author.id).to.eql(1);\r",
 									"});\r",
 									"pm.test(\"Соотвествие event.id\", function () {\r",
-									"    pm.expect(target.event.id).to.eql(39);\r",
+									"    pm.expect(target.event.id).to.eql(1);\r",
 									"});\r",
 									"pm.test(\"Соотвествие state\", function () {\r",
 									"    pm.expect(target.state).to.eql(\"PUBLISHED\");\r",
@@ -1093,7 +533,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент3\",\r\n  \"userId\": 64,\r\n  \"eventId\": 39\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент3\",\r\n  \"userId\": 3,\r\n  \"eventId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1129,7 +569,7 @@
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
+									"    pm.expect(jsonData.length, 'List length must be 3').to.eql(3);\r",
 									"});\r",
 									""
 								],
@@ -1166,7 +606,7 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "39"
+									"value": "1"
 								}
 							]
 						}
@@ -1276,7 +716,7 @@
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
+									"    pm.expect(jsonData.length, 'List length must be 2').to.eql(2);\r",
 									"});\r",
 									""
 								],
@@ -1313,7 +753,7 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "39"
+									"value": "1"
 								}
 							]
 						}
@@ -1325,388 +765,6 @@
 		{
 			"name": "Commets Private",
 			"item": [
-				{
-					"name": "User 67 - Добавление пользователя (Владелец события)",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"pm.expect(target).to.have.property('email');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');\r",
-									"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"Grom@mail.ru\",\r\n  \"name\": \"Громов Иван\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/admin/users",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User 68 - Добавление пользователя Комментатор",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"pm.expect(target).to.have.property('email');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');\r",
-									"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"VA@mail.ru\",\r\n  \"name\": \"Волкова Анастасия\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/admin/users",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Category 57 - Добавление категории Категория 2",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Категория должна содержать поля: id, name\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Название категории должно совпадать с отправленным');\r",
-									"});\r",
-									"\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Категория - 2\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/admin/categories",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"categories"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Event 41- Добавление события",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('title');\r",
-									"pm.expect(target).to.have.property('annotation');\r",
-									"pm.expect(target).to.have.property('category');\r",
-									"pm.expect(target).to.have.property('paid');\r",
-									"pm.expect(target).to.have.property('eventDate');\r",
-									"pm.expect(target).to.have.property('initiator');\r",
-									"pm.expect(target).to.have.property('description');\r",
-									"pm.expect(target).to.have.property('participantLimit');\r",
-									"pm.expect(target).to.have.property('state');\r",
-									"pm.expect(target).to.have.property('createdOn');\r",
-									"pm.expect(target).to.have.property('location');\r",
-									"pm.expect(target).to.have.property('requestModeration');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(target.title).equal(source.title, 'Название события должно соответствовать названию события в запросе');\r",
-									"    pm.expect(target.annotation).equal(source.annotation, 'Аннотация события должна соответствовать аннотации события в запросе');\r",
-									"    pm.expect(target.paid.toString()).equal(source.paid.toString(), 'Стоимость события должна соответствовать стоимости события в запросе');\r",
-									"    pm.expect(target.eventDate).equal(source.eventDate, 'Дата проведения события должна соответствовать дате проведения события в запросе');\r",
-									"    pm.expect(target.description).equal(source.description, 'Описание события должно соответствовать описание события в запросе');\r",
-									"    pm.expect(target.participantLimit.toString()).equal(source.participantLimit.toString(), 'Лимит участников события должно соответствовать лимиту участников события в запросе');\r",
-									"    pm.expect(target.location.lat.toString()).equal(source.location.lat.toString(), 'Широта локации проведения события должна соответствовать широте локации проведения события в запросе');\r",
-									"    pm.expect(target.location.lon.toString()).equal(source.location.lon.toString(), 'Долгота локации проведения события должна соответствовать долготе локации проведения события в запросе');\r",
-									"    pm.expect(target.requestModeration.toString()).equal(source.requestModeration.toString(), 'Необходимость модерации события должна соответствовать необходимости модерации события в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"annotation\": \"Краткое описание события 2\",\r\n  \"category\": 57,\r\n  \"description\": \"Полное описание событиям2\",\r\n  \"eventDate\": \"2023-11-15 12:00:00\",\r\n\"location\": {\r\n    \"lat\": 57.75416,\r\n    \"lon\": 38.62\r\n  },\r\n\"paid\": true,\r\n\"participantLimit\": 10,\r\n\"requestModeration\": false,\r\n\"title\": \"Краткое описание 2\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/users/:userId/events",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								":userId",
-								"events"
-							],
-							"variable": [
-								{
-									"key": "userId",
-									"value": "67"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Event 3 - Публикация сообщения",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 200 и данные в формате json\", function () {\r",
-									"    pm.response.to.be.ok;    \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = pm.environment.toObject();\r",
-									"const target = pm.response.json();\r",
-									"console.log(source)\r",
-									"console.log(target)\r",
-									"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, publishedOn, location, requestModeration\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('title');\r",
-									"pm.expect(target).to.have.property('annotation');\r",
-									"pm.expect(target).to.have.property('category');\r",
-									"pm.expect(target).to.have.property('paid');\r",
-									"pm.expect(target).to.have.property('eventDate');\r",
-									"pm.expect(target).to.have.property('initiator');\r",
-									"pm.expect(target).to.have.property('description');\r",
-									"pm.expect(target).to.have.property('participantLimit');\r",
-									"pm.expect(target).to.have.property('state');\r",
-									"pm.expect(target).to.have.property('createdOn');\r",
-									"pm.expect(target).to.have.property('publishedOn');\r",
-									"pm.expect(target).to.have.property('location');\r",
-									"pm.expect(target).to.have.property('requestModeration');\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n\"stateAction\": \"PUBLISH_EVENT\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/admin/events/:eventId",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"events",
-								":eventId"
-							],
-							"variable": [
-								{
-									"key": "eventId",
-									"value": "41",
-									"description": "(Required) id события"
-								}
-							]
-						}
-					},
-					"response": []
-				},
 				{
 					"name": "Comment  -Добавление коммента с ненормативной лексикой",
 					"event": [
@@ -1735,7 +793,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"МаТ\",\r\n  \"userId\": 68,\r\n  \"eventId\": 41\r\n}",
+							"raw": "{\r\n  \"text\": \"МаТ\",\r\n  \"userId\": 5,\r\n  \"eventId\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1796,7 +854,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент4\",\r\n  \"userId\": 68,\r\n  \"eventId\": 41\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент4\",\r\n  \"userId\": 5,\r\n  \"eventId\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1846,7 +904,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент4\",\r\n  \"userId\": 1000,\r\n  \"eventId\": 41\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент4\",\r\n  \"userId\": 1000,\r\n  \"eventId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1896,7 +954,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент4\",\r\n  \"userId\": 68,\r\n  \"eventId\": 100000\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент4\",\r\n  \"userId\": 2,\r\n  \"eventId\": 100000\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1919,7 +977,7 @@
 					"response": []
 				},
 				{
-					"name": "Update Comment 4 - Обновление коммента admin",
+					"name": "Update Comment 1 - Обновление коммента admin",
 					"event": [
 						{
 							"listen": "test",
@@ -1957,7 +1015,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент4Admin\",\r\n  \"userId\": 68,\r\n  \"eventId\": 41\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент4Admin\",\r\n  \"userId\": 5,\r\n  \"eventId\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1980,169 +1038,6 @@
 								{
 									"key": "commentId",
 									"value": "4"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "User 69 - Добавление пользователя 69 владелец события 42",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);\r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Пользователь должен содержать поля: id, name, email\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('name');\r",
-									"pm.expect(target).to.have.property('email');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(source.name).equal(target.name, 'Имя пользователя должно соответствовать отправленному в запросе');\r",
-									"    pm.expect(source.email).equal(target.email, 'Почта пользователя должна соответствовать отправленной в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "*/*",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"Stssp@mail.ru\",\r\n  \"name\": \"Степанов Иван\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "localhost:8080/admin/users",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"admin",
-								"users"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Event 42 Добавление 42 событие",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Событие должно содержать поля: id, title, annotation, category, paid, eventDate, initiator, description, participantLimit, state, createdOn, location, requestModeration\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('title');\r",
-									"pm.expect(target).to.have.property('annotation');\r",
-									"pm.expect(target).to.have.property('category');\r",
-									"pm.expect(target).to.have.property('paid');\r",
-									"pm.expect(target).to.have.property('eventDate');\r",
-									"pm.expect(target).to.have.property('initiator');\r",
-									"pm.expect(target).to.have.property('description');\r",
-									"pm.expect(target).to.have.property('participantLimit');\r",
-									"pm.expect(target).to.have.property('state');\r",
-									"pm.expect(target).to.have.property('createdOn');\r",
-									"pm.expect(target).to.have.property('location');\r",
-									"pm.expect(target).to.have.property('requestModeration');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(target.title).equal(source.title, 'Название события должно соответствовать названию события в запросе');\r",
-									"    pm.expect(target.annotation).equal(source.annotation, 'Аннотация события должна соответствовать аннотации события в запросе');\r",
-									"    pm.expect(target.paid.toString()).equal(source.paid.toString(), 'Стоимость события должна соответствовать стоимости события в запросе');\r",
-									"    pm.expect(target.eventDate).equal(source.eventDate, 'Дата проведения события должна соответствовать дате проведения события в запросе');\r",
-									"    pm.expect(target.description).equal(source.description, 'Описание события должно соответствовать описание события в запросе');\r",
-									"    pm.expect(target.participantLimit.toString()).equal(source.participantLimit.toString(), 'Лимит участников события должно соответствовать лимиту участников события в запросе');\r",
-									"    pm.expect(target.location.lat.toString()).equal(source.location.lat.toString(), 'Широта локации проведения события должна соответствовать широте локации проведения события в запросе');\r",
-									"    pm.expect(target.location.lon.toString()).equal(source.location.lon.toString(), 'Долгота локации проведения события должна соответствовать долготе локации проведения события в запросе');\r",
-									"    pm.expect(target.requestModeration.toString()).equal(source.requestModeration.toString(), 'Необходимость модерации события должна соответствовать необходимости модерации события в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"annotation\": \"Событие 4 владелец 6\",\r\n  \"category\": 57,\r\n  \"description\": \"Событие 4 полное описание\",\r\n  \"eventDate\": \"2023-05-15 15:00:00\",\r\n\"location\": {\r\n    \"lat\": 55.75416,\r\n    \"lon\": 37.62\r\n  },\r\n\"paid\": true,\r\n\"participantLimit\": 45,\r\n\"requestModeration\": false,\r\n\"title\": \"Событие 4 кратко\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/users/:userId/events",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								":userId",
-								"events"
-							],
-							"variable": [
-								{
-									"key": "userId",
-									"value": "69"
 								}
 							]
 						}
@@ -2188,7 +1083,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент5\",\r\n  \"userId\": 68,\r\n  \"eventId\": 42\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент5\",\r\n  \"userId\": 6,\r\n  \"eventId\": 4\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2238,7 +1133,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент 5 Обновление\",\r\n  \"userId\": 69,\r\n  \"eventId\": 39\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент 5 Обновление\",\r\n  \"userId\": 6,\r\n  \"eventId\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2295,7 +1190,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент 5 Обновление\",\r\n  \"userId\": 67,\r\n  \"eventId\": 42\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент 5 Обновление\",\r\n  \"userId\": 1,\r\n  \"eventId\": 4\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2363,7 +1258,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент 5 Обновление!!\",\r\n  \"userId\": 68,\r\n  \"eventId\": 42\r\n}",
+							"raw": "{\r\n  \"text\": \"Коммент 5 Обновление!!\",\r\n  \"userId\": 6,\r\n  \"eventId\": 4\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2440,7 +1335,7 @@
 								},
 								{
 									"key": "userId",
-									"value": "64"
+									"value": "1"
 								}
 							]
 						}
@@ -2478,10 +1373,10 @@
 									"    pm.expect(target.text).to.eql(\"Коммент 5 Обновление!!\");\r",
 									"});\r",
 									"pm.test(\"Соотвествие author.id\", function () {\r",
-									"    pm.expect(target.author.id).to.eql(68);\r",
+									"    pm.expect(target.author.id).to.eql(6);\r",
 									"});\r",
 									"pm.test(\"Соотвествие event.id\", function () {\r",
-									"    pm.expect(target.event.id).to.eql(42);\r",
+									"    pm.expect(target.event.id).to.eql(4);\r",
 									"});\r",
 									"pm.test(\"Соотвествие state\", function () {\r",
 									"    pm.expect(target.state).to.eql(\"UPDATE\");\r",
@@ -2516,7 +1411,7 @@
 								},
 								{
 									"key": "userId",
-									"value": "68"
+									"value": "6"
 								}
 							]
 						}
@@ -2566,11 +1461,11 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "42"
+									"value": "1"
 								},
 								{
 									"key": "userId",
-									"value": "68"
+									"value": "1"
 								}
 							]
 						}
@@ -2624,7 +1519,7 @@
 								},
 								{
 									"key": "userId",
-									"value": "64"
+									"value": "1"
 								}
 							]
 						}
@@ -2671,7 +1566,7 @@
 								},
 								{
 									"key": "userId",
-									"value": "68"
+									"value": "6"
 								}
 							]
 						}
@@ -2725,7 +1620,7 @@
 								},
 								{
 									"key": "userId",
-									"value": "68"
+									"value": "6"
 								}
 							]
 						}
@@ -2738,7 +1633,7 @@
 			"name": "Comments Public",
 			"item": [
 				{
-					"name": "Поиск всех комментов у события  1 по его id Copy",
+					"name": "Поиск всех комментов у события  1 по его id",
 					"event": [
 						{
 							"listen": "test",
@@ -2788,69 +1683,8 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "300"
+									"value": "3000"
 								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Comment 6 -  Коммент 6 принадлежит событию 1",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
-									"    pm.response.to.have.status(201);  \r",
-									"    pm.response.to.be.withBody;\r",
-									"    pm.response.to.be.json;\r",
-									"});\r",
-									"\r",
-									"const source = JSON.parse(pm.request.body.raw);\r",
-									"const target = pm.response.json();\r",
-									"\r",
-									"pm.test(\"Комментарий должен содержать поля: id, text, createdOn, author, event, state\", function () {\r",
-									"pm.expect(target).to.have.property('id');\r",
-									"pm.expect(target).to.have.property('text');\r",
-									"pm.expect(target).to.have.property('createdOn');\r",
-									"pm.expect(target).to.have.property('author');\r",
-									"pm.expect(target).to.have.property('event');\r",
-									"pm.expect(target).to.have.property('state');\r",
-									"});\r",
-									"\r",
-									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
-									"    pm.expect(target.id).to.not.be.null;\r",
-									"    pm.expect(target.text).equal(source.text, 'Название события должно соответствовать названию события в запросе');\r",
-									"});"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"Коммент6\",\r\n  \"userId\": 65,\r\n  \"eventId\": 39\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "http://localhost:8080/private/comments",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"private",
-								"comments"
 							]
 						}
 					},
@@ -2906,7 +1740,7 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "39"
+									"value": "1"
 								}
 							]
 						}
@@ -2914,7 +1748,68 @@
 					"response": []
 				},
 				{
-					"name": "Update Comment 6 - Обновление коммента admin",
+					"name": "Comment 6 -  Коммент 6 принадлежит событию 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 201 и данные в формате json\", function () {\r",
+									"    pm.response.to.have.status(201);  \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const source = JSON.parse(pm.request.body.raw);\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Комментарий должен содержать поля: id, text, createdOn, author, event, state\", function () {\r",
+									"pm.expect(target).to.have.property('id');\r",
+									"pm.expect(target).to.have.property('text');\r",
+									"pm.expect(target).to.have.property('createdOn');\r",
+									"pm.expect(target).to.have.property('author');\r",
+									"pm.expect(target).to.have.property('event');\r",
+									"pm.expect(target).to.have.property('state');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Данные в ответе должны соответствовать данным в запросе\", function () {\r",
+									"    pm.expect(target.id).to.not.be.null;\r",
+									"    pm.expect(target.text).equal(source.text, 'Название события должно соответствовать названию события в запросе');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"Коммент6\",\r\n  \"userId\": 1,\r\n  \"eventId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/private/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"private",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Comment 1 - Обновление коммента admin Copy",
 					"event": [
 						{
 							"listen": "test",
@@ -2952,7 +1847,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"КомментAdmin\",\r\n  \"userId\": 65,\r\n  \"eventId\": 39,\r\n  \"commentStateDto\": \"CANCELED\"\r\n}",
+							"raw": "{\r\n  \"text\": \"КомментAdmin\",\r\n  \"userId\": 1,\r\n  \"eventId\": 1,\r\n  \"commentStateDto\": \"CANCELED\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3020,7 +1915,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"text\": \"КомментAdmin\",\r\n  \"userId\": 64,\r\n  \"eventId\": 39,\r\n  \"commentStateDto\": \"CANCELED\"\r\n}",
+							"raw": "{\r\n  \"text\": \"КомментAdmin\",\r\n  \"userId\": 2,\r\n  \"eventId\": 1,\r\n  \"commentStateDto\": \"CANCELED\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -3050,7 +1945,7 @@
 					"response": []
 				},
 				{
-					"name": "Поиск всех комментов у события  1 по его id Copy 3",
+					"name": "Поиск всех комментов у события  1 по его id",
 					"event": [
 						{
 							"listen": "test",
@@ -3063,7 +1958,7 @@
 									"    pm.response.to.be.withBody;\r",
 									"    pm.response.to.be.json;\r",
 									"    var jsonData = pm.response.json();\r",
-									"    pm.expect(jsonData.length, 'List length must be 0').to.eql(0);\r",
+									"    pm.expect(jsonData.length, 'List length must be 1').to.eql(1);\r",
 									"});\r",
 									""
 								],
@@ -3099,7 +1994,453 @@
 							"variable": [
 								{
 									"key": "eventId",
-									"value": "39"
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error",
+			"item": [
+				{
+					"name": "Comment символов более 7000",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.clientError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.\",\r\n  \"userId\": 1,\r\n  \"eventId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment \"userId\": null",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.clientError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"Incidunt eveniet ratione sint aspernatur.\",\r\n  \"userId\": null,\r\n  \"eventId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment  \"eventId\": null",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.clientError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"Incidunt eveniet ratione sint aspernatur.\",\r\n  \"userId\": 1,\r\n  \"eventId\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment символов более 7000  update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.clientError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.Sed blanditiis quas beatae qui quia quia natus et sed. Expedita ut vitae error possimus cupiditate et quae natus. Dolorem unde neque deserunt in assumenda omnis. Sed ab occaecati quae fuga. Incidunt eveniet ratione sint aspernatur.\",\r\n  \"userId\": 1,\r\n  \"eventId\": 1,\r\n  \"commentStateDto\": \"PUBLISHED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/comments/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "commentId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment \"userId\": null Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.clientError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"Incidunt eveniet ratione sint aspernatur.\",\r\n  \"userId\": null,\r\n  \"eventId\": 1,\r\n  \"commentStateDto\": \"PUBLISHED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/comments/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "commentId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment  \"eventId\": null Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 409 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.clientError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"text\": \"Incidunt eveniet ratione sint aspernatur.\",\r\n  \"userId\": 1,\r\n  \"eventId\": null,\r\n  \"commentStateDto\": \"PUBLISHED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/admin/comments/:commentId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments",
+								":commentId"
+							],
+							"variable": [
+								{
+									"key": "commentId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск всех комментов у события  1 по его id -1/100",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 500 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.serverError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/comments/event/:eventId?from=-1&size=100",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments",
+								"event",
+								":eventId"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "-1"
+								},
+								{
+									"key": "size",
+									"value": "100"
+								}
+							],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Поиск всех комментов у события  1 по его id 0/-10",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Ответ должен содержать код статуса 500 и данные в формате json\", function () {\r",
+									"    pm.response.to.be.serverError;    \r",
+									"    pm.response.to.be.withBody;\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"const target = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Ошибка должна содержать поля: status\", function () {\r",
+									"    pm.expect(target).to.have.property('status');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/admin/comments/event/:eventId?from=0&size=-10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"admin",
+								"comments",
+								"event",
+								":eventId"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "-10"
+								}
+							],
+							"variable": [
+								{
+									"key": "eventId",
+									"value": "1"
 								}
 							]
 						}

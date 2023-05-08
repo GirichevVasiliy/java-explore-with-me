@@ -82,12 +82,15 @@ public class CommentsServiceAdminImpl implements CommentsServiceAdmin {
     private void addCommentStatusAdmin(UpdateCommentAdminDto updateComment, Comment comment) {
         if (updateComment.getCommentStateDto().equals(CommentStateDto.CANCELED)) {
             comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
+            return;
         }
         if (updateComment.getCommentStateDto().equals(CommentStateDto.PUBLISHED)) {
             comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
+            return;
         }
         if (updateComment.getCommentStateDto().equals(CommentStateDto.UPDATE)) {
             comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
+            return;
         } else {
             throw new BadRequestException("Статус не соответствует модификатору доступа");
         }
