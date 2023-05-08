@@ -86,8 +86,9 @@ public class CommentsServicePrivateImpl implements CommentsServicePrivate {
 
     @Override
     public void deleteComment(Long commentId, Long userId) {
-        findObjectInRepository.getUserById(userId);
+        User user = findObjectInRepository.getUserById(userId);
         Comment comment = findObjectInRepository.getCommentById(commentId);
+        processingComment.checkCommentOnOwner(comment, user);
         commentsRepository.delete(comment);
     }
 
