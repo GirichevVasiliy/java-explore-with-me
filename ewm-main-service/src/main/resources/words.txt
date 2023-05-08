@@ -1,5 +1,0 @@
-# при желании можно применить https://github.com/bars38/Russian_ban_words/blob/master/words.txt
-мат
-брань
-ругательство
-оскорбление

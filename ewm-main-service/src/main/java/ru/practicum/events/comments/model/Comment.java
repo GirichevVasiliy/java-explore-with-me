@@ -26,8 +26,8 @@ public class Comment {
     @JoinColumn(name = "author_id")
     private User author;
     @ManyToOne
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "event_id",referencedColumnName = "id")
     private Event event;
-    @Column(name = "state")
+    @Enumerated(EnumType.STRING)
     private CommentState state;
 }

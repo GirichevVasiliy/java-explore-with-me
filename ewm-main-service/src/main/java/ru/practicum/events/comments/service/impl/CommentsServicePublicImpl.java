@@ -33,7 +33,7 @@ public class CommentsServicePublicImpl implements CommentsServicePublic {
     public List<CommentDto> getAllCommentsByEventId(Long eventId, Integer from, Integer size) {
         Event event = findObjectInRepository.getEventById(eventId);
         Pageable pageable = PageRequest.of(from, size);
-        List<Comment> comments = commentsRepository.findAllByEventAndStateNot(event, CommentState.CANCELED, pageable);
+        List<Comment> comments = commentsRepository.findAllByEventIsAndStateIsNot(event, CommentState.CANCELED, pageable);
         return comments.stream().map(CommentsMapper::commentToCommentDto).collect(Collectors.toList());
     }
 }

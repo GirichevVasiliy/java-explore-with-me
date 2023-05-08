@@ -16,5 +16,5 @@ public interface CommentsRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByEventIsAndAndAuthor(Event event, User user, Pageable pageable);
 
-    List<Comment> findAllByEventAndStateNot(Event event, CommentState state, Pageable pageable);
+    List<Comment> findAllByEventIsAndStateIsNot(Event event, CommentState state, Pageable pageable);
 }

@@ -10,7 +10,6 @@ import ru.practicum.events.comments.dto.InputCommentDto;
 import ru.practicum.events.comments.mapper.CommentsMapper;
 import ru.practicum.events.comments.model.Comment;
 import ru.practicum.events.comments.model.CommentState;
-import ru.practicum.events.comments.moderation.ModerationMessage;
 import ru.practicum.events.comments.service.CommentsServicePrivate;
 import ru.practicum.events.comments.storage.CommentsRepository;
 import ru.practicum.events.event.model.Event;
@@ -29,22 +28,19 @@ public class CommentsServicePrivateImpl implements CommentsServicePrivate {
     private final FindObjectInRepository findObjectInRepository;
     private final CommentsRepository commentsRepository;
     private final ProcessingComment processingComment;
-    private final ModerationMessage moderationMessage;
 
     @Autowired
     public CommentsServicePrivateImpl(FindObjectInRepository findObjectInRepository,
                                       CommentsRepository commentsRepository,
-                                      ProcessingComment processingComment,
-                                      ModerationMessage moderationMessage) {
+                                      ProcessingComment processingComment) {
         this.findObjectInRepository = findObjectInRepository;
         this.commentsRepository = commentsRepository;
         this.processingComment = processingComment;
-        this.moderationMessage = moderationMessage;
     }
 
     @Override
     public CommentDto createComment(InputCommentDto inputCommentDto) {
-        moderationMessage.moderationMessage(inputCommentDto.getText());
+        processingComment.moderationMessage(inputCommentDto.getText());
         Event event = findObjectInRepository.getEventById(inputCommentDto.getEventId());
         User user = findObjectInRepository.getUserById(inputCommentDto.getUserId());
         Comment comment = CommentsMapper.createComment(inputCommentDto, user, event);
@@ -53,7 +49,7 @@ public class CommentsServicePrivateImpl implements CommentsServicePrivate {
 
     @Override
     public CommentDto updateComment(Long commentId, InputCommentDto inputCommentDto) {
-        moderationMessage.moderationMessage(inputCommentDto.getText());
+        processingComment.moderationMessage(inputCommentDto.getText());
         Comment comment = findObjectInRepository.getCommentById(commentId);
         checkCommentStatus(comment);
         Event event = findObjectInRepository.getEventById(inputCommentDto.getEventId());
