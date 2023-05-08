@@ -64,8 +64,8 @@ CREATE TABLE IF NOT EXISTS users(
                                        CONSTRAINT fk_author_id FOREIGN KEY (author_id) REFERENCES users (id) ON DELETE CASCADE,
                                        CONSTRAINT fk_event_id FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE
 );
---CREATE INDEX categories_name_field ON categories (name);
---CREATE INDEX compilations_name_field ON compilations (pinned);
---CREATE INDEX events_state_field ON events (state);
---CREATE INDEX events_event_date_field ON events (event_date);
---CREATE INDEX events_paid_field ON events (paid);
+CREATE INDEX categories_name_field ON categories (name);
+CREATE INDEX compilations_name_field ON compilations (pinned);
+CREATE INDEX events_state_field ON events (state);
+CREATE INDEX events_event_date_field ON events (event_date);
+CREATE INDEX events_paid_field ON events (paid);
