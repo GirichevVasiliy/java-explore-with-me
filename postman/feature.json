@@ -694,7 +694,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"Stp@mail.ru\",\r\n  \"name\": \"Степанюк Иван\"\r\n}",
+							"raw": "{\r\n  \"email\": \"Stp90@mail.ru\",\r\n  \"name\": \"Степанюк Иван\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2478,10 +2478,10 @@
 									"    pm.expect(target.text).to.eql(\"Коммент 5 Обновление!!\");\r",
 									"});\r",
 									"pm.test(\"Соотвествие author.id\", function () {\r",
-									"    pm.expect(target.author.id).to.eql(6);\r",
+									"    pm.expect(target.author.id).to.eql(68);\r",
 									"});\r",
 									"pm.test(\"Соотвествие event.id\", function () {\r",
-									"    pm.expect(target.event.id).to.eql(4);\r",
+									"    pm.expect(target.event.id).to.eql(42);\r",
 									"});\r",
 									"pm.test(\"Соотвествие state\", function () {\r",
 									"    pm.expect(target.state).to.eql(\"UPDATE\");\r",
