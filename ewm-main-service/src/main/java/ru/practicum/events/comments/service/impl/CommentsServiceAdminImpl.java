@@ -14,6 +14,7 @@ import ru.practicum.events.comments.model.Comment;
 import ru.practicum.events.comments.service.CommentsServiceAdmin;
 import ru.practicum.events.comments.storage.CommentsRepository;
 import ru.practicum.events.event.model.Event;
+import ru.practicum.exception.BadRequestException;
 import ru.practicum.users.model.User;
 import ru.practicum.util.FindObjectInRepository;
 
@@ -87,6 +88,8 @@ public class CommentsServiceAdminImpl implements CommentsServiceAdmin {
         }
         if (updateComment.getCommentStateDto().equals(CommentStateDto.UPDATE)) {
             comment.setState(processingComment.determiningTheStatusForComment(updateComment.getCommentStateDto()));
+        } else {
+            throw new BadRequestException("Статус не соответствует модификатору доступа");
         }
     }
 }
