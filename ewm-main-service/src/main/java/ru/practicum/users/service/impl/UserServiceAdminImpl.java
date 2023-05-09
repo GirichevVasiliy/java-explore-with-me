@@ -8,13 +8,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictNameAndEmailException;
+import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.dto.NewUserRequest;
 import ru.practicum.users.dto.UserDto;
 import ru.practicum.users.mapper.UserMapper;
 import ru.practicum.users.model.User;
 import ru.practicum.users.service.UserServiceAdmin;
 import ru.practicum.users.storage.UserRepository;
-import ru.practicum.util.FindObjectInRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,10 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceAdminImpl implements UserServiceAdmin {
     private final UserRepository userRepository;
-    private final FindObjectInRepository findObjectInRepository;
 
     @Autowired
-    public UserServiceAdminImpl(UserRepository userRepository,
-                                FindObjectInRepository findObjectInRepository) {
+    public UserServiceAdminImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.findObjectInRepository = findObjectInRepository;
     }
 
     @Override
@@ -63,7 +60,12 @@ public class UserServiceAdminImpl implements UserServiceAdmin {
     @Override
     public void deleteUserById(Long userId) {
         log.info("Получен запрос на удаления пользователя  по id= {}", userId);
-        User user = findObjectInRepository.getUserById(userId);
+        User user = getUserById(userId);
         userRepository.delete(user);
+    }
+
+    private User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Пользователь c id = " + id + " не найден"));
     }
 }

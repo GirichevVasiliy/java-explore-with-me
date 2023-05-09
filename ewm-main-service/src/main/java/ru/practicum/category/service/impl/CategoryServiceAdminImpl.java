@@ -10,21 +10,25 @@ import ru.practicum.category.mapper.CategoryMapper;
 import ru.practicum.category.model.Category;
 import ru.practicum.category.service.CategoryServiceAdmin;
 import ru.practicum.category.storage.CategoryRepository;
+import ru.practicum.events.event.model.Event;
+import ru.practicum.events.event.storage.EventRepository;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictDeleteException;
 import ru.practicum.exception.ConflictNameCategoryException;
-import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.exception.ResourceNotFoundException;
+
+import java.util.List;
 
 @Service
 @Slf4j
 public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     private final CategoryRepository categoryRepository;
-    private final FindObjectInRepository findObjectInRepository;
+    private final EventRepository eventRepository;
 
     @Autowired
-    public CategoryServiceAdminImpl(CategoryRepository categoryRepository, FindObjectInRepository findObjectInRepository) {
+    public CategoryServiceAdminImpl(CategoryRepository categoryRepository, EventRepository eventRepository) {
         this.categoryRepository = categoryRepository;
-        this.findObjectInRepository = findObjectInRepository;
+        this.eventRepository = eventRepository;
     }
 
     @Override
@@ -37,8 +41,8 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     @Override
     public void deleteCategoryById(Long catId) {
         log.info("Запрос на удаление категории c id= {}", catId);
-        Category category = findObjectInRepository.getCategoryById(catId);
-        if (findObjectInRepository.isRelatedEvent(category)) {
+        Category category = getCategoryById(catId);
+        if (isRelatedEvent(category)) {
             throw new ConflictDeleteException("Существуют события, связанные с категорией " + category.getName());
         }
         categoryRepository.delete(category);
@@ -47,7 +51,7 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
     @Override
     public CategoryDto updateCategory(Long catId, CategoryDto categoryDto) {
         log.info("Запрос на обновлении категории c id= {}", catId);
-        Category category = findObjectInRepository.getCategoryById(catId);
+        Category category = getCategoryById(catId);
         category.setId(catId);
         category.setName(categoryDto.getName());
         return getCategoryDto(category, category.getName());
@@ -64,5 +68,15 @@ public class CategoryServiceAdminImpl implements CategoryServiceAdmin {
             log.warn("Запрос на добавлении категории {} составлен не корректно", name);
             throw new BadRequestException("Запрос на добавлении категории " + name + " составлен не корректно ");
         }
+    }
+
+    private Category getCategoryById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Категория c id = " + id + " не найдена"));
+    }
+
+    private boolean isRelatedEvent(Category category) {
+        List<Event> findEventByCategory = eventRepository.findEventByCategoryIs(category);
+        return !findEventByCategory.isEmpty();
     }
 }

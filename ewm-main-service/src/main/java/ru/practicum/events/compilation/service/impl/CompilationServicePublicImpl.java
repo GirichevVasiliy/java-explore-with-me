@@ -8,9 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.events.compilation.dto.CompilationDto;
 import ru.practicum.events.compilation.mapper.CompilationMapper;
+import ru.practicum.events.compilation.model.Compilation;
 import ru.practicum.events.compilation.service.CompilationServicePublic;
 import ru.practicum.events.compilation.storage.CompilationStorage;
-import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.exception.ResourceNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,13 +21,10 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class CompilationServicePublicImpl implements CompilationServicePublic {
     private final CompilationStorage compilationStorage;
-    private final FindObjectInRepository findObjectInRepository;
 
     @Autowired
-    public CompilationServicePublicImpl(CompilationStorage compilationStorage,
-                                        FindObjectInRepository findObjectInRepository) {
+    public CompilationServicePublicImpl(CompilationStorage compilationStorage) {
         this.compilationStorage = compilationStorage;
-        this.findObjectInRepository = findObjectInRepository;
     }
 
     @Override
@@ -40,6 +38,11 @@ public class CompilationServicePublicImpl implements CompilationServicePublic {
     @Override
     public CompilationDto getCompilationById(Long compId) {
         log.info("Получен запрос на поиск подборки событий по id= {}", compId);
-        return CompilationMapper.compilationToCompilationDto(findObjectInRepository.getCompilationById(compId));
+        return CompilationMapper.compilationToCompilationDto(getCompilationByIdInRepository(compId));
+    }
+
+    private Compilation getCompilationByIdInRepository(Long id) {
+        return compilationStorage.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Подборка событий c id = " + id + " не найдена"));
     }
 }

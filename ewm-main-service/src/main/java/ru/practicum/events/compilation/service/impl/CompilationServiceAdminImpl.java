@@ -12,7 +12,7 @@ import ru.practicum.events.compilation.service.CompilationServiceAdmin;
 import ru.practicum.events.compilation.storage.CompilationStorage;
 import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.storage.EventRepository;
-import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.exception.ResourceNotFoundException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -22,15 +22,12 @@ import java.util.Set;
 @Slf4j
 public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
     private final CompilationStorage compilationStorage;
-    private final FindObjectInRepository findObjectInRepository;
     private final EventRepository eventRepository;
 
     @Autowired
     public CompilationServiceAdminImpl(CompilationStorage compilationStorage,
-                                       FindObjectInRepository findObjectInRepository,
                                        EventRepository eventRepository) {
         this.compilationStorage = compilationStorage;
-        this.findObjectInRepository = findObjectInRepository;
         this.eventRepository = eventRepository;
     }
 
@@ -48,14 +45,14 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
     @Override
     public void deleteCompilationById(Long compId) {
         log.info("Получен запрос на удаление подборки событий по id= {}", compId);
-        findObjectInRepository.getCompilationById(compId);
+        getCompilationById(compId);
         compilationStorage.deleteById(compId);
     }
 
     @Override
     public CompilationDto updateCompilationById(Long compId, UpdateCompilationRequest updateCompilationRequest) {
         log.info("Получен запрос на обновление подборки событий по id= {}", compId);
-        Compilation newCompilation = findObjectInRepository.getCompilationById(compId);
+        Compilation newCompilation = getCompilationById(compId);
         Set<Event> events;
         if (updateCompilationRequest.getEvents() != null) {
             events = addEvents(updateCompilationRequest.getEvents());
@@ -72,5 +69,10 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
 
     private Set<Event> addEvents(List<Long> eventsIds) {
         return eventRepository.findAllByIdIsIn(eventsIds);
+    }
+
+    private Compilation getCompilationById(Long id) {
+        return compilationStorage.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Подборка событий c id = " + id + " не найдена"));
     }
 }

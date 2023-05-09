@@ -1,4 +1,4 @@
-package ru.practicum.util.util;
+package ru.practicum.util;
 
 import lombok.experimental.UtilityClass;
 import ru.practicum.exception.ValidationDateException;

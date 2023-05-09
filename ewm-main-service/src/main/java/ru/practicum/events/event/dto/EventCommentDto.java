@@ -11,11 +11,11 @@ import java.time.LocalDateTime;
 @Value
 @Builder
 public class EventCommentDto {
-    String annotation; // example: Эксклюзивность нашего шоу гарантирует привлечение максимальной зрительской аудитории
+    String annotation;
     CategoryDto category;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    LocalDateTime eventDate; //Дата и время на которые намечено событие (в формате "yyyy-MM-dd HH:mm:ss")
+    LocalDateTime eventDate;
     Long id;
-    UserShortDto initiator; //Пользователь (краткая информация)
-    String title; // example: Знаменитое шоу 'Летающая кукуруза'
+    UserShortDto initiator;
+    String title;
 }

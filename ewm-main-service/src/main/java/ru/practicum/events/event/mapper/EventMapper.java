@@ -7,13 +7,13 @@ import ru.practicum.events.event.dto.EventCommentDto;
 import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.dto.NewEventDto;
-import ru.practicum.events.event.dto.stateDto.EventStateDto;
+import ru.practicum.events.event.dto.stateDto.ActionStateDto;
 import ru.practicum.events.event.model.Event;
 import ru.practicum.events.event.model.EventState;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.users.mapper.UserMapper;
 import ru.practicum.users.model.User;
-import ru.practicum.util.util.DateFormatter;
+import ru.practicum.util.DateFormatter;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -89,16 +89,17 @@ public class EventMapper {
                 .build();
     }
 
-    public static EventState eventStateDtoToEventState(EventStateDto state) {
-        if (state.name().equals(EventStateDto.PENDING.name())) {
+    public EventState toEventState(ActionStateDto stateAction) {
+        if (stateAction.equals(ActionStateDto.SEND_TO_REVIEW)) {
             return EventState.PENDING;
-        }
-        if (state.name().equals(EventStateDto.CANCELED.name())) {
+        } else if (stateAction.equals(ActionStateDto.CANCEL_REVIEW)) {
             return EventState.CANCELED;
-        }
-        if (state.name().equals(EventStateDto.PUBLISHED.name())) {
+        } else if (stateAction.equals(ActionStateDto.PUBLISH_EVENT)) {
             return EventState.PUBLISHED;
+        } else if (stateAction.equals(ActionStateDto.REJECT_EVENT)) {
+            return EventState.CANCELED;
+        } else {
+            throw new BadRequestException("Статус не соответствует модификатору доступа");
         }
-        throw new BadRequestException("Нет такого статуса" + state.name());
     }
 }

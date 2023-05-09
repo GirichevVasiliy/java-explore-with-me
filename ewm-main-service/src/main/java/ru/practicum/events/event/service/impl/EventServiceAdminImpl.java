@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import ru.practicum.category.model.Category;
+import ru.practicum.category.storage.CategoryRepository;
 import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.UpdateEventAdminRequest;
 import ru.practicum.events.event.dto.stateDto.ActionStateDto;
@@ -18,8 +19,7 @@ import ru.practicum.events.request.model.RequestStatus;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ForbiddenEventException;
 import ru.practicum.exception.ResourceNotFoundException;
-import ru.practicum.util.FindObjectInRepository;
-import ru.practicum.util.util.DateFormatter;
+import ru.practicum.util.DateFormatter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -32,15 +32,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EventServiceAdminImpl implements EventServiceAdmin {
     private final EventRepository eventRepository;
-    private final FindObjectInRepository findObjectInRepository;
+    private final CategoryRepository categoryRepository;
     private final ProcessingEvents processingEvents;
 
     @Autowired
     public EventServiceAdminImpl(EventRepository eventRepository,
-                                 FindObjectInRepository findObjectInRepository,
+                                 CategoryRepository categoryRepository,
                                  ProcessingEvents processingEvents) {
         this.eventRepository = eventRepository;
-        this.findObjectInRepository = findObjectInRepository;
+        this.categoryRepository = categoryRepository;
         this.processingEvents = processingEvents;
     }
 
@@ -74,7 +74,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
     @Override
     public EventFullDto updateEventById(Long eventId, UpdateEventAdminRequest updateEvent, HttpServletRequest request) {
         log.info("Получен запрос на обновление события с id= {} (администратором)", eventId);
-        Event event = findObjectInRepository.getEventById(eventId);
+        Event event = getEventById(eventId);
         eventAvailability(event);
         if (updateEvent.getEventDate() != null) {
             checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
@@ -83,7 +83,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             event.setAnnotation(updateEvent.getAnnotation());
         }
         if (updateEvent.getCategory() != null) {
-            Category category = findObjectInRepository.getCategoryById(updateEvent.getCategory());
+            Category category = getCategoryById(updateEvent.getCategory());
             event.setCategory(category);
         }
         if (updateEvent.getDescription() != null && !updateEvent.getDescription().isBlank()) {
@@ -110,7 +110,7 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
             } else if (event.getPublishedOn() == null) {
                 event.setPublishedOn(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS));
             }
-            event.setState(determiningTheStatusForEvent(updateEvent.getStateAction()));
+            event.setState(EventMapper.toEventState(updateEvent.getStateAction()));
         }
         if (updateEvent.getTitle() != null && !updateEvent.getTitle().isBlank()) {
             event.setTitle(updateEvent.getTitle());
@@ -139,20 +139,6 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         return timeNow;
     }
 
-    private EventState determiningTheStatusForEvent(ActionStateDto stateAction) {
-        if (stateAction.equals(ActionStateDto.SEND_TO_REVIEW)) {
-            return EventState.PENDING;
-        } else if (stateAction.equals(ActionStateDto.CANCEL_REVIEW)) {
-            return EventState.CANCELED;
-        } else if (stateAction.equals(ActionStateDto.PUBLISH_EVENT)) {
-            return EventState.PUBLISHED;
-        } else if (stateAction.equals(ActionStateDto.REJECT_EVENT)) {
-            return EventState.CANCELED;
-        } else {
-            throw new BadRequestException("Статус не соответствует модификатору доступа");
-        }
-    }
-
     private void eventAvailability(Event event) {
         if (event.getState().equals(EventState.PUBLISHED) || event.getState().equals(EventState.CANCELED)) {
             throw new ForbiddenEventException("Статус события не позволяет редоктировать событие, статус: " + event.getState());
@@ -164,5 +150,15 @@ public class EventServiceAdminImpl implements EventServiceAdmin {
         event.setConfirmedRequests(count);
         long views = processingEvents.searchViews(event, request);
         event.setViews(views);
+    }
+
+    private Category getCategoryById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Категория c id = " + id + " не найдена"));
+    }
+
+    private Event getEventById(Long id) {
+        return eventRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
     }
 }

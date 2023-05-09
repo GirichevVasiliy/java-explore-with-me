@@ -12,9 +12,9 @@ import java.util.List;
 
 @Repository
 public interface CommentsRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findAllByEventIs(Event event, Pageable pageable);
+    List<Comment> findByEvent(Event event, Pageable pageable);
 
-    List<Comment> findAllByEventIsAndAndAuthor(Event event, User user, Pageable pageable);
+    List<Comment> findByEventAndAuthor(Event event, User user, Pageable pageable);
 
-    List<Comment> findAllByEventIsAndStateIsNot(Event event, CommentState state, Pageable pageable);
+    List<Comment> findByEventAndStateIsNot(Event event, CommentState state, Pageable pageable);
 }

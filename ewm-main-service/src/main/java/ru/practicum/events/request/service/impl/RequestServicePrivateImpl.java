@@ -16,8 +16,9 @@ import ru.practicum.events.request.service.RequestServicePrivate;
 import ru.practicum.events.request.storage.RequestRepository;
 import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictRequestException;
+import ru.practicum.exception.ResourceNotFoundException;
 import ru.practicum.users.model.User;
-import ru.practicum.util.FindObjectInRepository;
+import ru.practicum.users.storage.UserRepository;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -29,17 +30,18 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class RequestServicePrivateImpl implements RequestServicePrivate {
+    private final UserRepository userRepository;
     private final RequestRepository requestRepository;
-    private final FindObjectInRepository findObjectInRepository;
     private final EventRepository eventRepository;
     private final ProcessingEvents processingEvents;
 
     @Autowired
-    public RequestServicePrivateImpl(RequestRepository requestRepository,
-                                     FindObjectInRepository findObjectInRepository,
-                                     EventRepository eventRepository, ProcessingEvents processingEvents) {
+    public RequestServicePrivateImpl(UserRepository userRepository,
+                                     RequestRepository requestRepository,
+                                     EventRepository eventRepository,
+                                     ProcessingEvents processingEvents) {
+        this.userRepository = userRepository;
         this.requestRepository = requestRepository;
-        this.findObjectInRepository = findObjectInRepository;
         this.eventRepository = eventRepository;
         this.processingEvents = processingEvents;
     }
@@ -47,7 +49,7 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
     @Override
     public List<ParticipationRequestDto> getAllRequestsUserById(Long userId) {
         log.info("Получен запрос на получение всех запросов пользователя с id= " + userId);
-        User user = findObjectInRepository.getUserById(userId);
+        User user = getUserById(userId);
         List<Request> requests = requestRepository.findAllByRequesterIs(user);
         return requests.stream().map(RequestMapper::requestToParticipationRequestDto)
                 .collect(Collectors.toList());
@@ -56,8 +58,8 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
     @Override
     public ParticipationRequestDto addRequestEventById(Long userId, Long eventId, HttpServletRequest httpServletRequest) {
         log.info("Получен запрос на добавление запроса от пользователя с id= {} для события с id= {}", userId, eventId);
-        User user = findObjectInRepository.getUserById(userId);
-        Event event = findObjectInRepository.getEventById(eventId);
+        User user = getUserById(userId);
+        Event event = getEventById(eventId);
         if (event.getState().equals(EventState.PUBLISHED)) {
             addEventConfirmedRequestsAndViews(event, httpServletRequest);
         } else {
@@ -98,8 +100,8 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
     @Override
     public ParticipationRequestDto updateRequestStatus(Long userId, Long requestId, HttpServletRequest httpServletRequest) {
         log.info("Получен запрос от пользователя с id= {} на обновление запроса с id= {}", userId, requestId);
-        User user = findObjectInRepository.getUserById(userId);
-        Request request = findObjectInRepository.getRequestById(requestId);
+        User user = getUserById(userId);
+        Request request = getRequestById(requestId);
         if (!request.getRequester().equals(user)) {
             throw new ConflictRequestException("Пользователь с id= " + userId
                     + "не подавал заявку с id= " + request.getId());
@@ -156,5 +158,20 @@ public class RequestServicePrivateImpl implements RequestServicePrivate {
         event.setConfirmedRequests(count);
         long views = processingEvents.searchViews(event, request);
         event.setViews(views);
+    }
+
+    public Event getEventById(Long id) {
+        return eventRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
+    }
+
+    private User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Пользователь c id = " + id + " не найден"));
+    }
+
+    private Request getRequestById(Long id) {
+        return requestRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Запрос на участие c id = " + id + " не найден"));
     }
 }

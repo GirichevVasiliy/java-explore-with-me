@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.practicum.category.model.Category;
+import ru.practicum.category.storage.CategoryRepository;
 import ru.practicum.events.event.dto.EventFullDto;
 import ru.practicum.events.event.dto.EventShortDto;
 import ru.practicum.events.event.dto.NewEventDto;
@@ -30,10 +31,9 @@ import ru.practicum.exception.BadRequestException;
 import ru.practicum.exception.ConflictRequestException;
 import ru.practicum.exception.ForbiddenEventException;
 import ru.practicum.exception.ResourceNotFoundException;
-import ru.practicum.explorewithme.stats.client.StatsClient;
 import ru.practicum.users.model.User;
-import ru.practicum.util.FindObjectInRepository;
-import ru.practicum.util.util.DateFormatter;
+import ru.practicum.users.storage.UserRepository;
+import ru.practicum.util.DateFormatter;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
@@ -46,28 +46,28 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EventServicePrivateImpl implements EventServicePrivate {
     private final EventRepository eventRepository;
-    private final FindObjectInRepository findObjectInRepository;
+    private final CategoryRepository categoryRepository;
     private final RequestRepository requestRepository;
     private final ProcessingEvents processingEvents;
-    private final StatsClient client;
+    private final UserRepository userRepository;
 
     @Autowired
     public EventServicePrivateImpl(EventRepository eventRepository,
-                                   FindObjectInRepository findObjectInRepository,
+                                   CategoryRepository categoryRepository,
                                    RequestRepository requestRepository,
-                                   StatsClient client,
+                                   UserRepository userRepository,
                                    ProcessingEvents processingEvents) {
         this.eventRepository = eventRepository;
-        this.findObjectInRepository = findObjectInRepository;
+        this.categoryRepository = categoryRepository;
         this.requestRepository = requestRepository;
-        this.client = client;
+        this.userRepository = userRepository;
         this.processingEvents = processingEvents;
     }
 
     @Override
     public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size, HttpServletRequest request) {
         log.info("Получен запрос на получение всех событий для пользователя с id= {}  (приватный)", userId);
-        findObjectInRepository.getUserById(userId);
+        getUserById(userId);
         Pageable pageable = PageRequest.of(from, size);
         List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable);
         List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);
@@ -80,8 +80,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     public EventFullDto addPrivateEventByUserId(Long userId, NewEventDto newEventDto) {
         log.info("Получен запрос на добавление события пользователем с id= {} (приватный)", userId);
         checkEventDate(DateFormatter.formatDate(newEventDto.getEventDate()));
-        User user = findObjectInRepository.getUserById(userId);
-        Category category = findObjectInRepository.getCategoryById(newEventDto.getCategory());
+        User user = getUserById(userId);
+        Category category = getCategoryById(newEventDto.getCategory());
         Long views = 0L;
         Long confirmedRequests = 0L;
         Event event = EventMapper.newEventDtoToCreateEvent(newEventDto, user, category, views, confirmedRequests);
@@ -91,8 +91,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     @Override
     public EventFullDto getPrivateEventByIdAndByUserId(Long userId, Long eventId, HttpServletRequest request) {
         log.info("Получен запрос на получение события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
-        User user = findObjectInRepository.getUserById(userId);
-        Event event = findObjectInRepository.getEventById(eventId);
+        User user = getUserById(userId);
+        Event event = getEventById(eventId);
         checkOwnerEvent(event, user);
         addEventConfirmedRequestsAndViews(event, request);
         return EventMapper.eventToEventFullDto(event);
@@ -104,15 +104,15 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         if (updateEvent.getEventDate() != null) {
             checkEventDate(DateFormatter.formatDate(updateEvent.getEventDate()));
         }
-        Event event = findObjectInRepository.getEventById(eventId);
-        User user = findObjectInRepository.getUserById(userId);
+        Event event = getEventById(eventId);
+        User user = getUserById(userId);
         checkOwnerEvent(event, user);
         eventAvailability(event);
         if (updateEvent.getAnnotation() != null && !updateEvent.getAnnotation().isBlank()) {
             event.setAnnotation(updateEvent.getAnnotation());
         }
         if (updateEvent.getCategory() != null) {
-            Category category = findObjectInRepository.getCategoryById(updateEvent.getCategory());
+            Category category = getCategoryById(updateEvent.getCategory());
             event.setCategory(category);
         }
         if (updateEvent.getDescription() != null && !updateEvent.getDescription().isBlank()) {
@@ -152,8 +152,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     public List<ParticipationRequestDto> getAllPrivateEventsByRequests(Long userId, Long eventId, HttpServletRequest request) {
         log.info("Получен запрос на получение всех запросов для события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
         try {
-            Event event = findObjectInRepository.getEventById(eventId);
-            User user = findObjectInRepository.getUserById(userId);
+            Event event = getEventById(eventId);
+            User user = getUserById(userId);
             checkOwnerEvent(event, user);
             List<Request> requests = requestRepository.findAllByEvent(event);
             return requests.stream().map(RequestMapper::requestToParticipationRequestDto)
@@ -166,8 +166,8 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     @Override
     public EventRequestStatusUpdateResult updateEventRequestStatus(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequest, HttpServletRequest request) {
         log.info("Получен запрос на обновление статуса запроса для события с id= {} для пользователя с id= {} (приватный)", eventId, userId);
-        Event event = findObjectInRepository.getEventById(eventId);
-        User user = findObjectInRepository.getUserById(userId);
+        Event event = getEventById(eventId);
+        User user = getUserById(userId);
         checkOwnerEvent(event, user);
         if (event.getState().equals(EventState.PUBLISHED)) {
             addEventConfirmedRequestsAndViews(event, request);
@@ -288,6 +288,21 @@ public class EventServicePrivateImpl implements EventServicePrivate {
         event.setConfirmedRequests(count);
         long views = processingEvents.searchViews(event, request);
         event.setViews(views);
+    }
+
+    private Category getCategoryById(Long id) {
+        return categoryRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Категория c id = " + id + " не найдена"));
+    }
+
+    private User getUserById(Long id) {
+        return userRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Пользователь c id = " + id + " не найден"));
+    }
+
+    private Event getEventById(Long id) {
+        return eventRepository.findById(id).orElseThrow(()
+                -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
     }
 }
 
