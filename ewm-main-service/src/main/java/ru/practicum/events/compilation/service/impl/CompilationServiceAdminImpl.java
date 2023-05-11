@@ -45,7 +45,9 @@ public class CompilationServiceAdminImpl implements CompilationServiceAdmin {
     @Override
     public void deleteCompilationById(Long compId) {
         log.info("Получен запрос на удаление подборки событий по id= {}", compId);
-        getCompilationById(compId);
+        if (!compilationStorage.existsById(compId)) {
+            throw new ResourceNotFoundException("Подборка событий c id = " + compId + " не найдена");
+        }
         compilationStorage.deleteById(compId);
     }
 

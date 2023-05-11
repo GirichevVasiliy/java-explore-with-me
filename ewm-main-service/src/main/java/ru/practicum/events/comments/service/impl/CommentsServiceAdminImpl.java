@@ -52,7 +52,9 @@ public class CommentsServiceAdminImpl implements CommentsServiceAdmin {
     @Override
     public CommentDto updateComment(Long commentId, UpdateCommentAdminDto updateComment) {
         Event event = getEventById(updateComment.getEventId());
-        getUserById(updateComment.getUserId());
+        if (!userRepository.existsById(updateComment.getUserId())) {
+            throw new ResourceNotFoundException("Пользователь c id = " + updateComment.getUserId() + " не найден");
+        }
         Comment comment = getCommentByIdInRepository(commentId);
         CommentUtil.checkCommentOnEvent(comment, event);
         if (updateComment.getText() != null && !updateComment.getText().isBlank()) {

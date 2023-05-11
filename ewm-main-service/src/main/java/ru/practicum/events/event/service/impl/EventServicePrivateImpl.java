@@ -67,7 +67,9 @@ public class EventServicePrivateImpl implements EventServicePrivate {
     @Override
     public List<EventShortDto> getAllPrivateEventsByUserId(Long userId, int from, int size, HttpServletRequest request) {
         log.info("Получен запрос на получение всех событий для пользователя с id= {}  (приватный)", userId);
-        getUserById(userId);
+        if (!userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("Пользователь c id = " + userId + " не найден");
+        }
         Pageable pageable = PageRequest.of(from, size);
         List<Event> events = eventRepository.findAllByInitiatorId(userId, pageable);
         List<Event> eventsAddViews = processingEvents.addViewsInEventsList(events, request);

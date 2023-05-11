@@ -42,7 +42,6 @@ public class CommentsServicePublicImpl implements CommentsServicePublic {
     private Event getEventById(Long id) {
         Event event = eventRepository.findById(id).orElseThrow(()
                 -> new ResourceNotFoundException("Событие c id = " + id + " не найдено"));
-
         return event;
     }
 }

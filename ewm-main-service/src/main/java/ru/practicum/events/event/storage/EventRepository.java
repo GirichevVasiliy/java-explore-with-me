@@ -71,4 +71,5 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     Optional<Event> findEventByIdAndStateIs(Long id, EventState state);
 
+    boolean existsByCategory(Category category);
 }
